@@ -12,13 +12,14 @@
 
 typedef NS_ENUM(NSUInteger, TDWLogLevel) {
 	TDWLogLevelDebug,
+	TDWLogLevelInfo,
 	TDWLogLevelWarning,
 	TDWLogLevelFatal
 };
 
 @protocol TDWLoggerDelegate <NSObject>
 @optional
-@property(nonatomic, readonly)BOOL log;
--(void)logReceived:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
+@property(nonatomic, readonly)TDWLogLevel level;
+-(void)logReceived:(TDWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
 @end
 #endif /* LogDelegate_h */

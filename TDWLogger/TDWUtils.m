@@ -12,6 +12,8 @@
 
 +(NSString *)logLevelString:(TDWLogLevel)level{
 	switch (level) {
+		case TDWLogLevelInfo:
+			return @"INFO";
 		case TDWLogLevelWarning:
 			return @"WARNING";
 		case TDWLogLevelFatal:

@@ -11,8 +11,12 @@
 @interface TDWLog : NSObject
 
 +(id<TDWLoggerDelegate>)delegate;
-+(void)setDelegate:(id<TDWLoggerDelegate>)delegate;
 
+//Setters/Getters
++(void)setDelegate:(id<TDWLoggerDelegate>)delegate;
++(void)setDefaultLogLevel:(TDWLogLevel)level;
++(BOOL)isLogging;
++(void)log:(BOOL)logging;
 void tdwLog(const char *file, const char *functionName, NSString *format, ...);
 
 @end

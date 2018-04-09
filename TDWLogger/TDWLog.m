@@ -59,8 +59,8 @@ void tdwLog(const char *file, const char *functionName, NSString *format, ...) {
 	}
 	
 	fprintf(stderr, "%s", logStr.UTF8String);
-	if([_delegate respondsToSelector:@selector(logReceived:fromFile:forMethod:)] && [_delegate respondsToSelector:@selector(log)] && _delegate.log){
-		[_delegate logReceived:logStr fromFile:file forMethod:functionName];
+	if([_delegate respondsToSelector:@selector(logReceived:body:fromFile:forMethod:)] && [_delegate respondsToSelector:@selector(log)] && _log){
+		[_delegate logReceived:_defaultLevel body:logStr fromFile:file forMethod:functionName];
 	}
 	
 }
@@ -73,4 +73,19 @@ static id<TDWLoggerDelegate> _delegate;
 +(void)setDelegate:(id<TDWLoggerDelegate>)delegate{
 	_delegate = delegate;
 }
+
+static TDWLogLevel _defaultLevel = TDWLogLevelDebug;
++(void)setDefaultLogLevel:(TDWLogLevel)level{
+	_defaultLevel = level;
+}
+
+static BOOL _log = YES;
++(BOOL)isLogging{
+	return _log;
+}
+
++(void)log:(BOOL)logging{
+	_log = logging;
+}
+
 @end
