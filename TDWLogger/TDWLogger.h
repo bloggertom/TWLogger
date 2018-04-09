@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#define NSLog(args...) tdwLog(__FILE__,__PRETTY_FUNCTION__,args);
+#define NSLog(args...) tdwLogD(__FILE__,__PRETTY_FUNCTION__,args);
+#define tdwLog(TDWLogLevel, args...) tdwLogL(__FILE__,__PRETTY_FUNCTION__, TDWLogLevel, args);
 //! Project version number for TDWLogger.
 FOUNDATION_EXPORT double TDWLoggerVersionNumber;
 

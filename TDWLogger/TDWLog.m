@@ -8,10 +8,22 @@
 
 #import "TDWLog.h"
 #import "TDWUtils.h"
+
 @implementation TDWLog
 
-void tdwLog(const char *file, const char *functionName, NSString *format, ...) {
+void tdwLogD(const char *file, const char *functionName, NSString *format, ...) {
+	// Type to hold information about variable arguments.
+	va_list ap;
 	
+	// Initialize a variable argument list.
+	va_start (ap, format);
+	tdwLogL(file, functionName, _defaultLevel, format);
+	
+	// End using variable argument list.
+	va_end (ap);
+}
+
+void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSString *format, ...) {
 		// Type to hold information about variable arguments.
 	va_list ap;
 	
@@ -40,7 +52,7 @@ void tdwLog(const char *file, const char *functionName, NSString *format, ...) {
 		function = [NSString stringWithUTF8String:functionName];
 	}
 	
-	[TDWLog tdwLog:_defaultLevel from:fileName inFunction:function body:body];
+	[TDWLog tdwLog:level from:fileName inFunction:function body:body];
 }
 
 + (void)tdwLog:(TDWLogLevel)level from:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{
