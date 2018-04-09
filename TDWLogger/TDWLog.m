@@ -40,7 +40,7 @@ void tdwLog(const char *file, const char *functionName, NSString *format, ...) {
 		function = [NSString stringWithUTF8String:functionName];
 	}
 	
-	[TDWLog tdwLog:TDWLogLevelDebug from:fileName inFunction:function body:body];
+	[TDWLog tdwLog:_defaultLevel from:fileName inFunction:function body:body];
 }
 
 + (void)tdwLog:(TDWLogLevel)level from:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{
@@ -60,7 +60,7 @@ void tdwLog(const char *file, const char *functionName, NSString *format, ...) {
 	
 	fprintf(stderr, "%s", logStr.UTF8String);
 	if([_delegate respondsToSelector:@selector(logReceived:body:fromFile:forMethod:)] && _log){
-		[_delegate logReceived:_defaultLevel body:logStr fromFile:file forMethod:functionName];
+		[_delegate logReceived:level body:logStr fromFile:file forMethod:functionName];
 	}
 	
 }
