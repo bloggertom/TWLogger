@@ -59,7 +59,7 @@ void tdwLog(const char *file, const char *functionName, NSString *format, ...) {
 	}
 	
 	fprintf(stderr, "%s", logStr.UTF8String);
-	if([_delegate respondsToSelector:@selector(logReceived:body:fromFile:forMethod:)] && [_delegate respondsToSelector:@selector(log)] && _log){
+	if([_delegate respondsToSelector:@selector(logReceived:body:fromFile:forMethod:)] && _log){
 		[_delegate logReceived:_defaultLevel body:logStr fromFile:file forMethod:functionName];
 	}
 	
