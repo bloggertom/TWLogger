@@ -7,10 +7,10 @@
 //
 
 #import "TDWLog.h"
-
+#import "TDWUtils.h"
 @implementation TDWLog
 
-void cLogger(const char *file, const char *functionName, NSString *format, ...) {
+void tdwLog(const char *file, const char *functionName, NSString *format, ...) {
 	
 		// Type to hold information about variable arguments.
 	va_list ap;
@@ -40,12 +40,12 @@ void cLogger(const char *file, const char *functionName, NSString *format, ...) 
 		function = [NSString stringWithUTF8String:functionName];
 	}
 	
-	[TDWLog logFromFile:fileName inFunction:function body:body];
+	[TDWLog tdwLog:TDWLogLevelDebug from:fileName inFunction:function body:body];
 }
 
-+ (void)logFromFile:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{
++ (void)tdwLog:(TDWLogLevel)level from:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{
 	NSMutableString *logStr = [[NSMutableString alloc]init];
-	[logStr appendFormat:@"%@ ", [NSDate date]];
+	[logStr appendFormat:@"[%@]%@ ", [TDWUtils logLevelString:level],[NSDate date]];
 	if(file != nil){
 		[logStr appendFormat:@"%@ ", file];
 	}

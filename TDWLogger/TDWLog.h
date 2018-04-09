@@ -13,6 +13,6 @@
 +(id<TDWLoggerDelegate>)delegate;
 +(void)setDelegate:(id<TDWLoggerDelegate>)delegate;
 
-void cLogger(const char *file, const char *functionName, NSString *format, ...);
+void tdwLog(const char *file, const char *functionName, NSString *format, ...);
 
 @end
