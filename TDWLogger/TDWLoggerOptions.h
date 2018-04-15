@@ -14,5 +14,6 @@
 @property (nonatomic, strong)NSDateComponents *pageLife;
 @property (nonatomic)NSInteger pageMaxSize;
 @property (nonatomic)NSInteger maxPageNum;
+@property (nonatomic)NSString *logFilePrefix;
 
 @end

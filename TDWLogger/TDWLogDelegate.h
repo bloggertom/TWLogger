@@ -18,7 +18,7 @@ typedef NS_ENUM(NSUInteger, TDWLogLevel) {
 };
 
 @protocol TDWLoggerDelegate <NSObject>
-
+@property (nonatomic, getter=isLogging)BOOL logging;
 -(void)logReceived:(TDWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
 
 @end
