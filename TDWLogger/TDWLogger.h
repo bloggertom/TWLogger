@@ -17,4 +17,6 @@ FOUNDATION_EXPORT const unsigned char TDWLoggerVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <TDWLogger/PublicHeader.h>
 #import <TDWLogger/TDWLog.h>
+#import	<TDWLogger/TDWFileLogger.h>
+#import	<TWDLogger/TDWLoggerOptions.h>
 
