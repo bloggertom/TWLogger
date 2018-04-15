@@ -175,22 +175,27 @@ BOOL _logging;
 	self.logging = NO;
 	[self.currentLogHandle closeFile];
 }
-
+-(NSArray *)sortFilesByCreationDate:(NSArray *)files{
+	NSArray *sortedArray = [files sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+		NSURL *pathObj1 = [self.options.filePath URLByAppendingPathComponent:obj1];
+		NSURL *pathObj2 = [self.options.filePath URLByAppendingPathComponent:obj2];
+		
+		NSError *error = nil;
+		NSDictionary *obj1Attr = [self.fileManager attributesOfItemAtPath:pathObj1.absoluteString error:&error];
+		NSDictionary *obj2Attr = [self.fileManager attributesOfItemAtPath:pathObj2.absoluteString error:&error];
+		
+		return [[obj1Attr fileCreationDate] compare:[obj2Attr fileCreationDate]];
+		
+	}];
+	
+	return sortedArray;
+}
 -(NSString *)fileNameOfNewestFile:(NSArray<NSString*>*)files{
 		//find file with most recent date stamp
-	if(files.count > 1){
-		[files sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-			NSURL *pathObj1 = [self.options.filePath URLByAppendingPathComponent:obj1];
-			NSURL *pathObj2 = [self.options.filePath URLByAppendingPathComponent:obj2];
-			
-			NSError *error = nil;
-			NSDictionary *obj1Attr = [self.fileManager attributesOfItemAtPath:pathObj1.absoluteString error:&error];
-			NSDictionary *obj2Attr = [self.fileManager attributesOfItemAtPath:pathObj2.absoluteString error:&error];
-			
-			return [[obj1Attr fileCreationDate] compare:[obj2Attr fileCreationDate]];
-			
-		}];
+	NSArray *sortedArray = files;
+	if(sortedArray.count > 1){
+		sortedArray = [self sortFilesByCreationDate:files];
 	}
-	return files.lastObject;
+	return sortedArray.lastObject;
 }
 @end
