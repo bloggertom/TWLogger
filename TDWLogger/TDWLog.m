@@ -66,7 +66,13 @@ void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSSt
 	}
 	
 }
-
++(void)systemLog:(NSString *)body{
+	if (![body hasSuffix: @"\n"])
+	{
+		body = [body stringByAppendingString: @"\n"];
+	}
+	fprintf(stderr, "%s", body.UTF8String);
+}
 NSMutableArray<id<TDWLoggerDelegate>> *_loggers;
 +(void)addLogger:(id<TDWLoggerDelegate>)logger{
 	if(logger == nil){

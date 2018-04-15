@@ -19,6 +19,7 @@
 +(void)log:(BOOL)logging;
 +(id<TDWLoggerDelegate>)removeLogger:(id<TDWLoggerDelegate>)logger;
 +(void)addLogger:(id<TDWLoggerDelegate>)logger;
++(void)systemLog:(NSString *)body;
 
 
 void tdwLogD(const char *file, const char *functionName, NSString *format, ...);
