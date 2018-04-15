@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 @property (nonatomic, strong)NSFileManager *fileManager;
 @property (nonatomic, strong)TDWLoggerOptions *options;
 @property (nonatomic, strong)NSFileHandle *currentLogHandle;
+@property (nonatomic, strong)NSURL *currentLogUrl;
 
 @end
 
@@ -57,10 +58,40 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	if(!self.isLogging){
 		return;
 	}
+	NSError *error = nil;
+	if(_currentLogHandle == nil){
+		_currentLogUrl = [self getLogFileUrl:&error];
+		if(_currentLogUrl == nil){
+			//error
+		}
+		_currentLogHandle = [NSFileHandle fileHandleForWritingToURL:self.currentLogUrl error:&error];
+	}else if([self logFileHasExpired:self.currentLogUrl error:&error]){
+		//check valid
+		[self.currentLogHandle synchronizeFile];
+		[self.currentLogHandle closeFile];
+		self.currentLogUrl = [self getLogFileUrl:&error];
+	}
+	if(error){
+		[TDWLog systemLog:@"Failed to create log file handle"];
+		[TDWLog systemLog:[NSString stringWithFormat:@"%@", error]];
+		[self stopLogging];
+		return;
+	}
+	
+	@try{
+		[self.currentLogHandle writeData:[body dataUsingEncoding:NSASCIIStringEncoding]];
+		[self.currentLogHandle synchronizeFile];
+	}@catch(NSException *e){
+		//Possibly means something else is in control of the file.
+		[TDWLog systemLog:@"Failed to write to log"];
+		[TDWLog systemLog:e.name];
+		[TDWLog systemLog:e.reason];
+		[self stopLogging];
+	}
 	
 }
 
--(NSFileHandle *)getLogFileHandle:(NSError **)error{
+-(NSURL *)getLogFileUrl:(NSError **)error{
 	BOOL isDirectory = NO;
 	if(![self.fileManager fileExistsAtPath:self.options.filePath.absoluteString isDirectory:&isDirectory]){
 		if(![self.fileManager createDirectoryAtURL:self.options.filePath withIntermediateDirectories:YES attributes:nil error:error]){
@@ -74,7 +105,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 			if(error){
 				return nil;
 			}
-			return [self handleToNewLogFile:error];
+			return [self urlToNewLogFile:error];
 			
 		}else{
 			NSArray *logFiles = [files filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
@@ -85,7 +116,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 				return NO;
 			}]];
 			
-			return [self handleToExistingLogFile:logFiles error:error];
+			return [self urlToExistingLogFile:logFiles error:error];
 		}
 	}else if(*error == nil){
 		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TDWFileLoggerErrorInvalidFilePath userInfo:@{NSLocalizedDescriptionKey: @"Invalid log storage directory."}];
@@ -94,7 +125,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	return nil;
 }
 
--(NSFileHandle *)handleToNewLogFile:(NSError **)error{
+-(NSURL *)urlToNewLogFile:(NSError **)error{
 	NSString *fileName = [NSString stringWithFormat:@"%@-%f.log",self.options.logFilePrefix, [[NSDate date] timeIntervalSince1970]];
 	
 	NSURL *fileUrl = [self.options.filePath URLByAppendingPathComponent:fileName];
@@ -122,9 +153,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		}
 	}
 	
-	NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingToURL:fileUrl error:error];
-	
-	return fileHandle;
+	return fileUrl;
 }
 
 -(BOOL)deleteOldestLog:(NSArray *)contents error:(NSError **)error{
@@ -132,9 +161,9 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	return [self.fileManager removeItemAtPath:oldestLog error:error];
 }
 
--(NSFileHandle *)handleToExistingLogFile:(NSArray<NSString *> *)files error:(NSError **)error{
+-(NSURL *)urlToExistingLogFile:(NSArray<NSString *> *)files error:(NSError **)error{
 	if(files.count == 0){
-		return [self handleToNewLogFile:error];
+		return [self urlToNewLogFile:error];
 	}
 	
 	//check it against options to ensure its valid
@@ -144,17 +173,9 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	NSURL *fileUrl = [self.options.filePath URLByAppendingPathComponent:file];
 	BOOL expired = [self logFileHasExpired:fileUrl error:error];
 	if(error|| expired){
-		return [self handleToNewLogFile:error];
+		return [self urlToNewLogFile:error];
 	}
-	
-	NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingToURL:fileUrl error:error];
-	
-	if(error){
-		return nil;
-	}
-	[fileHandle seekToEndOfFile];
-	
-	return fileHandle;
+	return fileUrl;
 }
 
 -(BOOL)logHasReachedCapacity:(NSArray<NSString*>*)logFiles error:(NSError **)error{
@@ -172,7 +193,9 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 }
 
 -(BOOL)logFileHasExpired:(NSURL *)logFile error:(NSError **)error{
-	
+	if(self.options.pageLife == nil){
+		return NO;
+	}
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:logFile.absoluteString error:error];
 	NSDate *fileCreation = [fileAtt fileCreationDate];
@@ -201,6 +224,7 @@ BOOL _logging;
 
 -(void)stopLogging{
 	self.logging = NO;
+	[self.currentLogHandle synchronizeFile];
 	[self.currentLogHandle closeFile];
 }
 -(NSArray *)sortFilesByCreationDate:(NSArray *)files{
