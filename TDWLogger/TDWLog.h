@@ -17,9 +17,11 @@
 +(void)setDefaultLogLevel:(TDWLogLevel)level;
 +(BOOL)isLogging;
 +(void)log:(BOOL)logging;
++(id<TDWLoggerDelegate>)removeLogger:(id<TDWLoggerDelegate>)logger;
++(void)addLogger:(id<TDWLoggerDelegate>)logger;
+
 
 void tdwLogD(const char *file, const char *functionName, NSString *format, ...);
-
 void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSString *format, ...);
 
 @end

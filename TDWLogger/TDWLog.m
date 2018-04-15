@@ -56,28 +56,48 @@ void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSSt
 }
 
 + (void)tdwLog:(TDWLogLevel)level from:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{
-	NSMutableString *logStr = [[NSMutableString alloc]init];
-	[logStr appendFormat:@"[%@]%@ ", [TDWUtils logLevelString:level],[NSDate date]];
-	if(file != nil){
-		[logStr appendFormat:@"%@ ", file];
-	}
-	
-	if(functionName != nil){
-		[logStr appendFormat:@"%@ ", functionName];
-	}
-	
 	if(body){
-		[logStr appendFormat:@"%@", body];
+		fprintf(stderr, "%s", body.UTF8String);
 	}
-	
-	fprintf(stderr, "%s", logStr.UTF8String);
-	if([_delegate respondsToSelector:@selector(logReceived:body:fromFile:forMethod:)] && _log){
-		[_delegate logReceived:level body:logStr fromFile:file forMethod:functionName];
+	if(_loggers.count > 0 && _log){
+		[_loggers enumerateObjectsUsingBlock:^(id<TDWLoggerDelegate>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+			[obj logReceived:level body:body fromFile:file forMethod:functionName];
+		}];
 	}
 	
 }
 
-static id<TDWLoggerDelegate> _delegate;
+NSMutableArray<id<TDWLoggerDelegate>> *_loggers;
++(void)addLogger:(id<TDWLoggerDelegate>)logger{
+	if(logger == nil){
+		return;
+	}
+	if(_loggers == nil){
+		_loggers = [[NSMutableArray alloc]init];
+	}
+	
+	[_loggers addObject:logger];
+}
+
++(id<TDWLoggerDelegate>)removeLogger:(id<TDWLoggerDelegate>)logger{
+	if(logger == nil || _loggers == nil){
+		return nil;
+	}
+	
+	NSInteger count = 0;
+	while(count < _loggers.count){
+		if(logger == [_loggers objectAtIndex:count]){
+			[_loggers removeObjectAtIndex:count];
+			return logger;
+		}
+		count++;
+	}
+	
+	return nil;
+}
+
+
+static __weak id<TDWLoggerDelegate> _delegate;
 +(id<TDWLoggerDelegate>)delegate{
 	return _delegate;
 }
