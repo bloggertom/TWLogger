@@ -12,8 +12,8 @@
 
 @property (nonatomic, strong)NSURL *filePath;
 @property (nonatomic, strong)NSDateComponents *pageLife;
-@property (nonatomic)NSInteger pageMaxSize;
-@property (nonatomic)NSInteger maxPageNum;
+@property (nonatomic)NSUInteger maxLogCacheCapacity;
+@property (nonatomic)NSUInteger maxPageNum;
 @property (nonatomic)NSString *logFilePrefix;
 
 @end

@@ -9,9 +9,12 @@
 #import "TDWFileLogger.h"
 #import "TDWLog.h"
 
+#define ERROR_DOMAIN @"TDWFileLogger"
+
 typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	TDWFileLoggerErrorUnknown = 2000,
 	TDWFileLoggerErrorInvalidFilePath = 2001,
+	TDWFileLoggerErrorFailedToCreateLogFile = 2002,
 };
 
 @interface TDWFileLogger()
@@ -28,7 +31,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	TDWLoggerOptions *options = [[TDWLoggerOptions alloc]init];
 	
 	options.maxPageNum = 80;
-	options.pageMaxSize = -1;
+	options.maxLogCacheCapacity = 0;
 	options.logFilePrefix = @"TDWLog";
 	options.pageLife = [[NSDateComponents alloc]init];
 	options.pageLife.day = 1;
@@ -85,7 +88,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 			return [self handleToExistingLogFile:logFiles error:error];
 		}
 	}else if(*error == nil){
-		*error = [NSError errorWithDomain:@"TDWFileLogger" code:TDWFileLoggerErrorInvalidFilePath userInfo:@{NSLocalizedDescriptionKey: @"Invalid log storage directory."}];
+		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TDWFileLoggerErrorInvalidFilePath userInfo:@{NSLocalizedDescriptionKey: @"Invalid log storage directory."}];
 	}
 	
 	return nil;
@@ -95,14 +98,38 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	NSString *fileName = [NSString stringWithFormat:@"%@-%f.log",self.options.logFilePrefix, [[NSDate date] timeIntervalSince1970]];
 	
 	NSURL *fileUrl = [self.options.filePath URLByAppendingPathComponent:fileName];
-	
-	if(![self.fileManager contentsOfDirectoryAtPath:fileUrl.absoluteString error:error]){
+	NSArray *contents = [self.fileManager contentsOfDirectoryAtURL:self.options.filePath includingPropertiesForKeys:nil options:0 error:error];
+	if(error){
 		return nil;
 	}
 	
-	NSFileHandle *fileHanle = [NSFileHandle fileHandleForWritingToURL:fileUrl error:error];
+	if([self logHasReachedCapacity:contents error:error]){
+		if([self deleteOldestLog:contents error:error]){
+			[TDWLog systemLog:[NSString stringWithFormat:@"Failed to delete old log"]];
+		}
+	}
 	
-	return fileHanle;
+	if(![self.fileManager createFileAtPath:fileUrl.absoluteString contents:nil attributes:nil]){
+		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TDWFileLoggerErrorFailedToCreateLogFile userInfo:@{NSLocalizedDescriptionKey : @"Failed to create new log file"}];
+		return nil;
+	}
+	
+	contents = [contents arrayByAddingObject:fileName];
+	if(self.options.maxPageNum > 0 && contents.count > self.options.maxPageNum){
+		//Remove oldest file.
+		if([self deleteOldestLog:contents error:error]){
+			[TDWLog systemLog:[NSString stringWithFormat:@"Failed to delete older log"]];
+		}
+	}
+	
+	NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingToURL:fileUrl error:error];
+	
+	return fileHandle;
+}
+
+-(BOOL)deleteOldestLog:(NSArray *)contents error:(NSError **)error{
+	NSString *oldestLog = [self fileNameOfOldestFile:contents];
+	return [self.fileManager removeItemAtPath:oldestLog error:error];
 }
 
 -(NSFileHandle *)handleToExistingLogFile:(NSArray<NSString *> *)files error:(NSError **)error{
@@ -120,11 +147,6 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		return [self handleToNewLogFile:error];
 	}
 	
-	//pageMaxSize
-	BOOL logCapacityReached = [self logHasReachedCapacity:fileUrl error:error];
-	if(error|| logCapacityReached){
-		return [self handleToNewLogFile:error];
-	}
 	NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingToURL:fileUrl error:error];
 	
 	if(error){
@@ -135,12 +157,18 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	return fileHandle;
 }
 
--(BOOL)logHasReachedCapacity:(NSURL *)logFile error:(NSError **)error{
-	NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:logFile.absoluteString error:error];
-	if([fileAtt fileSize] >= self.options.pageMaxSize *1000){
-		return YES;
+-(BOOL)logHasReachedCapacity:(NSArray<NSString*>*)logFiles error:(NSError **)error{
+	if(self.options.maxLogCacheCapacity <= 0){
+		return NO;
 	}
-	return NO;
+	NSUInteger logsSize = 0;
+	for (NSString *logFile in logFiles) {
+		NSURL *filePath = [self.options.filePath URLByAppendingPathComponent:logFile];
+		NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:filePath.absoluteString error:error];
+		logsSize += [fileAtt fileSize];
+	}
+	logsSize = logsSize/1000;
+	return (logsSize >= self.options.maxLogCacheCapacity);
 }
 
 -(BOOL)logFileHasExpired:(NSURL *)logFile error:(NSError **)error{
@@ -197,5 +225,13 @@ BOOL _logging;
 		sortedArray = [self sortFilesByCreationDate:files];
 	}
 	return sortedArray.lastObject;
+}
+
+-(NSString *)fileNameOfOldestFile:(NSArray<NSString*>*)files{
+	NSArray *sortedArray = files;
+	if(sortedArray.count > 1){
+		sortedArray = [self sortFilesByCreationDate:files];
+	}
+	return sortedArray.firstObject;
 }
 @end
