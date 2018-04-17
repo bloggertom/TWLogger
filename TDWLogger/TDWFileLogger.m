@@ -7,7 +7,6 @@
 //
 
 #import "TDWFileLogger.h"
-#import "TDWLog.h"
 
 #define ERROR_DOMAIN @"TDWFileLogger"
 
@@ -38,7 +37,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	options.pageLife.day = 1;
 	
 	NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-	path = [path stringByAppendingPathComponent:@"TDWLogsFiles"];
+	path = [path stringByAppendingPathComponent:@"TDWLogFiles"];
 	options.filePath = [NSURL URLWithString:path];
 	
 	return [self initWithOptions:options];
@@ -62,7 +61,8 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	if(_currentLogHandle == nil){
 		_currentLogUrl = [self getLogFileUrl:&error];
 		if(_currentLogUrl == nil){
-			//error
+			[self stopLoggingWithMessage:@"Failed to create log file" andError:error];
+			return;
 		}
 		_currentLogHandle = [NSFileHandle fileHandleForWritingToURL:self.currentLogUrl error:&error];
 	}else if([self logFileHasExpired:self.currentLogUrl error:&error]){
@@ -94,15 +94,16 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 -(NSURL *)getLogFileUrl:(NSError **)error{
 	BOOL isDirectory = NO;
 	if(![self.fileManager fileExistsAtPath:self.options.filePath.absoluteString isDirectory:&isDirectory]){
-		if(![self.fileManager createDirectoryAtURL:self.options.filePath withIntermediateDirectories:YES attributes:nil error:error]){
+		if(![self.fileManager createDirectoryAtPath:self.options.filePath.absoluteString withIntermediateDirectories:YES attributes:nil error:error]){
 			return nil;
 		}
+		isDirectory = YES;
 	}
 	
 	if(isDirectory){
 		NSArray *files = [self.fileManager contentsOfDirectoryAtPath:self.options.filePath.absoluteString error:error];
 		if(files.count == 0){
-			if(error){
+			if(*error){
 				return nil;
 			}
 			return [self urlToNewLogFile:error];

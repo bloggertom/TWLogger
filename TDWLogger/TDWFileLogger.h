@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TDWLog.h"
 #import "TDWLogDelegate.h"
 #import "TDWLoggerOptions.h"
 @interface TDWFileLogger : NSObject <TDWLoggerDelegate>
