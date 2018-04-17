@@ -129,7 +129,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 }
 
 -(NSString *)urlToNewLogFile:(NSError **)error{
-	NSString *fileName = [NSString stringWithFormat:@"%@-%f.log",self.options.logFilePrefix, [[NSDate date] timeIntervalSince1970]];
+	NSString *fileName = [NSString stringWithFormat:@"%@-%lld.log",self.options.logFilePrefix, (long long)[[NSDate date] timeIntervalSince1970]];
 	
 	NSString *fileUrl = [self.options.filePath stringByAppendingPathComponent:fileName];
 	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.options.filePath error:error];
