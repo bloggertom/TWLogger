@@ -71,6 +71,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		[self.currentLogHandle synchronizeFile];
 		[self.currentLogHandle closeFile];
 		self.currentLogPath = [self getLogFileUrl:&error];
+		self.currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
 	}
 	if(error){
 		[TDWLog systemLog:@"Failed to create log file handle"];
@@ -87,7 +88,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		[TDWLog systemLog:@"Failed to write to log"];
 		[TDWLog systemLog:e.name];
 		[TDWLog systemLog:e.reason];
-		[self stopLogging];
+		self.logging = NO;
 	}
 	
 }
@@ -199,13 +200,17 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	if(self.options.pageLife == nil){
 		return NO;
 	}
+	
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:logFile error:error];
+	if(*error){
+		return NO;
+	}
 	NSDate *fileCreation = [fileAtt fileCreationDate];
 	
 	NSDate *expiryDate = [calendar dateByAddingComponents:self.options.pageLife toDate:fileCreation options:0];
 	NSDate *now = [NSDate date];
-	return ([expiryDate compare:now] == NSOrderedDescending || [expiryDate compare:now] == NSOrderedSame);
+	return ([expiryDate compare:now] == NSOrderedAscending || [expiryDate compare:now] == NSOrderedSame);
 }
 
 BOOL _logging;
