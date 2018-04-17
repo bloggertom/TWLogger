@@ -17,7 +17,26 @@ void tdwLogD(const char *file, const char *functionName, NSString *format, ...) 
 	
 	// Initialize a variable argument list.
 	va_start (ap, format);
-	tdwLogL(file, functionName, _defaultLevel, format);
+	if (![format hasSuffix: @"\n"])
+	{
+		format = [format stringByAppendingString: @"\n"];
+	}
+	
+	NSString *body = [[NSString alloc] initWithFormat:format arguments:ap];
+	
+	// End using variable argument list.
+	va_end (ap);
+	
+	NSString *fileName = nil;
+	if(file){
+		fileName = [[NSString stringWithUTF8String:file] lastPathComponent];
+	}
+	NSString *function = nil;
+	if(functionName){
+		function = [NSString stringWithUTF8String:functionName];
+	}
+	
+	[TDWLog tdwLog:TDWLogLevelDebug from:fileName inFunction:function body:body];
 	
 	// End using variable argument list.
 	va_end (ap);
