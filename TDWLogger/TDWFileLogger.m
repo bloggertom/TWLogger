@@ -21,7 +21,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 @property (nonatomic, strong)NSFileManager *fileManager;
 @property (nonatomic, strong)TDWLoggerOptions *options;
 @property (nonatomic, strong)NSFileHandle *currentLogHandle;
-@property (nonatomic, strong)NSURL *currentLogUrl;
+@property (nonatomic, strong)NSString *currentLogPath;
 
 @end
 
@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	
 	NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 	path = [path stringByAppendingPathComponent:@"TDWLogFiles"];
-	options.filePath = [NSURL URLWithString:path];
+	options.filePath = path;
 	
 	return [self initWithOptions:options];
 }
@@ -59,17 +59,18 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	}
 	NSError *error = nil;
 	if(_currentLogHandle == nil){
-		_currentLogUrl = [self getLogFileUrl:&error];
-		if(_currentLogUrl == nil){
+		_currentLogPath = [self getLogFileUrl:&error];
+		if(_currentLogPath == nil){
 			[self stopLoggingWithMessage:@"Failed to create log file" andError:error];
 			return;
 		}
-		_currentLogHandle = [NSFileHandle fileHandleForWritingToURL:self.currentLogUrl error:&error];
-	}else if([self logFileHasExpired:self.currentLogUrl error:&error]){
+		_currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
+		
+	}else if([self logFileHasExpired:self.currentLogPath error:&error]){
 		//check valid
 		[self.currentLogHandle synchronizeFile];
 		[self.currentLogHandle closeFile];
-		self.currentLogUrl = [self getLogFileUrl:&error];
+		self.currentLogPath = [self getLogFileUrl:&error];
 	}
 	if(error){
 		[TDWLog systemLog:@"Failed to create log file handle"];
@@ -91,17 +92,17 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	
 }
 
--(NSURL *)getLogFileUrl:(NSError **)error{
+-(NSString *)getLogFileUrl:(NSError **)error{
 	BOOL isDirectory = NO;
-	if(![self.fileManager fileExistsAtPath:self.options.filePath.absoluteString isDirectory:&isDirectory]){
-		if(![self.fileManager createDirectoryAtPath:self.options.filePath.absoluteString withIntermediateDirectories:YES attributes:nil error:error]){
+	if(![self.fileManager fileExistsAtPath:self.options.filePath isDirectory:&isDirectory]){
+		if(![self.fileManager createDirectoryAtPath:self.options.filePath withIntermediateDirectories:YES attributes:nil error:error]){
 			return nil;
 		}
 		isDirectory = YES;
 	}
 	
 	if(isDirectory){
-		NSArray *files = [self.fileManager contentsOfDirectoryAtPath:self.options.filePath.absoluteString error:error];
+		NSArray *files = [self.fileManager contentsOfDirectoryAtPath:self.options.filePath error:error];
 		if(files.count == 0){
 			if(*error){
 				return nil;
@@ -126,11 +127,12 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	return nil;
 }
 
--(NSURL *)urlToNewLogFile:(NSError **)error{
+-(NSString *)urlToNewLogFile:(NSError **)error{
 	NSString *fileName = [NSString stringWithFormat:@"%@-%f.log",self.options.logFilePrefix, [[NSDate date] timeIntervalSince1970]];
 	
-	NSURL *fileUrl = [self.options.filePath URLByAppendingPathComponent:fileName];
-	NSArray *contents = [self.fileManager contentsOfDirectoryAtURL:self.options.filePath includingPropertiesForKeys:nil options:0 error:error];
+	NSString *fileUrl = [self.options.filePath stringByAppendingPathComponent:fileName];
+	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.options.filePath error:error];
+	
 	if(error){
 		return nil;
 	}
@@ -141,7 +143,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		}
 	}
 	
-	if(![self.fileManager createFileAtPath:fileUrl.absoluteString contents:nil attributes:nil]){
+	if(![self.fileManager createFileAtPath:fileUrl contents:nil attributes:nil]){
 		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TDWFileLoggerErrorFailedToCreateLogFile userInfo:@{NSLocalizedDescriptionKey : @"Failed to create new log file"}];
 		return nil;
 	}
@@ -162,7 +164,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	return [self.fileManager removeItemAtPath:oldestLog error:error];
 }
 
--(NSURL *)urlToExistingLogFile:(NSArray<NSString *> *)files error:(NSError **)error{
+-(NSString *)urlToExistingLogFile:(NSArray<NSString *> *)files error:(NSError **)error{
 	if(files.count == 0){
 		return [self urlToNewLogFile:error];
 	}
@@ -171,7 +173,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	NSString *file = [self fileNameOfNewestFile:files];
 	
 	//life time
-	NSURL *fileUrl = [self.options.filePath URLByAppendingPathComponent:file];
+	NSString *fileUrl = [self.options.filePath stringByAppendingPathComponent:file];
 	BOOL expired = [self logFileHasExpired:fileUrl error:error];
 	if(error|| expired){
 		return [self urlToNewLogFile:error];
@@ -185,20 +187,20 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	}
 	NSUInteger logsSize = 0;
 	for (NSString *logFile in logFiles) {
-		NSURL *filePath = [self.options.filePath URLByAppendingPathComponent:logFile];
-		NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:filePath.absoluteString error:error];
+		NSString *filePath = [self.options.filePath stringByAppendingPathComponent:logFile];
+		NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:filePath error:error];
 		logsSize += [fileAtt fileSize];
 	}
 	logsSize = logsSize/1000;
 	return (logsSize >= self.options.maxLogCacheCapacity);
 }
 
--(BOOL)logFileHasExpired:(NSURL *)logFile error:(NSError **)error{
+-(BOOL)logFileHasExpired:(NSString *)logFile error:(NSError **)error{
 	if(self.options.pageLife == nil){
 		return NO;
 	}
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:logFile.absoluteString error:error];
+	NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:logFile error:error];
 	NSDate *fileCreation = [fileAtt fileCreationDate];
 	
 	NSDate *expiryDate = [calendar dateByAddingComponents:self.options.pageLife toDate:fileCreation options:0];
@@ -230,12 +232,12 @@ BOOL _logging;
 }
 -(NSArray *)sortFilesByCreationDate:(NSArray *)files{
 	NSArray *sortedArray = [files sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-		NSURL *pathObj1 = [self.options.filePath URLByAppendingPathComponent:obj1];
-		NSURL *pathObj2 = [self.options.filePath URLByAppendingPathComponent:obj2];
+		NSString *pathObj1 = [self.options.filePath stringByAppendingPathComponent:obj1];
+		NSString *pathObj2 = [self.options.filePath stringByAppendingPathComponent:obj2];
 		
 		NSError *error = nil;
-		NSDictionary *obj1Attr = [self.fileManager attributesOfItemAtPath:pathObj1.absoluteString error:&error];
-		NSDictionary *obj2Attr = [self.fileManager attributesOfItemAtPath:pathObj2.absoluteString error:&error];
+		NSDictionary *obj1Attr = [self.fileManager attributesOfItemAtPath:pathObj1 error:&error];
+		NSDictionary *obj2Attr = [self.fileManager attributesOfItemAtPath:pathObj2 error:&error];
 		
 		return [[obj1Attr fileCreationDate] compare:[obj2Attr fileCreationDate]];
 		

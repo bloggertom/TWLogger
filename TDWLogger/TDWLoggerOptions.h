@@ -10,7 +10,7 @@
 
 @interface TDWLoggerOptions : NSObject
 
-@property (nonatomic, strong)NSURL *filePath;
+@property (nonatomic, strong)NSString *filePath;
 @property (nonatomic, strong)NSDateComponents *pageLife;
 @property (nonatomic)NSUInteger maxLogCacheCapacity;
 @property (nonatomic)NSUInteger maxPageNum;
