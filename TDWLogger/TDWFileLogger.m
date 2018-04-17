@@ -133,7 +133,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	NSString *fileUrl = [self.options.filePath stringByAppendingPathComponent:fileName];
 	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.options.filePath error:error];
 	
-	if(error){
+	if(*error){
 		return nil;
 	}
 	
