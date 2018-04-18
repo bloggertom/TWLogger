@@ -141,4 +141,39 @@
 	XCTAssertEqualObjects(logMessage2, file2Content);
 }
 
+-(void)testConcurrentLogging{
+	NSMutableArray *expectations = [[NSMutableArray alloc]init];
+	NSMutableArray *logStrings = [[NSMutableArray alloc]init];
+	for(int i=0; i<50; i++){
+		XCTestExpectation *expectation = [[XCTestExpectation alloc]initWithDescription:[NSString stringWithFormat:@"Test Excpection %d",i]];
+		[expectations addObject:expectation];
+		NSString *logString = [NSString stringWithFormat:@"Log num %d",i];
+		[logStrings addObject:logString];
+		
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			[self.fileLogger logReceived:TDWLogLevelDebug body:logString fromFile:[NSString stringWithUTF8String:__FILE__] forMethod:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
+			[expectation fulfill];
+		});
+	}
+	[self waitForExpectations:expectations timeout:180];
+	
+	NSError *error = nil;
+	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertTrue(contents.count == 1);
+	
+	error = nil;
+	NSString *fileContent = [NSString stringWithContentsOfFile:[self.logPath stringByAppendingPathComponent:contents.firstObject]  encoding:NSASCIIStringEncoding error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(fileContent);
+	
+	for (NSString *log in logStrings) {
+		NSRange range = [fileContent rangeOfString:log];
+		XCTAssertTrue(range.location != NSNotFound);
+		XCTAssertEqual(range.length, log.length);
+	}
+}
+
 @end
