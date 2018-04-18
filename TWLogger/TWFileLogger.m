@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 @interface TWFileLogger()
 
 @property (nonatomic, strong)NSFileManager *fileManager;
-@property (nonatomic, strong)TDWLoggerOptions *options;
+@property (nonatomic, strong)TWLoggerOptions *options;
 @property (nonatomic, strong)NSFileHandle *currentLogHandle;
 @property (nonatomic, strong)NSString *currentLogPath;
 
@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 @implementation TWFileLogger
 
 -(instancetype)init{
-	TDWLoggerOptions *options = [[TDWLoggerOptions alloc]init];
+	TWLoggerOptions *options = [[TWLoggerOptions alloc]init];
 	
 	options.maxPageNum = 80;
 	options.maxLogCacheCapacity = 0;
@@ -43,7 +43,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	return [self initWithOptions:options];
 }
 
--(instancetype)initWithOptions:(TDWLoggerOptions *)options{
+-(instancetype)initWithOptions:(TWLoggerOptions *)options{
 	if(self = [super init]){
 		_fileManager = [NSFileManager defaultManager];
 		_options = options;

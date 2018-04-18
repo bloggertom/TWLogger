@@ -7,18 +7,18 @@
 //
 
 #import <XCTest/XCTest.h>
-#import <TDWLogger/TDWLogger.h>
+#import <TWLogger/TWLogger.h>
 
 @interface TWFileLogger()
-@property (nonatomic, strong)TDWLoggerOptions *options;
+@property (nonatomic, strong)TWLoggerOptions *options;
 -(void)stopLogging;
 @end
 
-@interface TDWLoggerTests : XCTestCase
+@interface TWLoggerTests : XCTestCase
 
 @end
 
-@implementation TDWLoggerTests
+@implementation TWLoggerTests
 
 - (void)setUp {
     [super setUp];

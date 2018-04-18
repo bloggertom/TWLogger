@@ -7,21 +7,21 @@
 //
 
 #import <XCTest/XCTest.h>
-#import <TDWLogger/TDWLogger.h>
+#import <TWLogger/TWLogger.h>
 
 @interface TWFileLogger()
-@property (nonatomic, strong)TDWLoggerOptions *options;
+@property (nonatomic, strong)TWLoggerOptions *options;
 -(void)stopLogging;
 @end
 
-@interface TDWFileLoggerTest : XCTestCase
+@interface TWFileLoggerTest : XCTestCase
 @property (nonatomic, strong)NSFileManager *fileManager;
 @property (nonatomic, strong)NSString *baseDir;
 @property (nonatomic, strong)TWFileLogger *fileLogger;
 @property (nonatomic, strong)NSString *logPath;
 @end
 
-@implementation TDWFileLoggerTest
+@implementation TWFileLoggerTest
 
 - (void)setUp {
     [super setUp];

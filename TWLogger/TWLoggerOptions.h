@@ -1,5 +1,5 @@
 //
-//  TDWLoggerOptions.h
+//  TWLoggerOptions.h
 //  TDWLogger
 //
 //  Created by Thomas Wilson on 15/04/2018.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TDWLoggerOptions : NSObject
+@interface TWLoggerOptions : NSObject
 
 @property (nonatomic, strong)NSString *filePath;
 @property (nonatomic, strong)NSDateComponents *pageLife;
