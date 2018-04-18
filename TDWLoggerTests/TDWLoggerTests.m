@@ -7,6 +7,12 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <TDWLogger/TDWLogger.h>
+
+@interface TDWFileLogger()
+@property (nonatomic, strong)TDWLoggerOptions *options;
+-(void)stopLogging;
+@end
 
 @interface TDWLoggerTests : XCTestCase
 
@@ -35,5 +41,46 @@
         // Put the code you want to measure the time of here.
     }];
 }
+
+-(void)testConcurrentLogging{
+	TDWFileLogger *fileLogger = [[TDWFileLogger alloc]init];
+	[TDWLog addLogger:fileLogger];
+	
+	NSMutableArray *expectations = [[NSMutableArray alloc]init];
+	NSMutableArray *logStrings = [[NSMutableArray alloc]init];
+	for(int i=0; i<50; i++){
+		XCTestExpectation *expectation = [[XCTestExpectation alloc]initWithDescription:[NSString stringWithFormat:@"Test Excpection %d",i]];
+		[expectations addObject:expectation];
+		NSString *logString = [NSString stringWithFormat:@"Log num %d",i];
+		[logStrings addObject:logString];
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			NSLog(logString);
+			[expectation fulfill];
+		});
+	}
+	[self waitForExpectations:expectations timeout:180];
+	
+	NSError *error = nil;
+	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.filePath error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertTrue(contents.count == 1);
+	
+	error = nil;
+	NSString *fileContent = [NSString stringWithContentsOfFile:[fileLogger.options.filePath  stringByAppendingPathComponent:contents.firstObject]  encoding:NSASCIIStringEncoding error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(fileContent);
+	
+	for (NSString *log in logStrings) {
+		NSRange range = [fileContent rangeOfString:log];
+		XCTAssertTrue(range.location != NSNotFound);
+		XCTAssertEqual(range.length, log.length);
+	}
+	
+	[TDWLog removeLogger:fileLogger];
+	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.filePath error:&error];
+}
+
 
 @end
