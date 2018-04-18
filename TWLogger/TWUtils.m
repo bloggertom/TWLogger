@@ -6,9 +6,9 @@
 //  Copyright © 2018 Thomas Wilson. All rights reserved.
 //
 
-#import "TDWUtils.h"
+#import "TWUtils.h"
 
-@implementation TDWUtils
+@implementation TWUtils
 
 +(NSString *)logLevelString:(TDWLogLevel)level{
 	switch (level) {

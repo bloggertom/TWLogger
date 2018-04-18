@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TDWLogDelegate.h"
-@interface TDWUtils : NSObject
+#import "TWLogDelegate.h"
+@interface TWUtils : NSObject
 
 +(NSString *)logLevelString:(TDWLogLevel)level;
 

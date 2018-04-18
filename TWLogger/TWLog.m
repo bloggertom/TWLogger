@@ -7,16 +7,16 @@
 //
 
 #import "TWLog.h"
-#import "TDWUtils.h"
+#import "TWUtils.h"
 
 @interface LoggerReference :NSObject
 @property (nonatomic)dispatch_queue_t logQueue;
-@property (nonatomic, strong)id<TDWLoggerDelegate>logger;
+@property (nonatomic, strong)id<TWLoggerDelegate>logger;
 @end
 
 @implementation LoggerReference
 
--(instancetype)initWithLogger:(id<TDWLoggerDelegate>)logger queue:(dispatch_queue_t)logQueue{
+-(instancetype)initWithLogger:(id<TWLoggerDelegate>)logger queue:(dispatch_queue_t)logQueue{
 	self = [super init];
 	if(self){
 		_logQueue = logQueue;
@@ -113,7 +113,7 @@ void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSSt
 	fprintf(stderr, "%s", body.UTF8String);
 }
 NSMutableArray<LoggerReference *> *_loggers;
-+(void)addLogger:(id<TDWLoggerDelegate>)logger{
++(void)addLogger:(id<TWLoggerDelegate>)logger{
 	if(logger == nil){
 		return;
 	}
@@ -124,7 +124,7 @@ NSMutableArray<LoggerReference *> *_loggers;
 	[_loggers addObject:ref];
 }
 
-+(id<TDWLoggerDelegate>)removeLogger:(id<TDWLoggerDelegate>)logger{
++(id<TWLoggerDelegate>)removeLogger:(id<TWLoggerDelegate>)logger{
 	if(logger == nil || _loggers == nil){
 		return nil;
 	}
@@ -143,12 +143,12 @@ NSMutableArray<LoggerReference *> *_loggers;
 }
 
 
-static __weak id<TDWLoggerDelegate> _delegate;
-+(id<TDWLoggerDelegate>)delegate{
+static __weak id<TWLoggerDelegate> _delegate;
++(id<TWLoggerDelegate>)delegate{
 	return _delegate;
 }
 
-+(void)setDelegate:(id<TDWLoggerDelegate>)delegate{
++(void)setDelegate:(id<TWLoggerDelegate>)delegate{
 	_delegate = delegate;
 }
 

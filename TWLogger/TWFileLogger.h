@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "TWLog.h"
-#import "TDWLogDelegate.h"
+#import "TWLogDelegate.h"
 #import "TDWLoggerOptions.h"
-@interface TWFileLogger : NSObject <TDWLoggerDelegate>
+@interface TWFileLogger : NSObject <TWLoggerDelegate>
 
 -(instancetype)initWithOptions:(TDWLoggerOptions *)options;
 

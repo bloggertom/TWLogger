@@ -6,19 +6,19 @@
 //  Copyright © 2018 Thomas Wilson. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-#import "TDWLogDelegate.h"
+#import "TWLogDelegate.h"
 
 @interface TWLog : NSObject
 
-+(id<TDWLoggerDelegate>)delegate;
++(id<TWLoggerDelegate>)delegate;
 
 //Setters/Getters
-+(void)setDelegate:(id<TDWLoggerDelegate>)delegate;
++(void)setDelegate:(id<TWLoggerDelegate>)delegate;
 +(void)setDefaultLogLevel:(TDWLogLevel)level;
 +(BOOL)isLogging;
 +(void)log:(BOOL)logging;
-+(id<TDWLoggerDelegate>)removeLogger:(id<TDWLoggerDelegate>)logger;
-+(void)addLogger:(id<TDWLoggerDelegate>)logger;
++(id<TWLoggerDelegate>)removeLogger:(id<TWLoggerDelegate>)logger;
++(void)addLogger:(id<TWLoggerDelegate>)logger;
 +(void)systemLog:(NSString *)body;
 
 
