@@ -42,23 +42,11 @@
     }];
 }
 
--(void)testConcurrentLogging{
+-(void)testConcurrentFileLogging{
 	TDWFileLogger *fileLogger = [[TDWFileLogger alloc]init];
 	[TDWLog addLogger:fileLogger];
 	
-	NSMutableArray *expectations = [[NSMutableArray alloc]init];
-	NSMutableArray *logStrings = [[NSMutableArray alloc]init];
-	for(int i=0; i<50; i++){
-		XCTestExpectation *expectation = [[XCTestExpectation alloc]initWithDescription:[NSString stringWithFormat:@"Test Excpection %d",i]];
-		[expectations addObject:expectation];
-		NSString *logString = [NSString stringWithFormat:@"Log num %d",i];
-		[logStrings addObject:logString];
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-			NSLog(logString);
-			[expectation fulfill];
-		});
-	}
-	[self waitForExpectations:expectations timeout:180];
+	NSArray *logStrings = [self performConcurrentLogs];
 	
 	NSError *error = nil;
 	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.filePath error:&error];
@@ -82,5 +70,21 @@
 	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.filePath error:&error];
 }
 
-
+-(NSArray<NSString *> *)performConcurrentLogs{
+	NSMutableArray *expectations = [[NSMutableArray alloc]init];
+	NSMutableArray *logStrings = [[NSMutableArray alloc]init];
+	for(int i=0; i<50; i++){
+		XCTestExpectation *expectation = [[XCTestExpectation alloc]initWithDescription:[NSString stringWithFormat:@"Test Excpection %d",i]];
+		[expectations addObject:expectation];
+		NSString *logString = [NSString stringWithFormat:@"Log num %d",i];
+		[logStrings addObject:logString];
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			NSLog(logString);
+			[expectation fulfill];
+		});
+	}
+	[self waitForExpectations:expectations timeout:180];
+	
+	return logStrings;
+}
 @end
