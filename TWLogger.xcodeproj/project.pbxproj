@@ -12,7 +12,7 @@
 		DBB669A82083749F004EA937 /* TDWLoggerOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB669A62083749F004EA937 /* TDWLoggerOptions.m */; };
 		DBB669AA208669AF004EA937 /* TDWFileLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB669A9208669AF004EA937 /* TDWFileLoggerTest.m */; };
 		DBB669AB20867013004EA937 /* TDWLoggerOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = DBB669A52083749F004EA937 /* TDWLoggerOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DBE46B70207C095C00F5A3BE /* TDWLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE46B66207C095B00F5A3BE /* TDWLogger.framework */; };
+		DBE46B70207C095C00F5A3BE /* TWLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE46B66207C095B00F5A3BE /* TWLogger.framework */; };
 		DBE46B75207C095C00F5A3BE /* TDWLoggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE46B74207C095C00F5A3BE /* TDWLoggerTests.m */; };
 		DBE46B77207C095C00F5A3BE /* TDWLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B69207C095B00F5A3BE /* TDWLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE46B82207C098700F5A3BE /* TDWLog.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B80207C098700F5A3BE /* TDWLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -38,10 +38,10 @@
 		DBB669A52083749F004EA937 /* TDWLoggerOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDWLoggerOptions.h; sourceTree = "<group>"; };
 		DBB669A62083749F004EA937 /* TDWLoggerOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDWLoggerOptions.m; sourceTree = "<group>"; };
 		DBB669A9208669AF004EA937 /* TDWFileLoggerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDWFileLoggerTest.m; sourceTree = "<group>"; };
-		DBE46B66207C095B00F5A3BE /* TDWLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TDWLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBE46B66207C095B00F5A3BE /* TWLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TWLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBE46B69207C095B00F5A3BE /* TDWLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDWLogger.h; sourceTree = "<group>"; };
 		DBE46B6A207C095C00F5A3BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DBE46B6F207C095C00F5A3BE /* TDWLoggerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TDWLoggerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBE46B6F207C095C00F5A3BE /* TWLoggerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TWLoggerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBE46B74207C095C00F5A3BE /* TDWLoggerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDWLoggerTests.m; sourceTree = "<group>"; };
 		DBE46B76207C095C00F5A3BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBE46B80207C098700F5A3BE /* TDWLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDWLog.h; sourceTree = "<group>"; };
@@ -63,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBE46B70207C095C00F5A3BE /* TDWLogger.framework in Frameworks */,
+				DBE46B70207C095C00F5A3BE /* TWLogger.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,8 +73,8 @@
 		DBE46B5C207C095B00F5A3BE = {
 			isa = PBXGroup;
 			children = (
-				DBE46B68207C095B00F5A3BE /* TDWLogger */,
-				DBE46B73207C095C00F5A3BE /* TDWLoggerTests */,
+				DBE46B68207C095B00F5A3BE /* TWLogger */,
+				DBE46B73207C095C00F5A3BE /* TWLoggerTests */,
 				DBE46B67207C095B00F5A3BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -82,13 +82,13 @@
 		DBE46B67207C095B00F5A3BE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DBE46B66207C095B00F5A3BE /* TDWLogger.framework */,
-				DBE46B6F207C095C00F5A3BE /* TDWLoggerTests.xctest */,
+				DBE46B66207C095B00F5A3BE /* TWLogger.framework */,
+				DBE46B6F207C095C00F5A3BE /* TWLoggerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DBE46B68207C095B00F5A3BE /* TDWLogger */ = {
+		DBE46B68207C095B00F5A3BE /* TWLogger */ = {
 			isa = PBXGroup;
 			children = (
 				DBE46B69207C095B00F5A3BE /* TDWLogger.h */,
@@ -103,17 +103,17 @@
 				DBB669A52083749F004EA937 /* TDWLoggerOptions.h */,
 				DBB669A62083749F004EA937 /* TDWLoggerOptions.m */,
 			);
-			path = TDWLogger;
+			path = TWLogger;
 			sourceTree = "<group>";
 		};
-		DBE46B73207C095C00F5A3BE /* TDWLoggerTests */ = {
+		DBE46B73207C095C00F5A3BE /* TWLoggerTests */ = {
 			isa = PBXGroup;
 			children = (
 				DBE46B74207C095C00F5A3BE /* TDWLoggerTests.m */,
 				DBE46B76207C095C00F5A3BE /* Info.plist */,
 				DBB669A9208669AF004EA937 /* TDWFileLoggerTest.m */,
 			);
-			path = TDWLoggerTests;
+			path = TWLoggerTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,9 +135,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		DBE46B65207C095B00F5A3BE /* TDWLogger */ = {
+		DBE46B65207C095B00F5A3BE /* TWLogger */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DBE46B7A207C095C00F5A3BE /* Build configuration list for PBXNativeTarget "TDWLogger" */;
+			buildConfigurationList = DBE46B7A207C095C00F5A3BE /* Build configuration list for PBXNativeTarget "TWLogger" */;
 			buildPhases = (
 				DBE46B61207C095B00F5A3BE /* Sources */,
 				DBE46B62207C095B00F5A3BE /* Frameworks */,
@@ -148,14 +148,14 @@
 			);
 			dependencies = (
 			);
-			name = TDWLogger;
+			name = TWLogger;
 			productName = TDWLogger;
-			productReference = DBE46B66207C095B00F5A3BE /* TDWLogger.framework */;
+			productReference = DBE46B66207C095B00F5A3BE /* TWLogger.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		DBE46B6E207C095C00F5A3BE /* TDWLoggerTests */ = {
+		DBE46B6E207C095C00F5A3BE /* TWLoggerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DBE46B7D207C095C00F5A3BE /* Build configuration list for PBXNativeTarget "TDWLoggerTests" */;
+			buildConfigurationList = DBE46B7D207C095C00F5A3BE /* Build configuration list for PBXNativeTarget "TWLoggerTests" */;
 			buildPhases = (
 				DBE46B6B207C095C00F5A3BE /* Sources */,
 				DBE46B6C207C095C00F5A3BE /* Frameworks */,
@@ -166,9 +166,9 @@
 			dependencies = (
 				DBE46B72207C095C00F5A3BE /* PBXTargetDependency */,
 			);
-			name = TDWLoggerTests;
+			name = TWLoggerTests;
 			productName = TDWLoggerTests;
-			productReference = DBE46B6F207C095C00F5A3BE /* TDWLoggerTests.xctest */;
+			productReference = DBE46B6F207C095C00F5A3BE /* TWLoggerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -188,7 +188,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DBE46B60207C095B00F5A3BE /* Build configuration list for PBXProject "TDWLogger" */;
+			buildConfigurationList = DBE46B60207C095B00F5A3BE /* Build configuration list for PBXProject "TWLogger" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -200,8 +200,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DBE46B65207C095B00F5A3BE /* TDWLogger */,
-				DBE46B6E207C095C00F5A3BE /* TDWLoggerTests */,
+				DBE46B65207C095B00F5A3BE /* TWLogger */,
+				DBE46B6E207C095C00F5A3BE /* TWLoggerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -249,7 +249,7 @@
 /* Begin PBXTargetDependency section */
 		DBE46B72207C095C00F5A3BE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DBE46B65207C095B00F5A3BE /* TDWLogger */;
+			target = DBE46B65207C095B00F5A3BE /* TWLogger */;
 			targetProxy = DBE46B71207C095C00F5A3BE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -456,7 +456,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DBE46B60207C095B00F5A3BE /* Build configuration list for PBXProject "TDWLogger" */ = {
+		DBE46B60207C095B00F5A3BE /* Build configuration list for PBXProject "TWLogger" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DBE46B78207C095C00F5A3BE /* Debug */,
@@ -465,7 +465,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DBE46B7A207C095C00F5A3BE /* Build configuration list for PBXNativeTarget "TDWLogger" */ = {
+		DBE46B7A207C095C00F5A3BE /* Build configuration list for PBXNativeTarget "TWLogger" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DBE46B7B207C095C00F5A3BE /* Debug */,
@@ -474,7 +474,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DBE46B7D207C095C00F5A3BE /* Build configuration list for PBXNativeTarget "TDWLoggerTests" */ = {
+		DBE46B7D207C095C00F5A3BE /* Build configuration list for PBXNativeTarget "TWLoggerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DBE46B7E207C095C00F5A3BE /* Debug */,

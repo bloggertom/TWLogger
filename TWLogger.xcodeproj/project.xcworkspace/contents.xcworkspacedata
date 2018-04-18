@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:TDWLogger.xcodeproj">
+      location = "self:/Users/thomaswilson/Documents/workspace/appledev/TDWLogger/TWLogger.xcodeproj">
    </FileRef>
 </Workspace>
