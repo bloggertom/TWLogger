@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 #import <TDWLogger/TDWLogger.h>
 
-@interface TDWFileLogger()
+@interface TWFileLogger()
 @property (nonatomic, strong)TDWLoggerOptions *options;
 -(void)stopLogging;
 @end
@@ -43,8 +43,8 @@
 }
 
 -(void)testConcurrentFileLogging{
-	TDWFileLogger *fileLogger = [[TDWFileLogger alloc]init];
-	[TDWLog addLogger:fileLogger];
+	TWFileLogger *fileLogger = [[TWFileLogger alloc]init];
+	[TWLog addLogger:fileLogger];
 	
 	NSArray *logStrings = [self performConcurrentLogs];
 	
@@ -66,7 +66,7 @@
 		XCTAssertEqual(range.length, log.length);
 	}
 	
-	[TDWLog removeLogger:fileLogger];
+	[TWLog removeLogger:fileLogger];
 	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.filePath error:&error];
 }
 

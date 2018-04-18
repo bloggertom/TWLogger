@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 #import <TDWLogger/TDWLogger.h>
 
-@interface TDWFileLogger()
+@interface TWFileLogger()
 @property (nonatomic, strong)TDWLoggerOptions *options;
 -(void)stopLogging;
 @end
@@ -17,7 +17,7 @@
 @interface TDWFileLoggerTest : XCTestCase
 @property (nonatomic, strong)NSFileManager *fileManager;
 @property (nonatomic, strong)NSString *baseDir;
-@property (nonatomic, strong)TDWFileLogger *fileLogger;
+@property (nonatomic, strong)TWFileLogger *fileLogger;
 @property (nonatomic, strong)NSString *logPath;
 @end
 
@@ -28,7 +28,7 @@
     // Put setup code here. This method is called before the invocation of each test method in the class.
 	_baseDir  = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 	_fileManager = [NSFileManager defaultManager];
-	_fileLogger = [[TDWFileLogger alloc]init];
+	_fileLogger = [[TWFileLogger alloc]init];
 	_logPath = [self getLogDirPath];
 	
 	self.fileLogger.options.filePath = self.logPath;
@@ -85,7 +85,7 @@
 	[self testExpiringLog];//create 2 logs files
 	[self.fileLogger stopLogging];
 	
-	_fileLogger = [[TDWFileLogger alloc]init];
+	_fileLogger = [[TWFileLogger alloc]init];
 	self.fileLogger.options.filePath = self.logPath;
 	
 	[self.fileLogger logReceived:TDWLogLevelDebug body:logText fromFile:[NSString stringWithUTF8String:__FILE__] forMethod:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];

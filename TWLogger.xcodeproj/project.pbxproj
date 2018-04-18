@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DBB669A3208372FC004EA937 /* TDWFileLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DBB669A1208372FC004EA937 /* TDWFileLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DBB669A4208372FC004EA937 /* TDWFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB669A2208372FC004EA937 /* TDWFileLogger.m */; };
+		DBB669A3208372FC004EA937 /* TWFileLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DBB669A1208372FC004EA937 /* TWFileLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBB669A4208372FC004EA937 /* TWFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB669A2208372FC004EA937 /* TWFileLogger.m */; };
 		DBB669A82083749F004EA937 /* TDWLoggerOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB669A62083749F004EA937 /* TDWLoggerOptions.m */; };
 		DBB669AA208669AF004EA937 /* TDWFileLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB669A9208669AF004EA937 /* TDWFileLoggerTest.m */; };
 		DBB669AB20867013004EA937 /* TDWLoggerOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = DBB669A52083749F004EA937 /* TDWLoggerOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE46B70207C095C00F5A3BE /* TWLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE46B66207C095B00F5A3BE /* TWLogger.framework */; };
 		DBE46B75207C095C00F5A3BE /* TDWLoggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE46B74207C095C00F5A3BE /* TDWLoggerTests.m */; };
-		DBE46B77207C095C00F5A3BE /* TDWLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B69207C095B00F5A3BE /* TDWLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DBE46B82207C098700F5A3BE /* TDWLog.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B80207C098700F5A3BE /* TDWLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DBE46B83207C098700F5A3BE /* TDWLog.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE46B81207C098700F5A3BE /* TDWLog.m */; };
+		DBE46B77207C095C00F5A3BE /* TWLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B69207C095B00F5A3BE /* TWLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBE46B82207C098700F5A3BE /* TWLog.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B80207C098700F5A3BE /* TWLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBE46B83207C098700F5A3BE /* TWLog.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE46B81207C098700F5A3BE /* TWLog.m */; };
 		DBE46B85207C1A3700F5A3BE /* TDWLogDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B84207C190A00F5A3BE /* TDWLogDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE46B88207C1F6B00F5A3BE /* TDWUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B86207C1F6B00F5A3BE /* TDWUtils.h */; };
 		DBE46B89207C1F6B00F5A3BE /* TDWUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE46B87207C1F6B00F5A3BE /* TDWUtils.m */; };
@@ -33,19 +33,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		DBB669A1208372FC004EA937 /* TDWFileLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDWFileLogger.h; sourceTree = "<group>"; };
-		DBB669A2208372FC004EA937 /* TDWFileLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDWFileLogger.m; sourceTree = "<group>"; };
+		DBB669A1208372FC004EA937 /* TWFileLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWFileLogger.h; sourceTree = "<group>"; };
+		DBB669A2208372FC004EA937 /* TWFileLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWFileLogger.m; sourceTree = "<group>"; };
 		DBB669A52083749F004EA937 /* TDWLoggerOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDWLoggerOptions.h; sourceTree = "<group>"; };
 		DBB669A62083749F004EA937 /* TDWLoggerOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDWLoggerOptions.m; sourceTree = "<group>"; };
 		DBB669A9208669AF004EA937 /* TDWFileLoggerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDWFileLoggerTest.m; sourceTree = "<group>"; };
 		DBE46B66207C095B00F5A3BE /* TWLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TWLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBE46B69207C095B00F5A3BE /* TDWLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDWLogger.h; sourceTree = "<group>"; };
+		DBE46B69207C095B00F5A3BE /* TWLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogger.h; sourceTree = "<group>"; };
 		DBE46B6A207C095C00F5A3BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBE46B6F207C095C00F5A3BE /* TWLoggerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TWLoggerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBE46B74207C095C00F5A3BE /* TDWLoggerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDWLoggerTests.m; sourceTree = "<group>"; };
 		DBE46B76207C095C00F5A3BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DBE46B80207C098700F5A3BE /* TDWLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDWLog.h; sourceTree = "<group>"; };
-		DBE46B81207C098700F5A3BE /* TDWLog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDWLog.m; sourceTree = "<group>"; };
+		DBE46B80207C098700F5A3BE /* TWLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLog.h; sourceTree = "<group>"; };
+		DBE46B81207C098700F5A3BE /* TWLog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLog.m; sourceTree = "<group>"; };
 		DBE46B84207C190A00F5A3BE /* TDWLogDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDWLogDelegate.h; sourceTree = "<group>"; };
 		DBE46B86207C1F6B00F5A3BE /* TDWUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDWUtils.h; sourceTree = "<group>"; };
 		DBE46B87207C1F6B00F5A3BE /* TDWUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDWUtils.m; sourceTree = "<group>"; };
@@ -91,15 +91,15 @@
 		DBE46B68207C095B00F5A3BE /* TWLogger */ = {
 			isa = PBXGroup;
 			children = (
-				DBE46B69207C095B00F5A3BE /* TDWLogger.h */,
+				DBE46B69207C095B00F5A3BE /* TWLogger.h */,
 				DBE46B6A207C095C00F5A3BE /* Info.plist */,
-				DBE46B80207C098700F5A3BE /* TDWLog.h */,
-				DBE46B81207C098700F5A3BE /* TDWLog.m */,
+				DBE46B80207C098700F5A3BE /* TWLog.h */,
+				DBE46B81207C098700F5A3BE /* TWLog.m */,
 				DBE46B84207C190A00F5A3BE /* TDWLogDelegate.h */,
 				DBE46B86207C1F6B00F5A3BE /* TDWUtils.h */,
 				DBE46B87207C1F6B00F5A3BE /* TDWUtils.m */,
-				DBB669A1208372FC004EA937 /* TDWFileLogger.h */,
-				DBB669A2208372FC004EA937 /* TDWFileLogger.m */,
+				DBB669A1208372FC004EA937 /* TWFileLogger.h */,
+				DBB669A2208372FC004EA937 /* TWFileLogger.m */,
 				DBB669A52083749F004EA937 /* TDWLoggerOptions.h */,
 				DBB669A62083749F004EA937 /* TDWLoggerOptions.m */,
 			);
@@ -124,10 +124,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBE46B88207C1F6B00F5A3BE /* TDWUtils.h in Headers */,
-				DBB669A3208372FC004EA937 /* TDWFileLogger.h in Headers */,
-				DBE46B82207C098700F5A3BE /* TDWLog.h in Headers */,
+				DBB669A3208372FC004EA937 /* TWFileLogger.h in Headers */,
+				DBE46B82207C098700F5A3BE /* TWLog.h in Headers */,
 				DBE46B85207C1A3700F5A3BE /* TDWLogDelegate.h in Headers */,
-				DBE46B77207C095C00F5A3BE /* TDWLogger.h in Headers */,
+				DBE46B77207C095C00F5A3BE /* TWLogger.h in Headers */,
 				DBB669AB20867013004EA937 /* TDWLoggerOptions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -229,8 +229,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBB669A82083749F004EA937 /* TDWLoggerOptions.m in Sources */,
-				DBB669A4208372FC004EA937 /* TDWFileLogger.m in Sources */,
-				DBE46B83207C098700F5A3BE /* TDWLog.m in Sources */,
+				DBB669A4208372FC004EA937 /* TWFileLogger.m in Sources */,
+				DBE46B83207C098700F5A3BE /* TWLog.m in Sources */,
 				DBE46B89207C1F6B00F5A3BE /* TDWUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -381,7 +381,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = TDWLogger/Info.plist;
+				INFOPLIST_FILE = TWLogger/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -405,7 +405,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = TDWLogger/Info.plist;
+				INFOPLIST_FILE = TWLogger/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -424,7 +424,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQ2U65ZE29;
-				INFOPLIST_FILE = TDWLoggerTests/Info.plist;
+				INFOPLIST_FILE = TWLoggerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -441,7 +441,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQ2U65ZE29;
-				INFOPLIST_FILE = TDWLoggerTests/Info.plist;
+				INFOPLIST_FILE = TWLoggerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

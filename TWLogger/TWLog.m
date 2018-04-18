@@ -6,7 +6,7 @@
 //  Copyright © 2018 Thomas Wilson. All rights reserved.
 //
 
-#import "TDWLog.h"
+#import "TWLog.h"
 #import "TDWUtils.h"
 
 @interface LoggerReference :NSObject
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation TDWLog
+@implementation TWLog
 
 void tdwLogD(const char *file, const char *functionName, NSString *format, ...) {
 	// Type to hold information about variable arguments.
@@ -54,7 +54,7 @@ void tdwLogD(const char *file, const char *functionName, NSString *format, ...) 
 		function = [NSString stringWithUTF8String:functionName];
 	}
 	
-	[TDWLog tdwLog:TDWLogLevelDebug from:fileName inFunction:function body:body];
+	[TWLog tdwLog:TDWLogLevelDebug from:fileName inFunction:function body:body];
 	
 	// End using variable argument list.
 	va_end (ap);
@@ -89,7 +89,7 @@ void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSSt
 		function = [NSString stringWithUTF8String:functionName];
 	}
 	
-	[TDWLog tdwLog:level from:fileName inFunction:function body:body];
+	[TWLog tdwLog:level from:fileName inFunction:function body:body];
 }
 
 + (void)tdwLog:(TDWLogLevel)level from:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{

@@ -6,7 +6,7 @@
 //  Copyright © 2018 Thomas Wilson. All rights reserved.
 //
 
-#import "TDWFileLogger.h"
+#import "TWFileLogger.h"
 
 #define ERROR_DOMAIN @"TDWFileLogger"
 
@@ -16,7 +16,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	TDWFileLoggerErrorFailedToCreateLogFile = 2002,
 };
 
-@interface TDWFileLogger()
+@interface TWFileLogger()
 
 @property (nonatomic, strong)NSFileManager *fileManager;
 @property (nonatomic, strong)TDWLoggerOptions *options;
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 
 @end
 
-@implementation TDWFileLogger
+@implementation TWFileLogger
 
 -(instancetype)init{
 	TDWLoggerOptions *options = [[TDWLoggerOptions alloc]init];
@@ -75,8 +75,8 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		self.currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
 	}
 	if(error){
-		[TDWLog systemLog:@"Failed to create log file handle"];
-		[TDWLog systemLog:[NSString stringWithFormat:@"%@", error]];
+		[TWLog systemLog:@"Failed to create log file handle"];
+		[TWLog systemLog:[NSString stringWithFormat:@"%@", error]];
 		[self stopLogging];
 		return;
 	}
@@ -86,9 +86,9 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		[self.currentLogHandle synchronizeFile];
 	}@catch(NSException *e){
 		//Possibly means something else is in control of the file.
-		[TDWLog systemLog:@"Failed to write to log"];
-		[TDWLog systemLog:e.name];
-		[TDWLog systemLog:e.reason];
+		[TWLog systemLog:@"Failed to write to log"];
+		[TWLog systemLog:e.name];
+		[TWLog systemLog:e.reason];
 		self.logging = NO;
 	}
 	
@@ -141,7 +141,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	
 	if([self logHasReachedCapacity:contents error:error]){
 		if([self deleteOldestLog:contents error:error]){
-			[TDWLog systemLog:[NSString stringWithFormat:@"Failed to delete old log"]];
+			[TWLog systemLog:[NSString stringWithFormat:@"Failed to delete old log"]];
 		}
 	}
 	
@@ -154,7 +154,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	if(self.options.maxPageNum > 0 && contents.count > self.options.maxPageNum){
 		//Remove oldest file.
 		if([self deleteOldestLog:contents error:error]){
-			[TDWLog systemLog:[NSString stringWithFormat:@"Failed to delete older log"]];
+			[TWLog systemLog:[NSString stringWithFormat:@"Failed to delete older log"]];
 		}
 	}
 	
@@ -224,9 +224,9 @@ BOOL _logging;
 }
 
 -(void)stopLoggingWithMessage:(NSString *)message andError:(nullable NSError *)error{
-	[TDWLog systemLog:message];
+	[TWLog systemLog:message];
 	if(error != nil){
-		[TDWLog systemLog:[NSString stringWithFormat:@"%@",error]];
+		[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
 	}
 	[self stopLogging];
 }

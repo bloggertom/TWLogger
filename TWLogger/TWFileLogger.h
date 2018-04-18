@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TDWLog.h"
+#import "TWLog.h"
 #import "TDWLogDelegate.h"
 #import "TDWLoggerOptions.h"
-@interface TDWFileLogger : NSObject <TDWLoggerDelegate>
+@interface TWFileLogger : NSObject <TDWLoggerDelegate>
 
 -(instancetype)initWithOptions:(TDWLoggerOptions *)options;
 

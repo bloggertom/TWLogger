@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "TDWLogDelegate.h"
 
-@interface TDWLog : NSObject
+@interface TWLog : NSObject
 
 +(id<TDWLoggerDelegate>)delegate;
 
