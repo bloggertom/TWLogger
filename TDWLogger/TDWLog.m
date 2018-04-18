@@ -9,6 +9,24 @@
 #import "TDWLog.h"
 #import "TDWUtils.h"
 
+@interface LoggerReference :NSObject
+@property (nonatomic)dispatch_queue_t logQueue;
+@property (nonatomic, strong)id<TDWLoggerDelegate>logger;
+@end
+
+@implementation LoggerReference
+
+-(instancetype)initWithLogger:(id<TDWLoggerDelegate>)logger queue:(dispatch_queue_t)logQueue{
+	self = [super init];
+	if(self){
+		_logQueue = logQueue;
+		_logger = logger;
+	}
+	return self;
+}
+
+@end
+
 @implementation TDWLog
 
 void tdwLogD(const char *file, const char *functionName, NSString *format, ...) {
@@ -79,8 +97,10 @@ void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSSt
 		fprintf(stderr, "%s", body.UTF8String);
 	}
 	if(_loggers.count > 0 && _log){
-		[_loggers enumerateObjectsUsingBlock:^(id<TDWLoggerDelegate>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-			[obj logReceived:level body:body fromFile:file forMethod:functionName];
+		[_loggers enumerateObjectsUsingBlock:^(LoggerReference* _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+			dispatch_sync(obj.logQueue, ^{
+				[obj.logger logReceived:level body:body fromFile:file forMethod:functionName];
+			});
 		}];
 	}
 	
@@ -92,7 +112,7 @@ void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSSt
 	}
 	fprintf(stderr, "%s", body.UTF8String);
 }
-NSMutableArray<id<TDWLoggerDelegate>> *_loggers;
+NSMutableArray<LoggerReference *> *_loggers;
 +(void)addLogger:(id<TDWLoggerDelegate>)logger{
 	if(logger == nil){
 		return;
@@ -100,8 +120,8 @@ NSMutableArray<id<TDWLoggerDelegate>> *_loggers;
 	if(_loggers == nil){
 		_loggers = [[NSMutableArray alloc]init];
 	}
-	
-	[_loggers addObject:logger];
+	LoggerReference *ref = [[LoggerReference alloc]initWithLogger:logger queue:dispatch_queue_create("logging-queue", DISPATCH_QUEUE_SERIAL)];
+	[_loggers addObject:ref];
 }
 
 +(id<TDWLoggerDelegate>)removeLogger:(id<TDWLoggerDelegate>)logger{
@@ -111,7 +131,7 @@ NSMutableArray<id<TDWLoggerDelegate>> *_loggers;
 	
 	NSInteger count = 0;
 	while(count < _loggers.count){
-		if(logger == [_loggers objectAtIndex:count]){
+		if(logger == [_loggers objectAtIndex:count].logger){
 			[_loggers removeObjectAtIndex:count];
 			[logger stopLogging];
 			return logger;
