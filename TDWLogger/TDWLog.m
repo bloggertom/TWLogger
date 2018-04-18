@@ -113,6 +113,7 @@ NSMutableArray<id<TDWLoggerDelegate>> *_loggers;
 	while(count < _loggers.count){
 		if(logger == [_loggers objectAtIndex:count]){
 			[_loggers removeObjectAtIndex:count];
+			[logger stopLogging];
 			return logger;
 		}
 		count++;
