@@ -65,6 +65,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 			return;
 		}
 		_currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
+		[_currentLogHandle seekToEndOfFile];
 		
 	}else if([self logFileHasExpired:self.currentLogPath error:&error]){
 		//check valid
@@ -176,7 +177,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	//life time
 	NSString *fileUrl = [self.options.filePath stringByAppendingPathComponent:file];
 	BOOL expired = [self logFileHasExpired:fileUrl error:error];
-	if(error|| expired){
+	if(*error|| expired){
 		return [self urlToNewLogFile:error];
 	}
 	return fileUrl;
