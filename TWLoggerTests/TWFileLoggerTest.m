@@ -44,6 +44,7 @@
 -(NSString *)getLogDirPath{
 	return [self.baseDir stringByAppendingPathComponent:[NSString stringWithFormat:@"TestLogDir-%lld",(long long)[NSDate date].timeIntervalSince1970]];
 }
+
 -(void)removeLogDir:(NSString *)logDirPath{
 		[[NSFileManager defaultManager]removeItemAtPath:logDirPath error:nil];
 }
@@ -56,6 +57,7 @@
 	[self logTest:logMessage];
 	
 }
+
 -(void)logTest:(NSString *)expectedResult{
 	NSError *error = nil;
 	NSArray *testDirContents = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
@@ -140,6 +142,5 @@
 	XCTAssertNil(error);
 	XCTAssertEqualObjects(logMessage2, file2Content);
 }
-
 
 @end
