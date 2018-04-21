@@ -7,7 +7,7 @@
 //
 
 #import "TWFileLogger.h"
-#import "TWLogFormatter.h"
+#import "TWLogFormatterProject.h"
 #define ERROR_DOMAIN @"TDWFileLogger"
 
 typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {

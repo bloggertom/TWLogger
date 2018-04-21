@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-
+#import "TWLogFormatter.h"
 @interface TWLogFormatterTest : XCTestCase
 
 @end
@@ -24,9 +24,27 @@
     [super tearDown];
 }
 
-- (void)testExample {
+- (void)testFormatting {
     // Use recording to get started writing UI tests.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
+	NSString *format = [NSString stringWithFormat:@"%@,%@,%@,%@", TWLogFormatDateTime, TWLogFormatFile, TWLogFormatFunction, TWLogFormatBody];
+	TWLogFormatter *formatter = [[TWLogFormatter alloc]initWithFormat:format];
+	NSString *logBody = @"Log Body";
+	NSString *fileName = @"ComplexFilesAreComplex";
+	NSString *functionName = @"ObjectiveCFunctionsAreVerbose";
+	
+	NSString *formattedLog = [formatter formatLog:TDWLogLevelDebug body:logBody fromFile:fileName forMethod:functionName];
+	
+	NSArray *components = [formattedLog componentsSeparatedByString:@","];
+	XCTAssert(components.count == 4);
+	//Get dates tested. Probably needs formatting.
+	//NSDate *date;
+	
+	
+	XCTAssertEqualObjects(fileName, components[1]);
+	XCTAssertEqualObjects(functionName, components[2]);
+	XCTAssertEqualObjects(logBody, components[3]);
+	
 }
 
 @end

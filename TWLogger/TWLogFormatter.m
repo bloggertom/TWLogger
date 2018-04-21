@@ -6,7 +6,7 @@
 //  Copyright © 2018 Thomas Wilson. All rights reserved.
 //
 
-#import "TWLogFormatter.h"
+#import "TWLogFormatterProject.h"
 #import "TWLogDelegate.h"
 NSString * const TWLogFormatDateTime = @"<TW.LogFormat.DateTime>";
 NSString * const TWLogFormatLevel = @"<TW.LogFormat.LogLevel>";

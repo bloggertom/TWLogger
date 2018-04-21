@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "TWLogLevel.h"
-@interface TWLogFormatter : NSObject
+#import "TWLoggerOptions.h"
 
-@property (nonatomic, strong)NSString *format;
-
--(instancetype)initWithFormat:(NSString *)format;
--(NSString *)formatLog:(TDWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
-@end
+extern NSString * const TWLogFormatDateTime;
+extern NSString * const TWLogFormatLevel;
+extern NSString * const TWLogFormatFile;
+extern NSString * const TWLogFormatFunction;
+extern NSString * const TWLogFormatBody;
