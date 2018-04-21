@@ -62,7 +62,7 @@
 	NSMutableArray *expectations = [[NSMutableArray alloc]init];
 	NSMutableArray *logStrings = [[NSMutableArray alloc]init];
 	for(int i=0; i<50; i++){
-		XCTestExpectation *expectation = [[XCTestExpectation alloc]initWithDescription:[NSString stringWithFormat:@"Test Excpection %d",i]];
+		XCTestExpectation *expectation = [[XCTestExpectation alloc]initWithDescription:[NSString stringWithFormat:@"Test Expectation %d",i]];
 		[expectations addObject:expectation];
 		NSString *logString = [NSString stringWithFormat:@"Log num %d",i];
 		[logStrings addObject:logString];
