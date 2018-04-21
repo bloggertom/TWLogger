@@ -62,10 +62,39 @@
 	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.loggingDirectory error:&error];
 	XCTAssertNil(error);
 }
-
--(void)testTWLog(){
-
+-(void)testTWLog{
+	TWFileLogger *fileLogger = [[TWFileLogger alloc]init];
+	[TWLog addLogger:fileLogger];
+	NSString *logMessage = @"logging NSLog logging test";
+	TWLog(TWLogLevelDebug, logMessage);
+	
+	NSError *error = nil;
+	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.loggingDirectory error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssert(contents.count == 1);
+	
+	error = nil;
+	NSString *logContent = [NSString stringWithContentsOfFile:[fileLogger.options.loggingDirectory stringByAppendingPathComponent:contents.firstObject] encoding:NSASCIIStringEncoding error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(logContent);
+	logMessage = [NSString stringWithFormat:@"%@\n",logMessage];
+	XCTAssertEqualObjects(logMessage, logContent);
+	
+	[TWLog removeLogger:fileLogger];
+	
+	error = nil;
+	contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.loggingDirectory error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssert(contents.count == 1);
+	
+	error = nil;
+	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.loggingDirectory error:&error];
+	XCTAssertNil(error);
 }
+
 -(void)testConcurrentFileLogging{
 	TWFileLogger *fileLogger = [[TWFileLogger alloc]init];
 	[TWLog addLogger:fileLogger];
