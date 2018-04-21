@@ -1,6 +1,6 @@
 //
 //  Logger.m
-//  TDWLogger
+//  TWLogger
 //
 //  Created by Thomas Wilson on 09/04/2018.
 //  Copyright © 2018 Thomas Wilson. All rights reserved.
@@ -54,7 +54,7 @@ void twLogD(const char *file, const char *functionName, NSString *format, ...) {
 		function = [NSString stringWithUTF8String:functionName];
 	}
 	
-	[TWLog tdwLog:TWLogLevelDebug from:fileName inFunction:function body:body];
+	[TWLog twLog:TWLogLevelDebug from:fileName inFunction:function body:body];
 	
 	// End using variable argument list.
 	va_end (ap);
@@ -89,10 +89,10 @@ void twLogL(const char *file, const char *functionName, TWLogLevel level, NSStri
 		function = [NSString stringWithUTF8String:functionName];
 	}
 	
-	[TWLog tdwLog:level from:fileName inFunction:function body:body];
+	[TWLog twLog:level from:fileName inFunction:function body:body];
 }
 
-+ (void)tdwLog:(TWLogLevel)level from:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{
++ (void)twLog:(TWLogLevel)level from:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{
 	if(body){
 		fprintf(stderr, "%s", body.UTF8String);
 	}

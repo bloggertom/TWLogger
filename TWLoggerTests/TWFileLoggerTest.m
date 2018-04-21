@@ -1,6 +1,6 @@
 //
 //  TDWFileLoggerTest.m
-//  TDWLoggerTests
+//  TWLoggerTests
 //
 //  Created by Thomas Wilson on 17/04/2018.
 //  Copyright © 2018 Thomas Wilson. All rights reserved.

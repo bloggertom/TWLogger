@@ -1,6 +1,6 @@
 //
 //  TDWFileLogger.m
-//  TDWLogger
+//  TWLogger
 //
 //  Created by Thomas Wilson on 15/04/2018.
 //  Copyright © 2018 Thomas Wilson. All rights reserved.
@@ -32,13 +32,13 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	
 	options.maxPageNum = 80;
 	options.maxPageSize = 0;
-	options.logFilePrefix = @"TDWLog";
+	options.logFilePrefix = @"TWLog";
 	options.pageLife = [[NSDateComponents alloc]init];
 	options.pageLife.day = 1;
 	options.dateTimeFormat = TWDateTimeFormatDefault;
 	
 	NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-	path = [path stringByAppendingPathComponent:@"TDWLogFiles"];
+	path = [path stringByAppendingPathComponent:@"TWLogFiles"];
 	options.loggingDirectory = path;
 	
 	return [self initWithOptions:options];
