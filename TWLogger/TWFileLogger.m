@@ -67,7 +67,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		_currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
 		[_currentLogHandle seekToEndOfFile];
 		
-	}else if([self logFileHasExpired:self.currentLogPath error:&error]){
+	}else if([self logFileHasExpired:self.currentLogPath error:&error] || [self logFileHasReachedMaxSize:self.currentLogPath error:&error]){
 		//check valid
 		[self.currentLogHandle synchronizeFile];
 		[self.currentLogHandle closeFile];
@@ -130,19 +130,14 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 }
 
 -(NSString *)urlToNewLogFile:(NSError **)error{
-	NSString *fileName = [NSString stringWithFormat:@"%@-%lld.log",self.options.logFilePrefix, (long long)[[NSDate date] timeIntervalSince1970]];
-	
+	NSInteger timestamp = (long long)([[NSDate date] timeIntervalSince1970] * 10000);
+	NSString *fileName = [NSString stringWithFormat:@"%@-%lld.log",self.options.logFilePrefix, (long long)timestamp];
+
 	NSString *fileUrl = [self.options.filePath stringByAppendingPathComponent:fileName];
 	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.options.filePath error:error];
 	
 	if(*error){
 		return nil;
-	}
-	
-	if([self logHasReachedCapacity:contents error:error]){
-		if([self deleteOldestLog:contents error:error]){
-			[TWLog systemLog:[NSString stringWithFormat:@"Failed to delete old log"]];
-		}
 	}
 	
 	if(![self.fileManager createFileAtPath:fileUrl contents:nil attributes:nil]){
@@ -154,7 +149,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	if(self.options.maxPageNum > 0 && contents.count > self.options.maxPageNum){
 		//Remove oldest file.
 		if([self deleteOldestLog:contents error:error]){
-			[TWLog systemLog:[NSString stringWithFormat:@"Failed to delete older log"]];
+			[TWLog systemLog:[NSString stringWithFormat:@"Failed to delete old log"]];
 		}
 	}
 	
@@ -177,24 +172,15 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	//life time
 	NSString *fileUrl = [self.options.filePath stringByAppendingPathComponent:file];
 	BOOL expired = [self logFileHasExpired:fileUrl error:error];
-	if(*error|| expired){
+	BOOL full = [self logFileHasReachedMaxSize:fileUrl error:error];
+	if(*error || expired || full){
+		if(*error){
+			[TWLog systemLog: [NSString stringWithFormat:@"%@",(*error)]];
+			*error = nil;
+		}
 		return [self urlToNewLogFile:error];
 	}
 	return fileUrl;
-}
-
--(BOOL)logHasReachedCapacity:(NSArray<NSString*>*)logFiles error:(NSError **)error{
-	if(self.options.maxPageSize <= 0){
-		return NO;
-	}
-	NSUInteger logsSize = 0;
-	for (NSString *logFile in logFiles) {
-		NSString *filePath = [self.options.filePath stringByAppendingPathComponent:logFile];
-		NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:filePath error:error];
-		logsSize += [fileAtt fileSize];
-	}
-	logsSize = logsSize/1000;
-	return (logsSize >= self.options.maxPageSize);
 }
 
 -(BOOL)logFileHasExpired:(NSString *)logFile error:(NSError **)error{
@@ -212,6 +198,21 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	NSDate *expiryDate = [calendar dateByAddingComponents:self.options.pageLife toDate:fileCreation options:0];
 	NSDate *now = [NSDate date];
 	return ([expiryDate compare:now] == NSOrderedAscending || [expiryDate compare:now] == NSOrderedSame);
+}
+
+-(BOOL)logFileHasReachedMaxSize:(NSString *)logFile error:(NSError **)error{
+	if(self.options.maxPageSize <= 0){
+		return NO;
+	}
+	
+	NSDictionary *fileAtt = [self.fileManager attributesOfItemAtPath:logFile error:error];
+	if(*error){
+		return NO;
+	}
+	
+	NSInteger sizeKb = [fileAtt fileSize]/1000;
+	
+	return sizeKb >= self.options.maxPageSize;
 }
 
 BOOL _logging;
