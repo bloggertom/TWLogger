@@ -23,9 +23,9 @@
  @param level Log level of the log received @see TWLogLevel.
  @param body Main body of the log text.
  @param file File which issued the log.
- @param method Method within the file which issued the log.
+ @param function Function within the file which issued the log.
  */
--(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
+-(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function;
 /**
  Request the logger to stop logging. Called just before the logger is removed from active logger list
  */

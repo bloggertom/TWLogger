@@ -99,7 +99,7 @@ void tdwLogL(const char *file, const char *functionName, TWLogLevel level, NSStr
 	if(_loggers.count > 0 && _log){
 		[_loggers enumerateObjectsUsingBlock:^(LoggerReference* _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 			dispatch_sync(obj.logQueue, ^{
-				[obj.logger logReceived:level body:body fromFile:file forMethod:functionName];
+				[obj.logger logReceived:level body:body fromFile:file forFunction:functionName];
 			});
 		}];
 	}

@@ -61,7 +61,7 @@ NSString * const TWLogFormatBody = @"<TW.LogFormat.Body>";
 	return [NSString stringWithFormat:@"%@:%@ [%@:%@] %@",TWLogFormatLevel, TWLogFormatDateTime, TWLogFormatFile, TWLogFormatFunction, TWLogFormatBody];
 }
 
--(NSString *)formatLog:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method{
+-(NSString *)formatLog:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
 	
 	NSString *logString = body;
 	if(self.format != nil){
@@ -80,7 +80,7 @@ NSString * const TWLogFormatBody = @"<TW.LogFormat.Body>";
 		}
 		
 		if([tempBody rangeOfString:TWLogFormatFunction].location != NSNotFound){
-			tempBody = [tempBody stringByReplacingOccurrencesOfString:TWLogFormatFunction withString:method];
+			tempBody = [tempBody stringByReplacingOccurrencesOfString:TWLogFormatFunction withString:function];
 		}
 		
 		if([tempBody rangeOfString:TWLogFormatLevel].location != NSNotFound){

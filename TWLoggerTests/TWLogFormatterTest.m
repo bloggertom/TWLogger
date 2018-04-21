@@ -35,7 +35,7 @@
 	NSString *functionName = @"ObjectiveCFunctionsAreVerbose";
 	NSString *levelStr = [TWUtils logLevelString:TDWLogLevelDebug];
 	
-	NSString *formattedLog = [formatter formatLog:TDWLogLevelDebug body:logBody fromFile:fileName forMethod:functionName];
+	NSString *formattedLog = [formatter formatLog:TDWLogLevelDebug body:logBody fromFile:fileName forFunction:functionName];
 	
 	NSArray *components = [formattedLog componentsSeparatedByString:@","];
 	XCTAssert(components.count == 5);

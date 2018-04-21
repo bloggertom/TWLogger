@@ -57,7 +57,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	return self;
 }
 
--(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method{
+-(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
 	if(!self.isLogging){
 		return;
 	}
@@ -86,7 +86,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	}
 	NSString *logString = body;
 	if(self.logFormatter){
-		logString = [self.logFormatter formatLog:level body:body fromFile:file forMethod:method];
+		logString = [self.logFormatter formatLog:level body:body fromFile:file forFunction:function];
 	}
 	
 	@try{
