@@ -16,10 +16,15 @@ NSString * const TWLogFormatFile = @"<TW.LogFormat.File>";
 NSString * const TWLogFormatFunction = @"<TW.LogFormat.Function>";
 NSString * const TWLogFormatBody = @"<TW.LogFormat.Body>";
 
+@interface TWLogFormatter()
+
+@property (nonatomic, strong)NSDateFormatter *dateFormatter;
+@end
+
 @implementation TWLogFormatter
 
 -(instancetype)init{
-	return [self initWithLogFormat:[TWLogFormatter defaultLogFormat] dateTimeFormat:TWLogFormatDateTime];
+	return [self initWithLogFormat:[TWLogFormatter defaultLogFormat] dateTimeFormat:TWDateTimeFormatDefault];
 }
 
 -(instancetype)initWithLogFormat:(NSString *)format{
@@ -45,7 +50,8 @@ NSString * const TWLogFormatBody = @"<TW.LogFormat.Body>";
 		}else{
 			_dateTimeFormat = dateTimeFormat;
 		}
-		
+		_dateFormatter = [[NSDateFormatter alloc]init];
+		_dateFormatter.dateFormat = _dateTimeFormat;
 	}
 	
 	return self;
@@ -62,7 +68,7 @@ NSString * const TWLogFormatBody = @"<TW.LogFormat.Body>";
 		NSString *tempBody = self.format.copy;
 		
 		if([tempBody rangeOfString:TWLogFormatDateTime].location != NSNotFound){
-			tempBody = [tempBody stringByReplacingOccurrencesOfString:TWLogFormatDateTime withString:[NSString stringWithFormat:@"%@", [NSDate date]]];
+			tempBody = [tempBody stringByReplacingOccurrencesOfString:TWLogFormatDateTime withString:[NSString stringWithFormat:@"%@", [self.dateFormatter stringFromDate:[NSDate date]]]];
 		}
 		
 		if([tempBody rangeOfString:TWLogFormatBody].location != NSNotFound){
