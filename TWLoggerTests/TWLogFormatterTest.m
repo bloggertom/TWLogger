@@ -33,9 +33,9 @@
 	NSString *logBody = @"Log Body";
 	NSString *fileName = @"ComplexFilesAreComplex";
 	NSString *functionName = @"ObjectiveCFunctionsAreVerbose";
-	NSString *levelStr = [TWUtils logLevelString:TDWLogLevelDebug];
+	NSString *levelStr = [TWUtils logLevelString:TWLogLevelDebug];
 	
-	NSString *formattedLog = [formatter formatLog:TDWLogLevelDebug body:logBody fromFile:fileName forFunction:functionName];
+	NSString *formattedLog = [formatter formatLog:TWLogLevelDebug body:logBody fromFile:fileName forFunction:functionName];
 	
 	NSArray *components = [formattedLog componentsSeparatedByString:@","];
 	XCTAssert(components.count == 5);
