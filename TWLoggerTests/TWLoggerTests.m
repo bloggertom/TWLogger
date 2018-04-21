@@ -49,13 +49,13 @@
 	NSArray *logStrings = [self performConcurrentLogs];
 	
 	NSError *error = nil;
-	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.filePath error:&error];
+	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.loggingDirectory error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertTrue(contents.count == 1);
 	
 	error = nil;
-	NSString *fileContent = [NSString stringWithContentsOfFile:[fileLogger.options.filePath  stringByAppendingPathComponent:contents.firstObject]  encoding:NSASCIIStringEncoding error:&error];
+	NSString *fileContent = [NSString stringWithContentsOfFile:[fileLogger.options.loggingDirectory  stringByAppendingPathComponent:contents.firstObject]  encoding:NSASCIIStringEncoding error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertNotNil(fileContent);
@@ -67,7 +67,7 @@
 	}
 	
 	[TWLog removeLogger:fileLogger];
-	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.filePath error:&error];
+	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.loggingDirectory error:&error];
 }
 
 -(NSArray<NSString *> *)performConcurrentLogs{

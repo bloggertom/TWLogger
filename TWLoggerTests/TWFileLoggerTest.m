@@ -31,7 +31,7 @@
 	_fileLogger = [[TWFileLogger alloc]init];
 	_logPath = [self getLogDirPath];
 	
-	self.fileLogger.options.filePath = self.logPath;
+	self.fileLogger.options.loggingDirectory = self.logPath;
 	
 }
 - (void)tearDown {
@@ -88,7 +88,7 @@
 	[self.fileLogger stopLogging];
 	
 	_fileLogger = [[TWFileLogger alloc]init];
-	self.fileLogger.options.filePath = self.logPath;
+	self.fileLogger.options.loggingDirectory = self.logPath;
 	
 	[self.fileLogger logReceived:TDWLogLevelDebug body:logText fromFile:[NSString stringWithUTF8String:__FILE__] forMethod:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
 	
@@ -131,16 +131,63 @@
 	NSString *file2Path = [contents objectAtIndex:1];
 	
 	error = nil;
-	NSString *file1Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.filePath stringByAppendingPathComponent:file1Path] encoding:NSASCIIStringEncoding error:&error];
+	NSString *file1Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.loggingDirectory stringByAppendingPathComponent:file1Path] encoding:NSASCIIStringEncoding error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertEqualObjects(logMessage1, file1Content);
 
 	error = nil;
-	NSString *file2Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.filePath stringByAppendingPathComponent:file2Path] encoding:NSASCIIStringEncoding error:&error];
+	NSString *file2Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.loggingDirectory stringByAppendingPathComponent:file2Path] encoding:NSASCIIStringEncoding error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertEqualObjects(logMessage2, file2Content);
 }
 
+-(void)testLogCacheSize{
+	
+	self.fileLogger.options.maxPageSize = 1;// 1Kb
+	NSString *logMessage = [self getRandomString:1500];
+	
+	[self.fileLogger logReceived:TDWLogLevelDebug body:logMessage fromFile:[NSString stringWithUTF8String:__FILE__] forMethod:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
+	
+	NSError *error = nil;
+	NSArray *logCache = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssert(logCache.count == 1);
+	
+	error = nil;
+	NSString *logContent = [NSString stringWithContentsOfFile:[self.logPath stringByAppendingPathComponent:logCache.firstObject] encoding:NSASCIIStringEncoding error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertEqualObjects(logMessage, logContent);
+	
+	NSString *newLog = @"The new log";
+	[self.fileLogger logReceived:TDWLogLevelDebug body:newLog fromFile:[NSString stringWithUTF8String:__FILE__] forMethod:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
+	
+	error = nil;
+	logCache = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssert(logCache.count == 2);
+	
+	logCache = [logCache sortedArrayUsingSelector:@selector(compare:)];
+	
+	error = nil;
+	logContent = [NSString stringWithContentsOfFile:[self.logPath stringByAppendingPathComponent:logCache.lastObject] encoding:NSASCIIStringEncoding error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertEqualObjects(newLog, logContent);
+	
+}
+-(NSString *)getRandomString:(NSUInteger)size{
+	NSRange range = NSMakeRange(33, 93);
+	unichar charArray[size];
+	
+	for(int i=0; i<size; i++){
+		charArray[i] = (char) arc4random_uniform((int)range.length) + range.location;
+	}
+	
+	return [NSString stringWithCharacters:&charArray[0] length:size];
+}
 @end

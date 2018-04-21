@@ -10,7 +10,7 @@
 
 @interface TWLoggerOptions : NSObject
 
-@property (nonatomic, strong)NSString *filePath;
+@property (nonatomic, strong)NSString *loggingDirectory;
 @property (nonatomic, strong)NSDateComponents *pageLife;
 @property (nonatomic)NSUInteger maxPageSize;
 @property (nonatomic)NSUInteger maxPageNum;
