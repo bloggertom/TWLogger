@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const TWLogFormatDateTime;
+extern NSString * const TWLogFormatLevel;
+extern NSString * const TWLogFormatFile;
+extern NSString * const TWLogFormatFunction;
+extern NSString * const TWLogFormatBody;
+
 @interface TWLoggerOptions : NSObject
 
 @property (nonatomic, strong)NSString *loggingDirectory;
@@ -15,5 +21,6 @@
 @property (nonatomic)NSUInteger maxPageSize;
 @property (nonatomic)NSUInteger maxPageNum;
 @property (nonatomic)NSString *logFilePrefix;
+@property (nonatomic, strong)NSString *logFormat;
 
 @end

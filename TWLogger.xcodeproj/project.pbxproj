@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB8051A0208B89E90001CA8D /* TWLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = DB80519E208B89E90001CA8D /* TWLogFormatter.h */; };
+		DB8051A5208B92AC0001CA8D /* TWLogLevel.h in Headers */ = {isa = PBXBuildFile; fileRef = DB8051A4208B928F0001CA8D /* TWLogLevel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DB8051A6208B93590001CA8D /* TWLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DB80519F208B89E90001CA8D /* TWLogFormatter.m */; };
 		DBB669A3208372FC004EA937 /* TWFileLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DBB669A1208372FC004EA937 /* TWFileLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBB669A4208372FC004EA937 /* TWFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB669A2208372FC004EA937 /* TWFileLogger.m */; };
 		DBB669A82083749F004EA937 /* TWLoggerOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB669A62083749F004EA937 /* TWLoggerOptions.m */; };
@@ -33,6 +36,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DB80519E208B89E90001CA8D /* TWLogFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogFormatter.h; sourceTree = "<group>"; };
+		DB80519F208B89E90001CA8D /* TWLogFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLogFormatter.m; sourceTree = "<group>"; };
+		DB8051A4208B928F0001CA8D /* TWLogLevel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogLevel.h; sourceTree = "<group>"; };
 		DBB669A1208372FC004EA937 /* TWFileLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWFileLogger.h; sourceTree = "<group>"; };
 		DBB669A2208372FC004EA937 /* TWFileLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWFileLogger.m; sourceTree = "<group>"; };
 		DBB669A52083749F004EA937 /* TWLoggerOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLoggerOptions.h; sourceTree = "<group>"; };
@@ -102,6 +108,9 @@
 				DBB669A2208372FC004EA937 /* TWFileLogger.m */,
 				DBB669A52083749F004EA937 /* TWLoggerOptions.h */,
 				DBB669A62083749F004EA937 /* TWLoggerOptions.m */,
+				DB80519E208B89E90001CA8D /* TWLogFormatter.h */,
+				DB80519F208B89E90001CA8D /* TWLogFormatter.m */,
+				DB8051A4208B928F0001CA8D /* TWLogLevel.h */,
 			);
 			path = TWLogger;
 			sourceTree = "<group>";
@@ -129,6 +138,8 @@
 				DBE46B85207C1A3700F5A3BE /* TWLogDelegate.h in Headers */,
 				DBE46B77207C095C00F5A3BE /* TWLogger.h in Headers */,
 				DBB669AB20867013004EA937 /* TWLoggerOptions.h in Headers */,
+				DB8051A0208B89E90001CA8D /* TWLogFormatter.h in Headers */,
+				DB8051A5208B92AC0001CA8D /* TWLogLevel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +243,7 @@
 				DBB669A4208372FC004EA937 /* TWFileLogger.m in Sources */,
 				DBE46B83207C098700F5A3BE /* TWLog.m in Sources */,
 				DBE46B89207C1F6B00F5A3BE /* TWUtils.m in Sources */,
+				DB8051A6208B93590001CA8D /* TWLogFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

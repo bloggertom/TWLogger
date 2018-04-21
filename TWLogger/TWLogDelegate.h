@@ -9,13 +9,7 @@
 #ifndef LogDelegate_h
 #define LogDelegate_h
 #import	<Foundation/Foundation.h>
-
-typedef NS_ENUM(NSUInteger, TDWLogLevel) {
-	TDWLogLevelDebug,
-	TDWLogLevelInfo,
-	TDWLogLevelWarning,
-	TDWLogLevelFatal
-};
+#import "TWLogLevel.h"
 
 @protocol TWLoggerDelegate <NSObject>
 @property (nonatomic, getter=isLogging)BOOL logging;

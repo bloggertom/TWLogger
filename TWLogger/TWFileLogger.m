@@ -7,7 +7,7 @@
 //
 
 #import "TWFileLogger.h"
-
+#import "TWLogFormatter.h"
 #define ERROR_DOMAIN @"TDWFileLogger"
 
 typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 @property (nonatomic, strong)TWLoggerOptions *options;
 @property (nonatomic, strong)NSFileHandle *currentLogHandle;
 @property (nonatomic, strong)NSString *currentLogPath;
-
+@property (nonatomic, strong)TWLogFormatter *logFormatter;
 @end
 
 @implementation TWFileLogger
@@ -47,6 +47,9 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	if(self = [super init]){
 		_fileManager = [NSFileManager defaultManager];
 		_options = options;
+		if(_options.logFormat != nil){
+			_logFormatter = [[TWLogFormatter alloc]initWithFormat:self.options.logFormat];
+		}
 		self.logging = YES;
 	}
 	
@@ -80,9 +83,13 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		[self stopLogging];
 		return;
 	}
+	NSString *logString = body;
+	if(self.logFormatter){
+		logString = [self.logFormatter formatLog:level body:body fromFile:file forMethod:method];
+	}
 	
 	@try{
-		[self.currentLogHandle writeData:[body dataUsingEncoding:NSASCIIStringEncoding]];
+		[self.currentLogHandle writeData:[logString dataUsingEncoding:NSASCIIStringEncoding]];
 		[self.currentLogHandle synchronizeFile];
 	}@catch(NSException *e){
 		//Possibly means something else is in control of the file.
