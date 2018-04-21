@@ -22,13 +22,15 @@
 /**
  @brief Maximum size of a page
  
- How size is determined will depend of the type of logger being used.
+ @note How size is interpreted will depend of the type off logger.
  */
 @property (nonatomic)NSUInteger maxPageSize;
 /**
  @brief Maximum number of pages.
  
  The maximum number of pages allowed by logger.
+ 
+ @note Once maximum pages have been reached the logger will decide how to continue.
  */
 @property (nonatomic)NSUInteger maxPageNum;
 
