@@ -47,7 +47,7 @@
 +(void)systemLog:(NSString *)body;
 
 
-void tdwLogD(const char *file, const char *functionName, NSString *format, ...);
-void tdwLogL(const char *file, const char *functionName, TWLogLevel level, NSString *format, ...);
+void twLogD(const char *file, const char *functionName, NSString *format, ...);
+void twLogL(const char *file, const char *functionName, TWLogLevel level, NSString *format, ...);
 
 @end

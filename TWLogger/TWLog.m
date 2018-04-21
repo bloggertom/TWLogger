@@ -29,7 +29,7 @@
 
 @implementation TWLog
 
-void tdwLogD(const char *file, const char *functionName, NSString *format, ...) {
+void twLogD(const char *file, const char *functionName, NSString *format, ...) {
 	// Type to hold information about variable arguments.
 	va_list ap;
 	
@@ -60,7 +60,7 @@ void tdwLogD(const char *file, const char *functionName, NSString *format, ...) 
 	va_end (ap);
 }
 
-void tdwLogL(const char *file, const char *functionName, TWLogLevel level, NSString *format, ...) {
+void twLogL(const char *file, const char *functionName, TWLogLevel level, NSString *format, ...) {
 		// Type to hold information about variable arguments.
 	va_list ap;
 	
