@@ -142,16 +142,6 @@ NSMutableArray<LoggerReference *> *_loggers;
 	return nil;
 }
 
-
-static __weak id<TWLoggerDelegate> _delegate;
-+(id<TWLoggerDelegate>)delegate{
-	return _delegate;
-}
-
-+(void)setDelegate:(id<TWLoggerDelegate>)delegate{
-	_delegate = delegate;
-}
-
 static TDWLogLevel _defaultLevel = TDWLogLevelDebug;
 +(void)setDefaultLogLevel:(TDWLogLevel)level{
 	_defaultLevel = level;

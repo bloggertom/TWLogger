@@ -12,8 +12,23 @@
 #import "TWLogLevel.h"
 
 @protocol TWLoggerDelegate <NSObject>
+/**
+ Boolean indicating if logger is currently active and logging.
+ */
 @property (nonatomic, getter=isLogging)BOOL logging;
+
+/**
+ Callback called when a log is recieved.
+ 
+ @param level Log level of the log received @see TWLogLevel.
+ @param body Main body of the log text.
+ @param file File which issued the log.
+ @param method Method within the file which issued the log.
+ */
 -(void)logReceived:(TDWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
+/**
+ Request the logger to stop logging. Called just before the logger is removed from active logger list
+ */
 -(void)stopLogging;
 @end
 #endif /* LogDelegate_h */
