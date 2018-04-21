@@ -10,7 +10,12 @@
 #define TWLogLevel_h
 
 /**
- 
+ @enum TWLogLevel
+ @abstract Different levels of logging.
+ @constant TWLogLevelDebug Logging relavant to debugging.
+ @constant TWLogLevelInfo Logging with information about the general running of the application.
+ @constant TWLogLevelWarning Logging indicating a warning.
+ @constant TWLogLevelFatal Logging of fatal error or exception.
 */
 typedef NS_ENUM(NSUInteger, TWLogLevel) {
 	TWLogLevelDebug,
