@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DB8051A0208B89E90001CA8D /* TWLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = DB80519E208B89E90001CA8D /* TWLogFormatter.h */; };
+		DB8051A0208B89E90001CA8D /* TWLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = DB80519E208B89E90001CA8D /* TWLogFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB8051A5208B92AC0001CA8D /* TWLogLevel.h in Headers */ = {isa = PBXBuildFile; fileRef = DB8051A4208B928F0001CA8D /* TWLogLevel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB8051A6208B93590001CA8D /* TWLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DB80519F208B89E90001CA8D /* TWLogFormatter.m */; };
 		DB8051A8208B942D0001CA8D /* TWLogFormatterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8051A7208B942D0001CA8D /* TWLogFormatterTest.m */; };

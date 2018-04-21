@@ -7,8 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TWLogLevel.h"
-#import "TWLoggerOptions.h"
 
 extern NSString * const TWLogFormatDateTime;
 extern NSString * const TWLogFormatLevel;

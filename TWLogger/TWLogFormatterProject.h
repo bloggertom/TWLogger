@@ -9,6 +9,7 @@
 #ifndef TWLogFormatterPrivate_h
 #define TWLogFormatterPrivate_h
 #import	"TWLogFormatter.h"
+#import	"TWLogLevel.h"
 
 @interface TWLogFormatter : NSObject
 
