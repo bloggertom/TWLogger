@@ -7,7 +7,8 @@
 //
 
 #import "TWLogFormatterProject.h"
-#import "TWLogDelegate.h"
+#import "TWUtils.h"
+NSString * const TWDateTimeFormatDefault = @"YYYYMMdd:HHmmss";
 
 NSString * const TWLogFormatDateTime = @"<TW.LogFormat.DateTime>";
 NSString * const TWLogFormatLevel = @"<TW.LogFormat.LogLevel>";
@@ -17,13 +18,41 @@ NSString * const TWLogFormatBody = @"<TW.LogFormat.Body>";
 
 @implementation TWLogFormatter
 
--(instancetype)initWithFormat:(NSString *)format{
+-(instancetype)init{
+	return [self initWithLogFormat:[TWLogFormatter defaultLogFormat] dateTimeFormat:TWLogFormatDateTime];
+}
+
+-(instancetype)initWithLogFormat:(NSString *)format{
+	if(format != nil){
+		return [self initWithLogFormat:format dateTimeFormat:TWDateTimeFormatDefault];
+	}else{
+		return [self init];
+	}
+	
+	
+}
+-(instancetype)initWithLogFormat:(NSString *)format dateTimeFormat:(NSString *)dateTimeFormat{
 	self = [super init];
 	if(self){
-		_format = format;
+		if(format == nil){
+			_format = [TWLogFormatter defaultLogFormat];
+		}else{
+			_format = format;
+		}
+		
+		if(dateTimeFormat == nil){
+			_dateTimeFormat = TWDateTimeFormatDefault;
+		}else{
+			_dateTimeFormat = dateTimeFormat;
+		}
+		
 	}
-	return self;
 	
+	return self;
+}
+
++(NSString *)defaultLogFormat{
+	return [NSString stringWithFormat:@"%@:%@ [%@:%@] %@",TWLogFormatLevel, TWLogFormatDateTime, TWLogFormatFile, TWLogFormatFunction, TWLogFormatBody];
 }
 
 -(NSString *)formatLog:(TDWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method{
@@ -40,12 +69,16 @@ NSString * const TWLogFormatBody = @"<TW.LogFormat.Body>";
 			tempBody = [tempBody stringByReplacingOccurrencesOfString:TWLogFormatBody withString:body];
 		}
 		
-		if([tempBody rangeOfString:TWLogFormatFile].location){
+		if([tempBody rangeOfString:TWLogFormatFile].location != NSNotFound){
 			tempBody = [tempBody stringByReplacingOccurrencesOfString:TWLogFormatFile withString:file];
 		}
 		
-		if([tempBody rangeOfString:TWLogFormatFunction].location){
+		if([tempBody rangeOfString:TWLogFormatFunction].location != NSNotFound){
 			tempBody = [tempBody stringByReplacingOccurrencesOfString:TWLogFormatFunction withString:method];
+		}
+		
+		if([tempBody rangeOfString:TWLogFormatLevel].location != NSNotFound){
+			tempBody = [tempBody stringByReplacingOccurrencesOfString:TWLogFormatLevel withString:[TWUtils logLevelString:level]];
 		}
 		
 		logString = tempBody;

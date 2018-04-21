@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const TWDateTimeFormatDefault;
+
 extern NSString * const TWLogFormatDateTime;
 extern NSString * const TWLogFormatLevel;
 extern NSString * const TWLogFormatFile;

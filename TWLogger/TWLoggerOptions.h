@@ -16,5 +16,6 @@
 @property (nonatomic)NSUInteger maxPageNum;
 @property (nonatomic)NSString *logFilePrefix;
 @property (nonatomic, strong)NSString *logFormat;
+@property (nonatomic, strong)NSString *dateTimeFormat;
 
 @end

@@ -35,6 +35,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	options.logFilePrefix = @"TDWLog";
 	options.pageLife = [[NSDateComponents alloc]init];
 	options.pageLife.day = 1;
+	options.dateTimeFormat = TWDateTimeFormatDefault;
 	
 	NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 	path = [path stringByAppendingPathComponent:@"TDWLogFiles"];
@@ -48,7 +49,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		_fileManager = [NSFileManager defaultManager];
 		_options = options;
 		if(_options.logFormat != nil){
-			_logFormatter = [[TWLogFormatter alloc]initWithFormat:self.options.logFormat];
+			_logFormatter = [[TWLogFormatter alloc]initWithLogFormat:self.options.logFormat dateTimeFormat:options.dateTimeFormat];
 		}
 		self.logging = YES;
 	}

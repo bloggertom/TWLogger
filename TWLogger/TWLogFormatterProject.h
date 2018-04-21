@@ -14,9 +14,11 @@
 @interface TWLogFormatter : NSObject
 
 @property (nonatomic, strong)NSString *format;
-
--(instancetype)initWithFormat:(NSString *)format;
+@property (nonatomic, strong)NSString *dateTimeFormat;
+-(instancetype)initWithLogFormat:(NSString *)format;
+-(instancetype)initWithLogFormat:(NSString *)format dateTimeFormat:(NSString)dateTimeFormat;
 -(NSString *)formatLog:(TDWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
++(NSString *)defaultLogFormat;
 @end
 
 #endif /* TWLogFormatterPrivate_h */
