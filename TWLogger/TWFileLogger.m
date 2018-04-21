@@ -31,7 +31,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	TWLoggerOptions *options = [[TWLoggerOptions alloc]init];
 	
 	options.maxPageNum = 80;
-	options.maxLogCacheCapacity = 0;
+	options.maxPageSize = 0;
 	options.logFilePrefix = @"TDWLog";
 	options.pageLife = [[NSDateComponents alloc]init];
 	options.pageLife.day = 1;
@@ -184,7 +184,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 }
 
 -(BOOL)logHasReachedCapacity:(NSArray<NSString*>*)logFiles error:(NSError **)error{
-	if(self.options.maxLogCacheCapacity <= 0){
+	if(self.options.maxPageSize <= 0){
 		return NO;
 	}
 	NSUInteger logsSize = 0;
@@ -194,7 +194,7 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 		logsSize += [fileAtt fileSize];
 	}
 	logsSize = logsSize/1000;
-	return (logsSize >= self.options.maxLogCacheCapacity);
+	return (logsSize >= self.options.maxPageSize);
 }
 
 -(BOOL)logFileHasExpired:(NSString *)logFile error:(NSError **)error{
