@@ -10,8 +10,6 @@
 
 @interface TWLog : NSObject
 
-+(id<TWLoggerDelegate>)delegate;
-
 //Setters/Getters
 /**
  Set default logging level for NSLog()
