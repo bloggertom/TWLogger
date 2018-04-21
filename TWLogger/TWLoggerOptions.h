@@ -42,10 +42,7 @@
 /**
  Format defining how the log will be formatted when it is written.
  
- Defaults to:
- @code
- 	TWLogFormatLevel:TWLogFormatDateTime [TWLogFormatFile:TWLogFormatFunction]  TWLogFormatBody
- @endcode
+ If nil no additonal infomration is added to logged text.
  */
 @property (nonatomic, strong)NSString *logFormat;
 /**
