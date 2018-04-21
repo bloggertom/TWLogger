@@ -16,7 +16,7 @@
  
  @param level Level of default logging.
  */
-+(void)setDefaultLogLevel:(TDWLogLevel)level;
++(void)setDefaultLogLevel:(TWLogLevel)level;
 /**
  Indicates if logging is currently active.
  
@@ -48,6 +48,6 @@
 
 
 void tdwLogD(const char *file, const char *functionName, NSString *format, ...);
-void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSString *format, ...);
+void tdwLogL(const char *file, const char *functionName, TWLogLevel level, NSString *format, ...);
 
 @end

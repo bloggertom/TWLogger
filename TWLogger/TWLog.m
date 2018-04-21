@@ -54,13 +54,13 @@ void tdwLogD(const char *file, const char *functionName, NSString *format, ...) 
 		function = [NSString stringWithUTF8String:functionName];
 	}
 	
-	[TWLog tdwLog:TDWLogLevelDebug from:fileName inFunction:function body:body];
+	[TWLog tdwLog:TWLogLevelDebug from:fileName inFunction:function body:body];
 	
 	// End using variable argument list.
 	va_end (ap);
 }
 
-void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSString *format, ...) {
+void tdwLogL(const char *file, const char *functionName, TWLogLevel level, NSString *format, ...) {
 		// Type to hold information about variable arguments.
 	va_list ap;
 	
@@ -92,7 +92,7 @@ void tdwLogL(const char *file, const char *functionName, TDWLogLevel level, NSSt
 	[TWLog tdwLog:level from:fileName inFunction:function body:body];
 }
 
-+ (void)tdwLog:(TDWLogLevel)level from:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{
++ (void)tdwLog:(TWLogLevel)level from:(NSString *)file inFunction:(NSString *)functionName body:(NSString *)body{
 	if(body){
 		fprintf(stderr, "%s", body.UTF8String);
 	}
@@ -142,8 +142,8 @@ NSMutableArray<LoggerReference *> *_loggers;
 	return nil;
 }
 
-static TDWLogLevel _defaultLevel = TDWLogLevelDebug;
-+(void)setDefaultLogLevel:(TDWLogLevel)level{
+static TWLogLevel _defaultLevel = TWLogLevelDebug;
++(void)setDefaultLogLevel:(TWLogLevel)level{
 	_defaultLevel = level;
 }
 

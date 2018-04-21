@@ -25,7 +25,7 @@
  @param file File which issued the log.
  @param method Method within the file which issued the log.
  */
--(void)logReceived:(TDWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
+-(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
 /**
  Request the logger to stop logging. Called just before the logger is removed from active logger list
  */

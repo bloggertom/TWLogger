@@ -17,7 +17,7 @@
 @property (nonatomic, strong)NSString *dateTimeFormat;
 -(instancetype)initWithLogFormat:(NSString *)format;
 -(instancetype)initWithLogFormat:(NSString *)format dateTimeFormat:(NSString *)dateTimeFormat;
--(NSString *)formatLog:(TDWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
+-(NSString *)formatLog:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method;
 +(NSString *)defaultLogFormat;
 @end
 

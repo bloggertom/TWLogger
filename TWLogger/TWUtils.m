@@ -10,13 +10,13 @@
 
 @implementation TWUtils
 
-+(NSString *)logLevelString:(TDWLogLevel)level{
++(NSString *)logLevelString:(TWLogLevel)level{
 	switch (level) {
-		case TDWLogLevelInfo:
+		case TWLogLevelInfo:
 			return @"INFO";
-		case TDWLogLevelWarning:
+		case TWLogLevelWarning:
 			return @"WARNING";
-		case TDWLogLevelFatal:
+		case TWLogLevelFatal:
 			return @"FATAL";
 		default:
 			return @"DEBUG";

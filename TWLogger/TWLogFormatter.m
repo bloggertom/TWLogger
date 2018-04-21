@@ -61,7 +61,7 @@ NSString * const TWLogFormatBody = @"<TW.LogFormat.Body>";
 	return [NSString stringWithFormat:@"%@:%@ [%@:%@] %@",TWLogFormatLevel, TWLogFormatDateTime, TWLogFormatFile, TWLogFormatFunction, TWLogFormatBody];
 }
 
--(NSString *)formatLog:(TDWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method{
+-(NSString *)formatLog:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forMethod:(NSString *)method{
 	
 	NSString *logString = body;
 	if(self.format != nil){

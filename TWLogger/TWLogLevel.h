@@ -9,11 +9,14 @@
 #ifndef TWLogLevel_h
 #define TWLogLevel_h
 
-typedef NS_ENUM(NSUInteger, TDWLogLevel) {
-	TDWLogLevelDebug,
-	TDWLogLevelInfo,
-	TDWLogLevelWarning,
-	TDWLogLevelFatal
+/**
+ 
+*/
+typedef NS_ENUM(NSUInteger, TWLogLevel) {
+	TWLogLevelDebug,
+	TWLogLevelInfo,
+	TWLogLevelWarning,
+	TWLogLevelFatal
 };
 
 #endif /* TWLogLevel_h */

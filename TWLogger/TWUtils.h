@@ -10,6 +10,6 @@
 #import "TWLogDelegate.h"
 @interface TWUtils : NSObject
 
-+(NSString *)logLevelString:(TDWLogLevel)level;
++(NSString *)logLevelString:(TWLogLevel)level;
 
 @end
