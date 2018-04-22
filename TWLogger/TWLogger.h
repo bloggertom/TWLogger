@@ -22,4 +22,5 @@ FOUNDATION_EXPORT const unsigned char TWLoggerVersionString[];
 #import	<TWLogger/TWLoggerOptions.h>
 #import <TWLogger/TWLogLevel.h>
 #import <TWLogger/TWLogFormatter.h>
+#import <TWLogger/TWLogDelegate.h>
 
