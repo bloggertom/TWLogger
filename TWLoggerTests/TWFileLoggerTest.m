@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import <TWLogger/TWLogger.h>
+#import "TWLogFormatterProject.h"
 
 @interface TWFileLogger()
 @property (nonatomic, strong)TWLoggerOptions *options;
@@ -189,5 +190,10 @@
 	}
 	
 	return [NSString stringWithCharacters:&charArray[0] length:size];
+}
+
+-(void)testLogFileFormatting{
+	TWFileLogger *fileLogger = [[TWFileLogger alloc]init];
+	fileLogger.options.logFormat = [TWLogFormatter defaultLogFormat];
 }
 @end

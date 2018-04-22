@@ -8,18 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "TWLog.h"
-#import "TWLogDelegate.h"
+#import "TWAbstractLogger.h"
 #import "TWLoggerOptions.h"
-@interface TWFileLogger : NSObject <TWLoggerDelegate>
 
-/**
- Create a new instance of a TWFileLogger with a given set of options.
- 
- @param options Options which will determin how the File logger will behave.
- 
- @return newly initialized TWFileLogger.
- */
--(instancetype)initWithOptions:(TWLoggerOptions *)options;
+@interface TWFileLogger : TWAbstractLogger <TWLoggerDelegate>
 
 
 @end

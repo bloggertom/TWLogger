@@ -7,7 +7,7 @@
 //
 
 #import "TWFileLogger.h"
-#import "TWLogFormatterProject.h"
+#import "TWAbstractLoggerProject.h"
 #define ERROR_DOMAIN @"TDWFileLogger"
 
 typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
@@ -19,41 +19,26 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 @interface TWFileLogger()
 
 @property (nonatomic, strong)NSFileManager *fileManager;
-@property (nonatomic, strong)TWLoggerOptions *options;
 @property (nonatomic, strong)NSFileHandle *currentLogHandle;
 @property (nonatomic, strong)NSString *currentLogPath;
-@property (nonatomic, strong)TWLogFormatter *logFormatter;
+
 @end
 
 @implementation TWFileLogger
 
 -(instancetype)init{
-	TWLoggerOptions *options = [[TWLoggerOptions alloc]init];
-	
-	options.maxPageNum = 80;
-	options.maxPageSize = 0;
-	options.logFilePrefix = @"TWLog";
-	options.pageLife = [[NSDateComponents alloc]init];
-	options.pageLife.day = 1;
-	options.dateTimeFormat = TWDateTimeFormatDefault;
-	
-	NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-	path = [path stringByAppendingPathComponent:@"TWLogFiles"];
-	options.loggingDirectory = path;
-	
-	return [self initWithOptions:options];
+	self = [super init];
+	if(self){
+		_fileManager = [NSFileManager defaultManager];
+	}
+	return self;
 }
 
 -(instancetype)initWithOptions:(TWLoggerOptions *)options{
-	if(self = [super init]){
+	self = [super initWithOptions:options];
+	if(self){
 		_fileManager = [NSFileManager defaultManager];
-		_options = options;
-		if(_options.logFormat != nil){
-			_logFormatter = [[TWLogFormatter alloc]initWithLogFormat:self.options.logFormat dateTimeFormat:options.dateTimeFormat];
-		}
-		self.logging = YES;
 	}
-	
 	return self;
 }
 
@@ -223,13 +208,10 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 	return sizeKb >= self.options.maxPageSize;
 }
 
-BOOL _logging;
--(BOOL)isLogging{
-	return _logging;
-}
-
--(void)setLogging:(BOOL)logging{
-	_logging = logging;
+-(void)stopLogging{
+	self.logging = NO;
+	[self.currentLogHandle synchronizeFile];
+	[self.currentLogHandle closeFile];
 }
 
 -(void)stopLoggingWithMessage:(NSString *)message andError:(nullable NSError *)error{
@@ -240,11 +222,6 @@ BOOL _logging;
 	[self stopLogging];
 }
 
--(void)stopLogging{
-	self.logging = NO;
-	[self.currentLogHandle synchronizeFile];
-	[self.currentLogHandle closeFile];
-}
 -(NSArray *)sortFilesByCreationDate:(NSArray *)files{
 	NSArray *sortedArray = [files sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
 		NSString *pathObj1 = [self.options.loggingDirectory stringByAppendingPathComponent:obj1];

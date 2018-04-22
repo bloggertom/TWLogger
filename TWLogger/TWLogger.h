@@ -17,6 +17,7 @@ FOUNDATION_EXPORT const unsigned char TWLoggerVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <TWLogger/PublicHeader.h>
 #import <TWLogger/TWLog.h>
+#import <TWLogger/TWAbstractLogger.h>
 #import	<TWLogger/TWFileLogger.h>
 #import	<TWLogger/TWLoggerOptions.h>
 #import <TWLogger/TWLogLevel.h>
