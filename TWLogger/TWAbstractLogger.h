@@ -10,10 +10,19 @@
 #import "TWLogDelegate.h"
 #import	"TWLoggerOptions.h"
 
+#define ERROR_DOMAIN @"TDWFileLogger"
+
+typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
+	TDWFileLoggerErrorUnknown = 2000,
+	TDWFileLoggerErrorInvalidFilePath = 2001,
+	TDWFileLoggerErrorFailedToCreateLogFile = 2002,
+	TWFileLoggerErrorFailedToOpenLog = 2003
+};
+
 @interface TWAbstractLogger : NSObject <TWLoggerDelegate>
 
 @property (nonatomic, readonly, strong)TWLoggerOptions *options;
-
+@property (nonatomic, readonly, strong)NSFileManager *fileManager;
 /**
  Create a new instance of a TWFileLogger with a given set of options.
  

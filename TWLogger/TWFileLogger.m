@@ -8,39 +8,15 @@
 
 #import "TWFileLogger.h"
 #import "TWAbstractLoggerProject.h"
-#define ERROR_DOMAIN @"TDWFileLogger"
-
-typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
-	TDWFileLoggerErrorUnknown = 2000,
-	TDWFileLoggerErrorInvalidFilePath = 2001,
-	TDWFileLoggerErrorFailedToCreateLogFile = 2002,
-};
 
 @interface TWFileLogger()
 
-@property (nonatomic, strong)NSFileManager *fileManager;
 @property (nonatomic, strong)NSFileHandle *currentLogHandle;
 @property (nonatomic, strong)NSString *currentLogPath;
 
 @end
 
 @implementation TWFileLogger
-
--(instancetype)init{
-	self = [super init];
-	if(self){
-		_fileManager = [NSFileManager defaultManager];
-	}
-	return self;
-}
-
--(instancetype)initWithOptions:(TWLoggerOptions *)options{
-	self = [super initWithOptions:options];
-	if(self){
-		_fileManager = [NSFileManager defaultManager];
-	}
-	return self;
-}
 
 -(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
 	if(!self.isLogging){
@@ -54,6 +30,10 @@ typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
 			return;
 		}
 		_currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
+		if(_currentLogHandle == nil){
+			[self stopLoggingWithMessage:@"Failed to open logger" andError:[NSError errorWithDomain:ERROR_DOMAIN code:TWFileLoggerErrorFailedToOpenLog userInfo:@{NSLocalizedDescriptionKey: @"Unable to create/open file"}]];
+			return;
+		}
 		[_currentLogHandle seekToEndOfFile];
 		
 	}else if([self logFileHasExpired:self.currentLogPath error:&error] || [self logFileHasReachedMaxSize:self.currentLogPath error:&error]){
