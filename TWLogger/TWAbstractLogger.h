@@ -12,11 +12,11 @@
 
 #define ERROR_DOMAIN @"TDWFileLogger"
 
-typedef NS_ENUM(NSUInteger, TDWFileLoggerError) {
-	TDWFileLoggerErrorUnknown = 2000,
-	TDWFileLoggerErrorInvalidFilePath = 2001,
-	TDWFileLoggerErrorFailedToCreateLogFile = 2002,
-	TWFileLoggerErrorFailedToOpenLog = 2003
+typedef NS_ENUM(NSUInteger, TWFileLoggerError) {
+	TWLoggerErrorUnknown = 2000,
+	TWLoggerErrorInvalidFilePath = 2001,
+	TWLoggerErrorFailedToCreateLogFile = 2002,
+	TWLoggerErrorFailedToOpenLog = 2003
 };
 
 @interface TWAbstractLogger : NSObject <TWLoggerDelegate>

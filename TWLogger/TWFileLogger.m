@@ -31,7 +31,7 @@
 		}
 		_currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
 		if(_currentLogHandle == nil){
-			[self stopLoggingWithMessage:@"Failed to open logger" andError:[NSError errorWithDomain:ERROR_DOMAIN code:TWFileLoggerErrorFailedToOpenLog userInfo:@{NSLocalizedDescriptionKey: @"Unable to create/open file"}]];
+			[self stopLoggingWithMessage:@"Failed to open logger" andError:[NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorFailedToOpenLog userInfo:@{NSLocalizedDescriptionKey: @"Unable to create/open file"}]];
 			return;
 		}
 		[_currentLogHandle seekToEndOfFile];
@@ -96,7 +96,7 @@
 			return [self urlToExistingLogFile:logFiles error:error];
 		}
 	}else if(*error == nil){
-		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TDWFileLoggerErrorInvalidFilePath userInfo:@{NSLocalizedDescriptionKey: @"Invalid log storage directory."}];
+		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorInvalidFilePath userInfo:@{NSLocalizedDescriptionKey: @"Invalid log storage directory."}];
 	}
 	
 	return nil;
@@ -114,7 +114,7 @@
 	}
 	
 	if(![self.fileManager createFileAtPath:fileUrl contents:nil attributes:nil]){
-		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TDWFileLoggerErrorFailedToCreateLogFile userInfo:@{NSLocalizedDescriptionKey : @"Failed to create new log file"}];
+		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorFailedToCreateLogFile userInfo:@{NSLocalizedDescriptionKey : @"Failed to create new log file"}];
 		return nil;
 	}
 	
