@@ -32,6 +32,7 @@
 		_options = options;
 		if(_options.logFormat != nil){
 			_logFormatter = [[TWLogFormatter alloc]initWithLogFormat:self.options.logFormat dateTimeFormat:options.dateTimeFormat];
+			_fileManager = [NSFileManager defaultManager];
 		}
 		self.logging = YES;
 	}
