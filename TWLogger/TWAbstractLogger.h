@@ -32,4 +32,6 @@ typedef NS_ENUM(NSUInteger, TWFileLoggerError) {
  */
 -(instancetype)initWithOptions:(TWLoggerOptions *)options;
 
+-(void)stopLoggingWithMessage:(NSString *)message andError:(nullable NSError *)error
+
 @end

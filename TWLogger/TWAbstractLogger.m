@@ -7,6 +7,7 @@
 //
 
 #import "TWAbstractLoggerProject.h"
+#import "TWLog.h"
 
 @implementation TWAbstractLogger
 
@@ -57,6 +58,14 @@ BOOL _logging;
 - (void)stopLogging {
 	[NSException raise:NSInternalInconsistencyException
 				format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
+}
+
+-(void)stopLoggingWithMessage:(NSString *)message andError:(nullable NSError *)error{
+	[TWLog systemLog:message];
+	if(error != nil){
+		[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
+	}
+	[self stopLogging];
 }
 
 @end

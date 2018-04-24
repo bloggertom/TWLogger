@@ -194,14 +194,6 @@
 	[self.currentLogHandle closeFile];
 }
 
--(void)stopLoggingWithMessage:(NSString *)message andError:(nullable NSError *)error{
-	[TWLog systemLog:message];
-	if(error != nil){
-		[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
-	}
-	[self stopLogging];
-}
-
 -(NSArray *)sortFilesByCreationDate:(NSArray *)files{
 	NSArray *sortedArray = [files sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
 		NSString *pathObj1 = [self.options.loggingDirectory stringByAppendingPathComponent:obj1];
