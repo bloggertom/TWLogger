@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TWAbstractLoggerProject.h"
+#import "TWAbstractLogger.h"
 @interface TWSqliteLogger : TWAbstractLogger
 
 
