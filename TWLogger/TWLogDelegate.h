@@ -21,6 +21,8 @@
  @brief Set up function for the logger.
  
  Called before the logger is added to the active logger list. Use this method to set up logging resourses and establish connections.
+ 
+ @return boolean indicating if log was opened successfully.
  */
 -(BOOL)startLogging;
 
