@@ -8,6 +8,7 @@
 
 #import "TWSqliteLogger.h"
 #import "TWAbstractLogger.h"
+#import "TWLog.h"
 #import <sqlite3.h>
 
 @interface TWSqliteLogger()
@@ -15,6 +16,7 @@
 @end
 
 @implementation TWSqliteLogger
+
 -(instancetype)init{
 	self = [super init];
 	if(self){
@@ -23,12 +25,17 @@
 	}
 	return self;
 }
+
 -(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
-	if(_database == nil){
-		NSError *error = nil;
-		[self openOrCreateDatabase:self.options.loggingAddress error:&error];
+	@synchronized(self){
+		if(_database == nil || !self.isLogging){
+			[TWLog systemLog: @"Log received when logging not active"];
+			return;
+		}
 	}
+	
 }
+
 -(BOOL)openOrCreateDatabase:(NSString *)loggingDirectory error:(NSError **)error{
 	BOOL isDir;
 	if(![self.fileManager fileExistsAtPath:loggingDirectory isDirectory:&isDir]){
@@ -54,8 +61,11 @@
 
 -(void)stopLogging{
 	//close database and stuff;
-	if(_database != nil){
-		sqlite3_close(_database);
+	@synchronized(self){
+		self.logging = NO;
+		if(_database != nil){
+			sqlite3_close(_database);
+		}
 	}
 }
 
