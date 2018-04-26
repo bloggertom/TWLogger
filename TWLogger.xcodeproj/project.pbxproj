@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		DB2DC708208CCBC2008F3FF0 /* TWAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2DC706208CCBC2008F3FF0 /* TWAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB2DC709208CCBC2008F3FF0 /* TWAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2DC707208CCBC2008F3FF0 /* TWAbstractLogger.m */; };
-		DB2DC70B208CCFDD008F3FF0 /* TWAbstractLoggerProject.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2DC70A208CCFAA008F3FF0 /* TWAbstractLoggerProject.h */; };
 		DB2DC70E208CD33F008F3FF0 /* TWSqliteLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2DC70C208CD33F008F3FF0 /* TWSqliteLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB2DC70F208CD33F008F3FF0 /* TWSqliteLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2DC70D208CD33F008F3FF0 /* TWSqliteLogger.m */; };
 		DB2DC712208CD58C008F3FF0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DB2DC711208CD58C008F3FF0 /* libsqlite3.tbd */; };
@@ -45,7 +44,6 @@
 /* Begin PBXFileReference section */
 		DB2DC706208CCBC2008F3FF0 /* TWAbstractLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWAbstractLogger.h; sourceTree = "<group>"; };
 		DB2DC707208CCBC2008F3FF0 /* TWAbstractLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWAbstractLogger.m; sourceTree = "<group>"; };
-		DB2DC70A208CCFAA008F3FF0 /* TWAbstractLoggerProject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWAbstractLoggerProject.h; sourceTree = "<group>"; };
 		DB2DC70C208CD33F008F3FF0 /* TWSqliteLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWSqliteLogger.h; sourceTree = "<group>"; };
 		DB2DC70D208CD33F008F3FF0 /* TWSqliteLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWSqliteLogger.m; sourceTree = "<group>"; };
 		DB2DC711208CD58C008F3FF0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -136,7 +134,6 @@
 				DB80519F208B89E90001CA8D /* TWLogFormatter.m */,
 				DB8051A4208B928F0001CA8D /* TWLogLevel.h */,
 				DB2DC706208CCBC2008F3FF0 /* TWAbstractLogger.h */,
-				DB2DC70A208CCFAA008F3FF0 /* TWAbstractLoggerProject.h */,
 				DB2DC707208CCBC2008F3FF0 /* TWAbstractLogger.m */,
 				DB2DC70C208CD33F008F3FF0 /* TWSqliteLogger.h */,
 				DB2DC70D208CD33F008F3FF0 /* TWSqliteLogger.m */,
@@ -164,7 +161,6 @@
 			files = (
 				DB2DC708208CCBC2008F3FF0 /* TWAbstractLogger.h in Headers */,
 				DBE46B88207C1F6B00F5A3BE /* TWUtils.h in Headers */,
-				DB2DC70B208CCFDD008F3FF0 /* TWAbstractLoggerProject.h in Headers */,
 				DB2DC70E208CD33F008F3FF0 /* TWSqliteLogger.h in Headers */,
 				DBB669A3208372FC004EA937 /* TWFileLogger.h in Headers */,
 				DBE46B82207C098700F5A3BE /* TWLog.h in Headers */,

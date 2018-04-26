@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, TWFileLoggerError) {
 
 @property (nonatomic, readonly, strong)TWLoggerOptions *options;
 @property (nonatomic, readonly, strong)NSFileManager *fileManager;
+@property (nonatomic, readonly, strong)TWLogFormatter *logFormatter;
 /**
  Create a new instance of a TWFileLogger with a given set of options.
  

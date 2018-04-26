@@ -7,7 +7,7 @@
 //
 
 #import "TWSqliteLogger.h"
-#import "TWAbstractLoggerProject.h"
+#import "TWAbstractLogger.h"
 #import <sqlite3.h>
 
 @interface TWSqliteLogger()

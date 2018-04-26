@@ -6,7 +6,7 @@
 //  Copyright © 2018 Thomas Wilson. All rights reserved.
 //
 
-#import "TWAbstractLoggerProject.h"
+#import "TWAbstractLogger.h"
 #import "TWLog.h"
 
 @implementation TWAbstractLogger

@@ -7,7 +7,7 @@
 //
 
 #import "TWFileLogger.h"
-#import "TWAbstractLoggerProject.h"
+#import "TWAbstractLogger.h"
 
 @interface TWFileLogger()
 
