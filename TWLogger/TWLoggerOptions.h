@@ -21,7 +21,7 @@
 @property (nonatomic, strong)NSString *loggingAddress;
 
 /**
- Span of time which a log page will be used before starting a new page.
+ Span of time which a log page will be used before starting a new page. If nil a page will never expire.
  */
 @property (nonatomic, strong)NSDateComponents *pageLife;
 /**
@@ -57,7 +57,7 @@
 @property (nonatomic, strong)NSString *dateTimeFormat;
 
 /**
- Sets how often the log cash is flushed to disk.
+ Sets how often the logs is flushed to disk. If nil logs will be flushed to disk immediately.
  */
 @property (nonatomic, strong)NSDateComponents *flushPeriod;
 @end
