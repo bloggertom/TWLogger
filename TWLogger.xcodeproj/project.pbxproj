@@ -12,6 +12,8 @@
 		DB2DC70E208CD33F008F3FF0 /* TWSqliteLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2DC70C208CD33F008F3FF0 /* TWSqliteLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB2DC70F208CD33F008F3FF0 /* TWSqliteLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2DC70D208CD33F008F3FF0 /* TWSqliteLogger.m */; };
 		DB2DC712208CD58C008F3FF0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DB2DC711208CD58C008F3FF0 /* libsqlite3.tbd */; };
+		DB2DC7152092763A008F3FF0 /* TWLogEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2DC7132092763A008F3FF0 /* TWLogEntry.h */; };
+		DB2DC7162092763A008F3FF0 /* TWLogEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2DC7142092763A008F3FF0 /* TWLogEntry.m */; };
 		DB8051A0208B89E90001CA8D /* TWLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = DB80519E208B89E90001CA8D /* TWLogFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB8051A5208B92AC0001CA8D /* TWLogLevel.h in Headers */ = {isa = PBXBuildFile; fileRef = DB8051A4208B928F0001CA8D /* TWLogLevel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB8051A6208B93590001CA8D /* TWLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DB80519F208B89E90001CA8D /* TWLogFormatter.m */; };
@@ -47,6 +49,8 @@
 		DB2DC70C208CD33F008F3FF0 /* TWSqliteLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWSqliteLogger.h; sourceTree = "<group>"; };
 		DB2DC70D208CD33F008F3FF0 /* TWSqliteLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWSqliteLogger.m; sourceTree = "<group>"; };
 		DB2DC711208CD58C008F3FF0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		DB2DC7132092763A008F3FF0 /* TWLogEntry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogEntry.h; sourceTree = "<group>"; };
+		DB2DC7142092763A008F3FF0 /* TWLogEntry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLogEntry.m; sourceTree = "<group>"; };
 		DB80519E208B89E90001CA8D /* TWLogFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogFormatter.h; sourceTree = "<group>"; };
 		DB80519F208B89E90001CA8D /* TWLogFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLogFormatter.m; sourceTree = "<group>"; };
 		DB8051A4208B928F0001CA8D /* TWLogLevel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogLevel.h; sourceTree = "<group>"; };
@@ -137,6 +141,8 @@
 				DB2DC707208CCBC2008F3FF0 /* TWAbstractLogger.m */,
 				DB2DC70C208CD33F008F3FF0 /* TWSqliteLogger.h */,
 				DB2DC70D208CD33F008F3FF0 /* TWSqliteLogger.m */,
+				DB2DC7132092763A008F3FF0 /* TWLogEntry.h */,
+				DB2DC7142092763A008F3FF0 /* TWLogEntry.m */,
 			);
 			path = TWLogger;
 			sourceTree = "<group>";
@@ -160,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB2DC708208CCBC2008F3FF0 /* TWAbstractLogger.h in Headers */,
+				DB2DC7152092763A008F3FF0 /* TWLogEntry.h in Headers */,
 				DBE46B88207C1F6B00F5A3BE /* TWUtils.h in Headers */,
 				DB2DC70E208CD33F008F3FF0 /* TWSqliteLogger.h in Headers */,
 				DBB669A3208372FC004EA937 /* TWFileLogger.h in Headers */,
@@ -274,6 +281,7 @@
 				DBE46B83207C098700F5A3BE /* TWLog.m in Sources */,
 				DB2DC709208CCBC2008F3FF0 /* TWAbstractLogger.m in Sources */,
 				DBE46B89207C1F6B00F5A3BE /* TWUtils.m in Sources */,
+				DB2DC7162092763A008F3FF0 /* TWLogEntry.m in Sources */,
 				DB8051A6208B93590001CA8D /* TWLogFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
