@@ -36,9 +36,11 @@
 }
 
 -(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
-	if(!self.isLogging || self.currentLogHandle == nil){
-		[TWLog systemLog: @"Log received when logging not active"];
-		return;
+	@synchronized(self){
+		if(!self.isLogging || self.currentLogHandle == nil){
+			[TWLog systemLog: @"Log received when logging not active"];
+			return;
+		}
 	}
 	NSError *error = nil;
 	if([self logFileHasExpired:self.currentLogPath error:&error] || [self logFileHasReachedMaxSize:self.currentLogPath error:&error]){
@@ -92,9 +94,11 @@
 }
 
 -(void)stopLogging{
-	self.logging = NO;
-	[self.currentLogHandle synchronizeFile];
-	[self.currentLogHandle closeFile];
+	@synchronized(self){
+		self.logging = NO;
+		[self.currentLogHandle synchronizeFile];
+		[self.currentLogHandle closeFile];
+	}
 }
 
 -(void)flushLogs{
