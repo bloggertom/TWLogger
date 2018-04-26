@@ -18,25 +18,30 @@
 
 @implementation TWFileLogger
 
+-(instancetype)init{
+	TWLoggerOptions *options = [[TWLoggerOptions alloc]init];
+	
+	options.maxPageNum = 80;
+	options.maxPageSize = 0;
+	options.logFilePrefix = @"TWLog";
+	options.pageLife = [[NSDateComponents alloc]init];
+	options.pageLife.day = 1;
+	options.dateTimeFormat = TWDateTimeFormatDefault;
+	
+	NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+	path = [path stringByAppendingPathComponent:@"TWLogFiles"];
+	options.loggingAddress = path;
+	
+	return [self initWithOptions:options];
+}
+
 -(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
-	if(!self.isLogging){
+	if(!self.isLogging || self.currentLogHandle == nil){
+		[TWLog systemLog: @"Log received when logging not active"];
 		return;
 	}
 	NSError *error = nil;
-	if(_currentLogHandle == nil){
-		_currentLogPath = [self getLogFileUrl:&error];
-		if(_currentLogPath == nil){
-			[self stopLoggingWithMessage:@"Failed to create log file" andError:error];
-			return;
-		}
-		_currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
-		if(_currentLogHandle == nil){
-			[self stopLoggingWithMessage:@"Failed to open logger" andError:[NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorFailedToOpenLog userInfo:@{NSLocalizedDescriptionKey: @"Unable to create/open file"}]];
-			return;
-		}
-		[_currentLogHandle seekToEndOfFile];
-		
-	}else if([self logFileHasExpired:self.currentLogPath error:&error] || [self logFileHasReachedMaxSize:self.currentLogPath error:&error]){
+	if([self logFileHasExpired:self.currentLogPath error:&error] || [self logFileHasReachedMaxSize:self.currentLogPath error:&error]){
 		//check valid
 		[self.currentLogHandle synchronizeFile];
 		[self.currentLogHandle closeFile];
@@ -65,6 +70,35 @@
 		self.logging = NO;
 	}
 	
+}
+
+-(BOOL)startLogging{
+	NSError *error = nil;
+	if(_currentLogHandle == nil && !self.isLogging){
+		_currentLogPath = [self getLogFileUrl:&error];
+		if(_currentLogPath == nil){
+			[self stopLoggingWithMessage:@"Failed to create log file" andError:error];
+			return NO;
+		}
+		_currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
+		if(_currentLogHandle == nil){
+			[self stopLoggingWithMessage:@"Failed to open logger" andError:[NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorFailedToOpenLog userInfo:@{NSLocalizedDescriptionKey: @"Unable to create/open file"}]];
+			return NO;
+		}
+		[_currentLogHandle seekToEndOfFile];
+	}
+	self.logging = YES;
+	return YES;
+}
+
+-(void)stopLogging{
+	self.logging = NO;
+	[self.currentLogHandle synchronizeFile];
+	[self.currentLogHandle closeFile];
+}
+
+-(void)flushLogs{
+	[self.currentLogHandle synchronizeFile];
 }
 
 -(NSString *)getLogFileUrl:(NSError **)error{
@@ -186,12 +220,6 @@
 	NSInteger sizeKb = [fileAtt fileSize]/1000;
 	
 	return sizeKb >= self.options.maxPageSize;
-}
-
--(void)stopLogging{
-	self.logging = NO;
-	[self.currentLogHandle synchronizeFile];
-	[self.currentLogHandle closeFile];
 }
 
 -(NSArray *)sortFilesByCreationDate:(NSArray *)files{

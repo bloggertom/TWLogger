@@ -11,23 +11,6 @@
 
 @implementation TWAbstractLogger
 
--(instancetype)init{
-	TWLoggerOptions *options = [[TWLoggerOptions alloc]init];
-	
-	options.maxPageNum = 80;
-	options.maxPageSize = 0;
-	options.logFilePrefix = @"TWLog";
-	options.pageLife = [[NSDateComponents alloc]init];
-	options.pageLife.day = 1;
-	options.dateTimeFormat = TWDateTimeFormatDefault;
-	
-	NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-	path = [path stringByAppendingPathComponent:@"TWLogFiles"];
-	options.loggingAddress = path;
-	
-	return [self initWithOptions:options];
-}
-
 -(instancetype)initWithOptions:(TWLoggerOptions *)options{
 	if(self = [super init]){
 		_options = options;
@@ -35,7 +18,6 @@
 			_logFormatter = self.options.logFormat;
 		}
 		_fileManager = [NSFileManager defaultManager];
-		self.logging = YES;
 	}
 	
 	return self;
@@ -56,6 +38,17 @@ BOOL _logging;
 }
 
 - (void)stopLogging {
+	[NSException raise:NSInternalInconsistencyException
+				format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
+}
+
+- (BOOL)startLogging{
+	[NSException raise:NSInternalInconsistencyException
+				format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
+	return NO;
+}
+
+-(void)flushLogs{
 	[NSException raise:NSInternalInconsistencyException
 				format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
 }

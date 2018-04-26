@@ -120,8 +120,12 @@ NSMutableArray<LoggerReference *> *_loggers;
 	if(_loggers == nil){
 		_loggers = [[NSMutableArray alloc]init];
 	}
-	LoggerReference *ref = [[LoggerReference alloc]initWithLogger:logger queue:dispatch_queue_create("logging-queue", DISPATCH_QUEUE_SERIAL)];
-	[_loggers addObject:ref];
+	if([logger startLogging]){
+		LoggerReference *ref = [[LoggerReference alloc]initWithLogger:logger queue:dispatch_queue_create("logging-queue", DISPATCH_QUEUE_SERIAL)];
+		[_loggers addObject:ref];
+	}else{
+		[self systemLog:@"Logger failed to start"];
+	}
 }
 
 +(id<TWLoggerDelegate>)removeLogger:(id<TWLoggerDelegate>)logger{

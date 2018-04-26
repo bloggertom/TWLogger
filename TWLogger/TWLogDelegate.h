@@ -18,6 +18,13 @@
 @property (nonatomic, getter=isLogging)BOOL logging;
 
 /**
+ @brief Set up function for the logger.
+ 
+ Called before the logger is added to the active logger list. Use this method to set up logging resourses and establish connections.
+ */
+-(BOOL)startLogging;
+
+/**
  Callback called when a log is recieved.
  
  @param level Log level of the log received @see TWLogLevel.
@@ -27,8 +34,16 @@
  */
 -(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function;
 /**
- Request the logger to stop logging. Called just before the logger is removed from active logger list
+ @brief Tear down function for logger.
+ 
+Called just before the logger is removed from active logger list. Use this method to clean up any resourses being used and close any connections.
  */
 -(void)stopLogging;
+
+/**
+ Force logger to write any pending logs to disk.
+ */
+-(void)flushLogs;
+
 @end
 #endif /* LogDelegate_h */

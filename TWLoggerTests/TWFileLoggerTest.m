@@ -29,10 +29,10 @@
 	_baseDir  = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 	_fileManager = [NSFileManager defaultManager];
 	_fileLogger = [[TWFileLogger alloc]init];
+	
 	_logPath = [self getLogDirPath];
-	
 	self.fileLogger.options.loggingAddress = self.logPath;
-	
+	[_fileLogger startLogging];
 }
 - (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -89,6 +89,7 @@
 	
 	_fileLogger = [[TWFileLogger alloc]init];
 	self.fileLogger.options.loggingAddress = self.logPath;
+	[_fileLogger startLogging];
 	
 	[self.fileLogger logReceived:TWLogLevelDebug body:logText fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
 	
