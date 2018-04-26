@@ -36,6 +36,16 @@
 	
 }
 
+-(BOOL)startLogging{
+	NSError *error = nil;
+	if(![self openOrCreateDatabase:self.options.loggingAddress error:&error]){
+		[self stopLoggingWithMessage:@"Failed to open or create database" andError:error];
+		return NO;
+	}
+	
+	return YES;
+}
+
 -(BOOL)openOrCreateDatabase:(NSString *)loggingDirectory error:(NSError **)error{
 	BOOL isDir;
 	if(![self.fileManager fileExistsAtPath:loggingDirectory isDirectory:&isDir]){
