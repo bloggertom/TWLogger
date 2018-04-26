@@ -8,7 +8,6 @@
 
 #import <XCTest/XCTest.h>
 #import <TWLogger/TWLogger.h>
-#import "TWLogFormatterProject.h"
 
 @interface TWFileLogger()
 @property (nonatomic, strong)TWLoggerOptions *options;
@@ -194,6 +193,6 @@
 
 -(void)testLogFileFormatting{
 	TWFileLogger *fileLogger = [[TWFileLogger alloc]init];
-	fileLogger.options.logFormat = [TWLogFormatter defaultLogFormat];
+	fileLogger.options.logFormat = [TWLogFormatter defaultLogFormatter];
 }
 @end

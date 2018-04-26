@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TWLogFormatter.h"
 
 @interface TWLoggerOptions : NSObject
 
@@ -44,7 +45,7 @@
  
  If nil no additonal infomration is added to logged text.
  */
-@property (nonatomic, strong)NSString *logFormat;
+@property (nonatomic, strong)TWLogFormatter *logFormat;
 /**
  Date time format to be used when writing date time to log. Defaults to YYYYMMdd:HHmmss.
  */

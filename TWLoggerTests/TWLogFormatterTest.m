@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "TWLogFormatterProject.h"
+#import "TWLogFormatter.h"
 #import "TWUtils.h"
 @interface TWLogFormatterTest : XCTestCase
 

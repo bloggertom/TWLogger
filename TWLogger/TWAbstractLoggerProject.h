@@ -9,7 +9,7 @@
 #ifndef TWAbstractLoggerProject_h
 #define TWAbstractLoggerProject_h
 #import "TWAbstractLogger.h"
-#import "TWLogFormatterProject.h"
+#import "TWLogFormatter.h"
 
 @interface TWAbstractLogger()
 

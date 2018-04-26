@@ -6,7 +6,7 @@
 //  Copyright © 2018 Thomas Wilson. All rights reserved.
 //
 
-#import "TWLogFormatterProject.h"
+#import "TWLogFormatter.h"
 #import "TWUtils.h"
 NSString * const TWDateTimeFormatDefault = @"YYYYMMdd:HHmmss";
 
@@ -59,6 +59,10 @@ NSString * const TWLogFormatBody = @"<TW.LogFormat.Body>";
 
 +(NSString *)defaultLogFormat{
 	return [NSString stringWithFormat:@"%@:%@ [%@:%@] %@",TWLogFormatLevel, TWLogFormatDateTime, TWLogFormatFile, TWLogFormatFunction, TWLogFormatBody];
+}
+
++(instancetype)defaultLogFormatter{
+	return [[TWLogFormatter alloc]init];
 }
 
 -(NSString *)formatLog:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
