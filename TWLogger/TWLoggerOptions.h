@@ -8,11 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "TWLogFormatter.h"
-
+/**
+ @class TWLoggerOptions
+ 
+ @discussion class for holding options which configures how a logger is going to behave. How properties are interpreted will depend on the type of logger used.
+ */
 @interface TWLoggerOptions : NSObject
 
 /**
- Path to the directory where logs will be stored.
+ Addess to where the logs will be stored. File or URL depending on logger type.
  */
 @property (nonatomic, strong)NSString *loggingAddress;
 
@@ -46,9 +50,14 @@
  If nil no additonal infomration is added to logged text.
  */
 @property (nonatomic, strong)TWLogFormatter *logFormat;
+
 /**
  Date time format to be used when writing date time to log. Defaults to YYYYMMdd:HHmmss.
  */
 @property (nonatomic, strong)NSString *dateTimeFormat;
 
+/**
+ Sets how often the log cash is flushed to disk.
+ */
+@property (nonatomic, strong)NSDateComponents *flushPeriod;
 @end
