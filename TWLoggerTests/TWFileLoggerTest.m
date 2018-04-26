@@ -32,7 +32,7 @@
 	_fileLogger = [[TWFileLogger alloc]init];
 	_logPath = [self getLogDirPath];
 	
-	self.fileLogger.options.loggingDirectory = self.logPath;
+	self.fileLogger.options.loggingAddress = self.logPath;
 	
 }
 - (void)tearDown {
@@ -89,7 +89,7 @@
 	[self.fileLogger stopLogging];
 	
 	_fileLogger = [[TWFileLogger alloc]init];
-	self.fileLogger.options.loggingDirectory = self.logPath;
+	self.fileLogger.options.loggingAddress = self.logPath;
 	
 	[self.fileLogger logReceived:TWLogLevelDebug body:logText fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
 	
@@ -132,13 +132,13 @@
 	NSString *file2Path = [contents objectAtIndex:1];
 	
 	error = nil;
-	NSString *file1Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.loggingDirectory stringByAppendingPathComponent:file1Path] encoding:NSASCIIStringEncoding error:&error];
+	NSString *file1Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.loggingAddress stringByAppendingPathComponent:file1Path] encoding:NSASCIIStringEncoding error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertEqualObjects(logMessage1, file1Content);
 
 	error = nil;
-	NSString *file2Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.loggingDirectory stringByAppendingPathComponent:file2Path] encoding:NSASCIIStringEncoding error:&error];
+	NSString *file2Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.loggingAddress stringByAppendingPathComponent:file2Path] encoding:NSASCIIStringEncoding error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertEqualObjects(logMessage2, file2Content);

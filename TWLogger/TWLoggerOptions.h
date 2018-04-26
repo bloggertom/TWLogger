@@ -13,7 +13,7 @@
 /**
  Path to the directory where logs will be stored.
  */
-@property (nonatomic, strong)NSString *loggingDirectory;
+@property (nonatomic, strong)NSString *loggingAddress;
 
 /**
  Span of time which a log page will be used before starting a new page.

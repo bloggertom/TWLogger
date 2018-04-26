@@ -36,7 +36,7 @@
 	NSString *logMessage = @"logging NSLog logging test";
 	NSLog(logMessage);
 	
-	[self checkLogFolderContents:fileLogger.options.loggingDirectory result:[NSString stringWithFormat:@"%@\n", logMessage]];
+	[self checkLogFolderContents:fileLogger.options.loggingAddress result:[NSString stringWithFormat:@"%@\n", logMessage]];
 									   
 	[self cleanUpFileLogger:fileLogger];
 }
@@ -48,7 +48,7 @@
 	TWLog(TWLogLevelDebug, logMessage);
 	
 	
-	[self checkLogFolderContents:fileLogger.options.loggingDirectory result:[NSString stringWithFormat:@"%@\n",logMessage]];
+	[self checkLogFolderContents:fileLogger.options.loggingAddress result:[NSString stringWithFormat:@"%@\n",logMessage]];
 	
 	[self cleanUpFileLogger:fileLogger];
 }
@@ -73,13 +73,13 @@
 	[TWLog removeLogger:fileLogger];
 	
 	NSError *error = nil;
-	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.loggingDirectory error:&error];
+	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.loggingAddress error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssert(contents.count == 1);
 	
 	error = nil;
-	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.loggingDirectory error:&error];
+	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.loggingAddress error:&error];
 	XCTAssertNil(error);
 }
 -(void)testConcurrentFileLogging{
@@ -89,13 +89,13 @@
 	NSArray *logStrings = [self performConcurrentLogs];
 	
 	NSError *error = nil;
-	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.loggingDirectory error:&error];
+	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.loggingAddress error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertTrue(contents.count == 1);
 	
 	error = nil;
-	NSString *fileContent = [NSString stringWithContentsOfFile:[fileLogger.options.loggingDirectory  stringByAppendingPathComponent:contents.firstObject]  encoding:NSASCIIStringEncoding error:&error];
+	NSString *fileContent = [NSString stringWithContentsOfFile:[fileLogger.options.loggingAddress  stringByAppendingPathComponent:contents.firstObject]  encoding:NSASCIIStringEncoding error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertNotNil(fileContent);

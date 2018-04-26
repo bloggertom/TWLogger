@@ -26,7 +26,7 @@
 -(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
 	if(_database == nil){
 		NSError *error = nil;
-		[self openOrCreateDatabase:self.options.loggingDirectory error:&error];
+		[self openOrCreateDatabase:self.options.loggingAddress error:&error];
 	}
 }
 -(BOOL)openOrCreateDatabase:(NSString *)loggingDirectory error:(NSError **)error{

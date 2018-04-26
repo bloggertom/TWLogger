@@ -69,15 +69,15 @@
 
 -(NSString *)getLogFileUrl:(NSError **)error{
 	BOOL isDirectory = NO;
-	if(![self.fileManager fileExistsAtPath:self.options.loggingDirectory isDirectory:&isDirectory]){
-		if(![self.fileManager createDirectoryAtPath:self.options.loggingDirectory withIntermediateDirectories:YES attributes:nil error:error]){
+	if(![self.fileManager fileExistsAtPath:self.options.loggingAddress isDirectory:&isDirectory]){
+		if(![self.fileManager createDirectoryAtPath:self.options.loggingAddress withIntermediateDirectories:YES attributes:nil error:error]){
 			return nil;
 		}
 		isDirectory = YES;
 	}
 	
 	if(isDirectory){
-		NSArray *files = [self.fileManager contentsOfDirectoryAtPath:self.options.loggingDirectory error:error];
+		NSArray *files = [self.fileManager contentsOfDirectoryAtPath:self.options.loggingAddress error:error];
 		if(files.count == 0){
 			if(*error){
 				return nil;
@@ -106,8 +106,8 @@
 	NSInteger timestamp = (long long)([[NSDate date] timeIntervalSince1970] * 10000);
 	NSString *fileName = [NSString stringWithFormat:@"%@-%lld.log",self.options.logFilePrefix, (long long)timestamp];
 
-	NSString *fileUrl = [self.options.loggingDirectory stringByAppendingPathComponent:fileName];
-	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.options.loggingDirectory error:error];
+	NSString *fileUrl = [self.options.loggingAddress stringByAppendingPathComponent:fileName];
+	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.options.loggingAddress error:error];
 	
 	if(*error){
 		return nil;
@@ -143,7 +143,7 @@
 	NSString *file = [self fileNameOfNewestFile:files];
 	
 	//life time
-	NSString *fileUrl = [self.options.loggingDirectory stringByAppendingPathComponent:file];
+	NSString *fileUrl = [self.options.loggingAddress stringByAppendingPathComponent:file];
 	BOOL expired = [self logFileHasExpired:fileUrl error:error];
 	BOOL full = [self logFileHasReachedMaxSize:fileUrl error:error];
 	if(*error || expired || full){
@@ -196,8 +196,8 @@
 
 -(NSArray *)sortFilesByCreationDate:(NSArray *)files{
 	NSArray *sortedArray = [files sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-		NSString *pathObj1 = [self.options.loggingDirectory stringByAppendingPathComponent:obj1];
-		NSString *pathObj2 = [self.options.loggingDirectory stringByAppendingPathComponent:obj2];
+		NSString *pathObj1 = [self.options.loggingAddress stringByAppendingPathComponent:obj1];
+		NSString *pathObj2 = [self.options.loggingAddress stringByAppendingPathComponent:obj2];
 		
 		NSError *error = nil;
 		NSDictionary *obj1Attr = [self.fileManager attributesOfItemAtPath:pathObj1 error:&error];

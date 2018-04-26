@@ -23,7 +23,7 @@
 	
 	NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 	path = [path stringByAppendingPathComponent:@"TWLogFiles"];
-	options.loggingDirectory = path;
+	options.loggingAddress = path;
 	
 	return [self initWithOptions:options];
 }
