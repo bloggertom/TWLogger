@@ -15,7 +15,10 @@ typedef NS_ENUM(NSUInteger, TWFileLoggerError) {
 	TWLoggerErrorUnknown = 2000,
 	TWLoggerErrorInvalidFilePath = 2001,
 	TWLoggerErrorFailedToCreateLogFile = 2002,
-	TWLoggerErrorFailedToOpenLog = 2003
+	TWLoggerErrorFailedToOpenLog = 2003,
+	
+	//sqlite errors
+	TWLoggerErrorSqliteFailedToWrite = 3001,
 };
 
 #endif /* TWLoggerErrors_h */

@@ -11,8 +11,17 @@
 #import "TWLoggerErrors.h"
 #define DATE_TIME_FORMAT @"YYYY-MM-dd-HH-mm-ss O"
 
+NSString * const TWLogTableName = @"TWLogEntries";
+
+NSString * const TWLogTableColumnDateTime = @"date_time";
+NSString * const TWLogTableColumnLevel = @"level";
+NSString * const TWLogTableColumnBody = @"body";
+NSString * const TWLogTableColumnFunction = @"function";
+NSString * const TWLogTableColumnFile = @"file";
+
 @interface TWSqlite ()
 @property (nonatomic)sqlite3 *database;
+@property (nonatomic, strong)NSDateFormatter *dateFormatter;
 @end
 
 @implementation TWSqlite
@@ -28,7 +37,14 @@ NSInteger databaseVersion = 1;
 
 -(instancetype)initInternal:(NSString *)path error:(NSError **)error{
 	self = [super init];
-	if(self && [self openOrCreateDatabaseAtPath:path error:error]){
+	if(self){
+		_dateFormatter = [[NSDateFormatter alloc]init];
+		[_dateFormatter setDateFormat:DATE_TIME_FORMAT];
+		if(![self openOrCreateDatabaseAtPath:path error:error]){
+			return nil;
+		}
+		
+	
 		return self;
 	}
 	return nil;
@@ -52,9 +68,18 @@ NSInteger databaseVersion = 1;
 				  @{NSLocalizedDescriptionKey: @"Unable to create/open database"}];
 		return NO;
 	}
+
+	return [self createLogTable:error];
+}
+
+-(BOOL)createLogTable:(NSError **)error{
+	NSString *query = [NSString stringWithFormat:@"CREATE TABLE %@ IF NOT EXISTS (%@, %@, %@, %@, %@);", TWLogTableName,TWLogTableColumnDateTime, TWLogTableColumnLevel, TWLogTableColumnFile, TWLogTableColumnFunction, TWLogTableColumnBody];
 	
-	
-	
+	if(sqlite3_exec(_database, query.UTF8String, NULL, NULL, NULL) != SQLITE_OK){
+		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToWrite userInfo:
+				  @{NSLocalizedDescriptionKey: @"Failed write database schema"}];
+		return NO;
+	}
 	return YES;
 }
 
