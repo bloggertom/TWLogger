@@ -11,6 +11,7 @@
 
 @interface TWLogEntry : NSObject
 
+@property (nonatomic, strong)NSDate *datetime;
 @property (nonatomic)TWLogLevel logLevel;
 @property (nonatomic, strong)NSString *logBody;
 @property (nonatomic, strong)NSString *file;
