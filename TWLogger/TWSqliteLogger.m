@@ -80,6 +80,16 @@
 	return YES;
 }
 
+-(void)flushLogs{
+	for (TWLogEntry *entry in self.logStore) {
+		NSError *error = nil;
+		if(![self.twSqlite insertEntry:entry error:&error]){
+			[TWLog systemLog:@"Failed to write log with error:"];
+			[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
+		}
+	}
+}
+
 -(void)stopLogging{
 	//close database and stuff;
 	@synchronized(self){
