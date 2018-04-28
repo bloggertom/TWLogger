@@ -20,17 +20,10 @@
 
 -(instancetype)init{
 	TWLoggerOptions *options = [[TWLoggerOptions alloc]init];
-	
 	options.maxPageNum = 80;
 	options.maxPageSize = 0;
-	options.logFilePrefix = @"TWLog";
 	options.pageLife = [[NSDateComponents alloc]init];
 	options.pageLife.day = 1;
-	options.dateTimeFormat = TWDateTimeFormatDefault;
-	
-	NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-	path = [path stringByAppendingPathComponent:@"TWLogFiles"];
-	options.loggingAddress = path;
 	
 	return [self initWithOptions:options];
 }

@@ -19,23 +19,38 @@
 @implementation TWAbstractLogger
 
 -(instancetype)init{
-	self = [super init];
-	if(self){
+	return [self initWithOptions:nil];
+}
+
+-(instancetype)initWithOptions:(TWLoggerOptions *)options{
+	if(self = [super init]){
 		_flushLock = [[NSObject alloc]init];
 		_logStore = [[NSMutableArray alloc]init];
 		_fileManager = [NSFileManager defaultManager];
 		_flushQueue = dispatch_queue_create("logger.flush.queue", DISPATCH_QUEUE_SERIAL);
 		_cal = [NSCalendar currentCalendar];
-	}
-	return self;
-}
-
--(instancetype)initWithOptions:(TWLoggerOptions *)options{
-	if(self = [self init]){
-		_options = options;
+		
+		if(options == nil){
+			_options = [[TWLoggerOptions alloc]init];
+		}else{
+			_options = options;
+		}
 		if(_options.logFormat != nil){
 			_logFormatter = self.options.logFormat;
 		}
+		if(_options.logFilePrefix == nil){
+			options.logFilePrefix = @"TWLog";
+		}
+		if(options.dateTimeFormat == nil){
+			options.dateTimeFormat = TWDateTimeFormatDefault;
+		}
+		
+		if(options.loggingAddress == nil){
+			NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+			path = [path stringByAppendingPathComponent:@"TWLogFiles"];
+			options.loggingAddress = path;
+		}
+		
 	}
 	return self;
 }
