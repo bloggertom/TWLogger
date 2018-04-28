@@ -19,11 +19,11 @@
 @property (nonatomic, readonly, strong)TWLogFormatter *logFormatter;
 @property (strong, readonly)NSMutableArray *logStore;
 /**
- Create a new instance of a TWFileLogger with a given set of options.
+ Create a new instance of a TWLogger with a given set of options.
  
- @param options Options which will determin how the File logger will behave.
+ @param options Options which will determin how the logger will behave.
  
- @return newly initialized TWFileLogger.
+ @return newly initialized TWLogger.
  */
 -(instancetype)initWithOptions:(TWLoggerOptions *)options;
 
