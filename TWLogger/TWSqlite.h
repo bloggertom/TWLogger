@@ -16,7 +16,6 @@
 +(void)closeDatabase;
 
 -(BOOL)insertEntry:(TWLogEntry *)entry error:(NSError **)error;
--(BOOL)insertEntries:(NSArray<TWLogEntry*>*)entries error:(NSError **)error;
 -(BOOL)deleteEntriesFromBeforeDate:(NSDate *)date error:(NSError **)error;
 
 @end

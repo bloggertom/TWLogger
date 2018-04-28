@@ -131,10 +131,6 @@ NSInteger databaseVersion = 1;
 	return NO;
 }
 
--(BOOL)insertEntries:(NSArray<TWLogEntry *> *)entries error:(NSError **)error{
-	return NO;
-}
-
 -(BOOL)deleteEntriesFromBeforeDate:(NSDate *)date error:(NSError **)error{
 	return NO;
 }
