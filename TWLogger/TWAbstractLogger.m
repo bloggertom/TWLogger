@@ -64,6 +64,7 @@ BOOL _logging;
 			//The wait is asynchronous so will break the lock.
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(trigger * NSEC_PER_SEC)), self.flushQueue, ^{
 				[self flushQueue];
+				[self.logStore removeAllObjects];
 				self.flushingScheduled = NO;
 				if(self.logging){
 					[self scheduleLogFlush];
