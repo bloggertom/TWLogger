@@ -91,7 +91,7 @@ NSInteger databaseVersion = 1;
 
 -(BOOL)insertEntry:(TWLogEntry *)entry error:(NSError **)error{
 	
-	NSString *query = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@, %@, %@, %@, %@) VALUES (?,?,?,?,?,?)",
+	NSString *query = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@, %@, %@, %@, %@) VALUES (?,?,?,?,?,?);",
 					   TWLogTableName,
 					   //columns
 					   TWLogTableColumnTimeStamp,
@@ -132,6 +132,27 @@ NSInteger databaseVersion = 1;
 }
 
 -(BOOL)deleteEntriesFromBeforeDate:(NSDate *)date error:(NSError **)error{
+	NSString *query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ < ?;",TWLogTableName, TWLogTableColumnTimeStamp];
+	
+	sqlite3_stmt *statement;
+	@try{
+		if(sqlite3_prepare(self.database, query.UTF8String, 0, &statement, NULL) == SQLITE_OK){
+			sqlite3_bind_double(statement, 1, [date timeIntervalSince1970]);
+			
+			int result = sqlite3_step(statement);
+			if(result == SQLITE_DONE || SQLITE_OK){
+				return YES;
+			}
+		}
+	}
+	@finally
+	{
+		sqlite3_finalize(statement);
+	}
+	
+	*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToWrite userInfo:
+			  @{NSLocalizedDescriptionKey: @"Failed to write log entry"}];
+	
 	return NO;
 }
 
