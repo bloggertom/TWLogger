@@ -10,10 +10,13 @@
 @class TWLogEntry;
 @interface TWSqlite : NSObject
 
+-(instancetype)init NS_UNAVAILABLE;
 
--(BOOL)openDatabaseAtPath:(NSString *)path error:(NSError *)error;
--(BOOL)insertEntry:(TWLogEntry *)entry error:(NSError *)error;
--(BOOL)insertEntries:(NSArray<TWLogEntry*>*)entries error:(NSError *)error;
--(BOOL)deleteEntriesFromBeforeDate:(NSDate *)date error:(NSError *)error;
++(instancetype)openDatabaseAtPath:(NSString *)path error:(NSError **)error;
++(void)closeDatabase;
+
+-(BOOL)insertEntry:(TWLogEntry *)entry error:(NSError **)error;
+-(BOOL)insertEntries:(NSArray<TWLogEntry*>*)entries error:(NSError **)error;
+-(BOOL)deleteEntriesFromBeforeDate:(NSDate *)date error:(NSError **)error;
 
 @end

@@ -9,10 +9,11 @@
 #import "TWSqliteLogger.h"
 #import "TWAbstractLogger.h"
 #import "TWLog.h"
-#import <sqlite3.h>
+#import "TWSqlite.h"
+#import "TWLogEntry.h"
 
 @interface TWSqliteLogger()
-@property (nonatomic)sqlite3 *database;
+@property (nonatomic, strong)TWSqlite *twSqlite;
 @end
 
 @implementation TWSqliteLogger
@@ -22,16 +23,30 @@
 	if(self){
 		self.options.pageLife.day = 0;
 		self.options.pageLife.month = 1;
+		self.options.flushPeriod = [[NSDateComponents alloc]init];
+		self.options.flushPeriod.second = 10;
 	}
 	return self;
 }
 
 -(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
 	@synchronized(self){
-		if(_database == nil || !self.isLogging){
+		if(self.twSqlite == nil || !self.isLogging){
 			[TWLog systemLog: @"Log received when logging not active"];
 			return;
 		}
+	}
+	TWLogEntry *entry = [[TWLogEntry alloc]init];
+	entry.datetime = [NSDate date];
+	entry.logLevel = level;
+	entry.logBody = body;
+	entry.file = file;
+	entry.function = function;
+	
+	if(self.options.flushPeriod != nil){
+		[self addLogEntry:entry];
+	}else{
+		
 	}
 	
 }
@@ -42,7 +57,7 @@
 		[self stopLoggingWithMessage:@"Failed to open or create database" andError:error];
 		return NO;
 	}
-	
+	self.logging = YES;
 	return YES;
 }
 
@@ -57,11 +72,7 @@
 	}
 	if(isDir){
 		NSString *databasePath = [loggingDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-Database.db",self.options.logFilePrefix]];
-		int result = sqlite3_open(databasePath.UTF8String, &_database);
-		if(result != SQLITE_OK){
-			*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorFailedToOpenLog userInfo:@{NSLocalizedDescriptionKey: @"Unable to create/open file"}];
-			return NO;
-		}
+		_twSqlite = [TWSqlite openDatabaseAtPath:databasePath error:error];
 	}else{
 		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorInvalidFilePath userInfo:@{NSLocalizedDescriptionKey: @"Invalid log storage directory."}];
 		return NO;
@@ -73,9 +84,8 @@
 	//close database and stuff;
 	@synchronized(self){
 		self.logging = NO;
-		if(_database != nil){
-			sqlite3_close(_database);
-		}
+		[TWSqlite closeDatabase];
+		_twSqlite = nil;
 	}
 }
 
