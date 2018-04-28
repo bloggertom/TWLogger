@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TWLogDelegate.h"
 #import	"TWLoggerOptions.h"
-
+#import "TWLogEntry.h"
 #define ERROR_DOMAIN @"TDWFileLogger"
 
 typedef NS_ENUM(NSUInteger, TWFileLoggerError) {
@@ -24,6 +24,7 @@ typedef NS_ENUM(NSUInteger, TWFileLoggerError) {
 @property (nonatomic, readonly, strong)TWLoggerOptions *options;
 @property (nonatomic, readonly, strong)NSFileManager *fileManager;
 @property (nonatomic, readonly, strong)TWLogFormatter *logFormatter;
+@property (strong, readonly)NSMutableArray *logStore;
 /**
  Create a new instance of a TWFileLogger with a given set of options.
  
@@ -34,5 +35,8 @@ typedef NS_ENUM(NSUInteger, TWFileLoggerError) {
 -(instancetype)initWithOptions:(TWLoggerOptions *)options;
 
 -(void)stopLoggingWithMessage:(NSString *)message andError:(nullable NSError *)error;
+
+-(void)addLogEntry:(TWLogEntry *)entry;
+
 
 @end
