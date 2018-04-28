@@ -151,7 +151,7 @@ NSInteger databaseVersion = 1;
 	}
 	
 	*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToWrite userInfo:
-			  @{NSLocalizedDescriptionKey: @"Failed to write log entry"}];
+			  @{NSLocalizedDescriptionKey: @"Failed to remove log entries"}];
 	
 	return NO;
 }
