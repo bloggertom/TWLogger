@@ -78,7 +78,7 @@ NSInteger databaseVersion = 1;
 }
 
 -(BOOL)createLogTable:(NSError **)error{
-	NSString *query = [NSString stringWithFormat:@"CREATE TABLE %@ IF NOT EXISTS (%@ REAL, %@ TEXT, %@ TEXT, %@ TEXT, %@ TEXT, %@ TEXT);", TWLogTableName, TWLogTableColumnTimeStamp, TWLogTableColumnDateTime, TWLogTableColumnLevel, TWLogTableColumnFile, TWLogTableColumnFunction, TWLogTableColumnBody];
+	NSString *query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ REAL, %@ TEXT, %@ TEXT, %@ TEXT, %@ TEXT, %@ TEXT);", TWLogTableName, TWLogTableColumnTimeStamp, TWLogTableColumnDateTime, TWLogTableColumnLevel, TWLogTableColumnFile, TWLogTableColumnFunction, TWLogTableColumnBody];
 	
 	if(sqlite3_exec(_database, query.UTF8String, NULL, NULL, NULL) != SQLITE_OK){
 		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToWrite userInfo:
@@ -103,7 +103,7 @@ NSInteger databaseVersion = 1;
 	
 	sqlite3_stmt *statement;
 	@try{
-		if(sqlite3_prepare(self.database, query.UTF8String, 0, &statement, NULL) == SQLITE_OK){
+		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
 			sqlite3_bind_double(statement, 1, [entry.datetime timeIntervalSince1970]);
 			sqlite3_bind_text(statement, 2, [self.dateFormatter stringFromDate:entry.datetime].UTF8String, 0, NULL);
 			sqlite3_bind_text(statement, 3, [TWUtils logLevelString:entry.logLevel].UTF8String, 0, NULL);
@@ -136,7 +136,7 @@ NSInteger databaseVersion = 1;
 	
 	sqlite3_stmt *statement;
 	@try{
-		if(sqlite3_prepare(self.database, query.UTF8String, 0, &statement, NULL) == SQLITE_OK){
+		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
 			sqlite3_bind_double(statement, 1, [date timeIntervalSince1970]);
 			
 			int result = sqlite3_step(statement);
