@@ -11,9 +11,12 @@
 #import "TWLog.h"
 #import "TWSqlite.h"
 #import "TWLogEntry.h"
+#import "TWSqliteLogEntry.h"
+#import "TWUtils.h"
 
 @interface TWSqliteLogger()
 @property (nonatomic, strong)TWSqlite *twSqlite;
+@property (nonatomic, strong)NSDateFormatter *dateFormatter;
 @end
 
 @implementation TWSqliteLogger
@@ -25,6 +28,9 @@
 		self.options.pageLife.month = 1;
 		self.options.flushPeriod = [[NSDateComponents alloc]init];
 		self.options.flushPeriod.second = 10;
+		
+		_dateFormatter = [[NSDateFormatter alloc]init];
+		[_dateFormatter setDateFormat:DATE_TIME_FORMAT];
 	}
 	return self;
 }
@@ -83,7 +89,16 @@
 -(void)flushLogs{
 	for (TWLogEntry *entry in self.logStore) {
 		NSError *error = nil;
-		if(![self.twSqlite insertEntry:entry error:&error]){
+		TWSqliteLogEntry *dbEntry = [[TWSqliteLogEntry alloc]init];
+		
+		dbEntry.datetime = [_dateFormatter stringFromDate:entry.datetime];
+		dbEntry.logLevel = [TWUtils logLevelString:entry.logLevel];
+		dbEntry.file = entry.file;
+		dbEntry.function = entry.function;
+		dbEntry.logBody = entry.logBody;
+		dbEntry.timestamp = [entry.datetime timeIntervalSince1970];
+		
+		if(![self.twSqlite insertEntry:dbEntry error:&error]){
 			[TWLog systemLog:@"Failed to write log with error:"];
 			[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
 		}

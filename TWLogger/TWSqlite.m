@@ -9,10 +9,8 @@
 #import "TWSqlite.h"
 #import <sqlite3.h>
 #import "TWLoggerErrors.h"
-#import "TWLogEntry.h"
+#import "TWSqliteLogEntry.h"
 #import "TWUtils.h"
-
-#define DATE_TIME_FORMAT @"yyyy-MM-dd-HH-mm-ss O"
 
 NSString * const TWLogTableName = @"TWLogEntries";
 
@@ -26,7 +24,6 @@ NSString * const TWLogTableColumnFile = @"file";
 @interface TWSqlite ()
 
 @property (nonatomic)sqlite3 *database;
-@property (nonatomic, strong)NSDateFormatter *dateFormatter;
 @end
 
 @implementation TWSqlite
@@ -43,8 +40,6 @@ NSInteger databaseVersion = 1;
 -(instancetype)initInternal:(NSString *)path error:(NSError **)error{
 	self = [super init];
 	if(self){
-		_dateFormatter = [[NSDateFormatter alloc]init];
-		[_dateFormatter setDateFormat:DATE_TIME_FORMAT];
 		if(![self openOrCreateDatabaseAtPath:path error:error]){
 			return nil;
 		}
@@ -89,7 +84,7 @@ NSInteger databaseVersion = 1;
 	return YES;
 }
 
--(BOOL)insertEntry:(TWLogEntry *)entry error:(NSError **)error{
+-(BOOL)insertEntry:(TWSqliteLogEntry *)entry error:(NSError **)error{
 	
 	NSString *query = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@, %@, %@, %@, %@) VALUES (?,?,?,?,?,?);",
 					   TWLogTableName,
@@ -104,9 +99,9 @@ NSInteger databaseVersion = 1;
 	sqlite3_stmt *statement;
 	@try{
 		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
-			sqlite3_bind_double(statement, 1, [entry.datetime timeIntervalSince1970]);
-			sqlite3_bind_text(statement, 2, [self.dateFormatter stringFromDate:entry.datetime].UTF8String, 0, NULL);
-			sqlite3_bind_text(statement, 3, [TWUtils logLevelString:entry.logLevel].UTF8String, 0, NULL);
+			sqlite3_bind_double(statement, 1, entry.timestamp);
+			sqlite3_bind_text(statement, 2, entry.datetime.UTF8String, 0, NULL);
+			sqlite3_bind_text(statement, 3, entry.logLevel.UTF8String, 0, NULL);
 			sqlite3_bind_text(statement, 4, entry.file.UTF8String, 0, NULL);
 			sqlite3_bind_text(statement, 5, entry.function.UTF8String, 0, NULL);
 			sqlite3_bind_text(statement, 6, entry.logBody.UTF8String, 0, NULL);
@@ -131,13 +126,13 @@ NSInteger databaseVersion = 1;
 	return NO;
 }
 
--(BOOL)deleteEntriesFromBeforeDate:(NSDate *)date error:(NSError **)error{
+-(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error{
 	NSString *query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ < ?;",TWLogTableName, TWLogTableColumnTimeStamp];
 	
 	sqlite3_stmt *statement;
 	@try{
 		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
-			sqlite3_bind_double(statement, 1, [date timeIntervalSince1970]);
+			sqlite3_bind_double(statement, 1, timeStamp);
 			
 			int result = sqlite3_step(statement);
 			if(result == SQLITE_DONE || SQLITE_OK){

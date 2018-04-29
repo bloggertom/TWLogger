@@ -7,13 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TWLogLevel.h"
+
+#define DATE_TIME_FORMAT @"yyyy-MM-dd-HH-mm-ss O"
 
 @interface TWSqliteLogEntry : NSObject
 
 @property (nonatomic)NSInteger logId;
-@property (nonatomic, strong)NSDate *datetime;
-@property (nonatomic)TWLogLevel logLevel;
+@property (nonatomic)double timestamp;
+@property (nonatomic, strong)NSString *datetime;
+@property (nonatomic, strong)NSString* logLevel;
 @property (nonatomic, strong)NSString *logBody;
 @property (nonatomic, strong)NSString *file;
 @property (nonatomic, strong)NSString *function;

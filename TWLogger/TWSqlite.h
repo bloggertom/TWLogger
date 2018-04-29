@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-@class TWLogEntry;
+@class TWSqliteLogEntry;
+
 @interface TWSqlite : NSObject
 
 -(instancetype)init NS_UNAVAILABLE;
@@ -15,7 +16,7 @@
 +(instancetype)openDatabaseAtPath:(NSString *)path error:(NSError **)error;
 +(void)closeDatabase;
 
--(BOOL)insertEntry:(TWLogEntry *)entry error:(NSError **)error;
--(BOOL)deleteEntriesFromBeforeDate:(NSDate *)date error:(NSError **)error;
+-(BOOL)insertEntry:(TWSqliteLogEntry *)entry error:(NSError **)error;
+-(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error;
 
 @end
