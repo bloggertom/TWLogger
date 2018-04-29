@@ -9,9 +9,10 @@
 #import <XCTest/XCTest.h>
 #import <Foundation/Foundation.h>
 #import "TWSqlite.h"
-#import "TWLogEntry.h"
+#import "TWSqliteLogEntry.h"
+#import "TWUtils.h"
 @interface TWSqliteTests : XCTestCase
-
+@property (nonatomic, strong)NSDateFormatter *dateFormatter;
 @end
 
 @implementation TWSqliteTests
@@ -19,6 +20,8 @@
 - (void)setUp {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+	_dateFormatter = [[NSDateFormatter alloc]init];
+	_dateFormatter.dateFormat = DATE_TIME_FORMAT;
 }
 
 - (void)tearDown {
@@ -57,18 +60,20 @@
 -(void)testAddLogEntry{
 	TWSqlite *twSqlite = [self getDatabase];
 	
-	TWLogEntry *entry = [[TWLogEntry alloc]init];
+	TWSqliteLogEntry *entry = [[TWSqliteLogEntry alloc]init];
 	entry.function = @"TestFunction";
 	entry.file = @"TestFile";
-	entry.logLevel = TWLogLevelInfo;
+	entry.logLevel = [TWUtils logLevelString:TWLogLevelInfo];
 	entry.logBody = @"Really long log body";
-	entry.datetime = [NSDate date];
+	NSDate *date = [NSDate date];
+	entry.datetime = [self.dateFormatter stringFromDate:date];
+	entry.timestamp = [date timeIntervalSince1970];
 	
 	[self addLogEntry:entry toDatabase:twSqlite];
 	
 }
 
--(void)addLogEntry:(TWLogEntry *)entry toDatabase:(TWSqlite *)database{
+-(void)addLogEntry:(TWSqliteLogEntry *)entry toDatabase:(TWSqlite *)database{
 	NSError *error = nil;
 	if(![database insertEntry:entry error:&error]){
 		NSLog(@"%@", error);
