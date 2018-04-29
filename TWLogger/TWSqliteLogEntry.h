@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TWLogLevel.h"
+
 @interface TWSqliteLogEntry : NSObject
 
 @property (nonatomic)NSInteger logId;
