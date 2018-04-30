@@ -100,11 +100,11 @@ NSInteger databaseVersion = 1;
 	@try{
 		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
 			sqlite3_bind_double(statement, 1, entry.timestamp);
-			sqlite3_bind_text(statement, 2, entry.datetime.UTF8String, 0, NULL);
-			sqlite3_bind_text(statement, 3, entry.logLevel.UTF8String, 0, NULL);
-			sqlite3_bind_text(statement, 4, entry.file.UTF8String, 0, NULL);
-			sqlite3_bind_text(statement, 5, entry.function.UTF8String, 0, NULL);
-			sqlite3_bind_text(statement, 6, entry.logBody.UTF8String, 0, NULL);
+			sqlite3_bind_text(statement, 2, entry.datetime.UTF8String, -1, NULL);
+			sqlite3_bind_text(statement, 3, entry.logLevel.UTF8String, -1, NULL);
+			sqlite3_bind_text(statement, 4, entry.file.UTF8String, -1, NULL);
+			sqlite3_bind_text(statement, 5, entry.function.UTF8String, -1, NULL);
+			sqlite3_bind_text(statement, 6, entry.logBody.UTF8String, -1, NULL);
 			
 			int result = sqlite3_step(statement);
 			if(result == SQLITE_OK || result == SQLITE_DONE){
@@ -151,7 +151,7 @@ NSInteger databaseVersion = 1;
 	return NO;
 }
 
--(TWSqliteLogEntry *)getLogEntryWithRowId:(NSInteger)rowId error:(NSError **)error{
+-(TWSqliteLogEntry *)selectLogEntryWithRowId:(NSInteger)rowId error:(NSError **)error{
 	NSString *query = [NSString stringWithFormat:@"SELECT ROWID,%@,%@,%@,%@,%@,%@ FROM %@ WHERE ROWID = ?;",
 					   TWLogTableColumnTimeStamp,
 					   TWLogTableColumnDateTime,
@@ -164,7 +164,7 @@ NSInteger databaseVersion = 1;
 	
 	sqlite3_stmt *statement;
 	@try{
-		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) != SQLITE_OK){
+		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
 			sqlite3_bind_int64(statement, 1, rowId);
 			int result = sqlite3_step(statement);
 			if(result == SQLITE_ROW){
