@@ -84,8 +84,8 @@ NSInteger databaseVersion = 1;
 	return YES;
 }
 
--(BOOL)insertEntry:(TWSqliteLogEntry *)entry error:(NSError **)error{
-	
+-(NSInteger)insertEntry:(TWSqliteLogEntry *)entry error:(NSError **)error{
+	NSInteger index = 0;
 	NSString *query = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@, %@, %@, %@, %@) VALUES (?,?,?,?,?,?);",
 					   TWLogTableName,
 					   //columns
@@ -108,7 +108,8 @@ NSInteger databaseVersion = 1;
 			
 			int result = sqlite3_step(statement);
 			if(result == SQLITE_OK || result == SQLITE_DONE){
-				return YES;
+				index = sqlite3_last_insert_rowid(self.database);
+				return index;
 			}
 		}
 	}
@@ -123,7 +124,7 @@ NSInteger databaseVersion = 1;
 				  @{NSLocalizedDescriptionKey: @"Failed to write log entry"}];
 	
 	
-	return NO;
+	return 0;
 }
 
 -(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error{

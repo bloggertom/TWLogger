@@ -75,7 +75,7 @@
 
 -(void)addLogEntry:(TWSqliteLogEntry *)entry toDatabase:(TWSqlite *)database{
 	NSError *error = nil;
-	if(![database insertEntry:entry error:&error]){
+	if([database insertEntry:entry error:&error] == 0){
 		NSLog(@"%@", error);
 		XCTAssertNotNil(error);
 		XCTFail(@"Failed to insert entry");

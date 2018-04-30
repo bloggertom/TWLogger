@@ -98,7 +98,7 @@
 		dbEntry.logBody = entry.logBody;
 		dbEntry.timestamp = [entry.datetime timeIntervalSince1970];
 		
-		if(![self.twSqlite insertEntry:dbEntry error:&error]){
+		if([self.twSqlite insertEntry:dbEntry error:&error] == 0){
 			[TWLog systemLog:@"Failed to write log with error:"];
 			[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
 		}

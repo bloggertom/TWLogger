@@ -16,7 +16,7 @@
 +(instancetype)openDatabaseAtPath:(NSString *)path error:(NSError **)error;
 +(void)closeDatabase;
 
--(BOOL)insertEntry:(TWSqliteLogEntry *)entry error:(NSError **)error;
+-(NSInteger)insertEntry:(TWSqliteLogEntry *)entry error:(NSError **)error;
 -(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error;
 
 @end
