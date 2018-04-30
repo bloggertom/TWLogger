@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 @class TWSqliteLogEntry;
 
+@interface NSString (TWSqlite)
++(NSString *)stringWithSqliteString:(const unsigned char*)text;
+@end
+
 @interface TWSqlite : NSObject
 
 -(instancetype)init NS_UNAVAILABLE;
@@ -17,6 +21,7 @@
 +(void)closeDatabase;
 
 -(NSInteger)insertEntry:(TWSqliteLogEntry *)entry error:(NSError **)error;
+-(BOOL)deleteEntryWithRowId:(NSInteger)rowId error:(NSError **)error;
 -(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error;
 
 @end

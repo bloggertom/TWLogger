@@ -127,6 +127,75 @@ NSInteger databaseVersion = 1;
 	return 0;
 }
 
+-(BOOL)deleteEntryWithRowId:(NSInteger)rowId error:(NSError **)error{
+	NSString *query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE ROWID = ?;", TWLogTableName];
+	
+	sqlite3_stmt *statement;
+	@try{
+		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
+			sqlite3_bind_int64(statement, 1, rowId);
+			
+			int result = sqlite3_step(statement);
+			if(result == SQLITE_OK || result == SQLITE_DONE){
+				return YES;
+			}
+		}
+	}@finally{
+		if(statement){
+			sqlite3_finalize(statement);
+		}
+	}
+	*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToWrite userInfo:
+			  @{NSLocalizedDescriptionKey: @"Failed to remove log entry"}];
+	
+	return NO;
+}
+
+-(TWSqliteLogEntry *)getLogEntryWithRowId:(NSInteger)rowId error:(NSError **)error{
+	NSString *query = [NSString stringWithFormat:@"SELECT ROWID,%@,%@,%@,%@,%@,%@ FROM %@ WHERE ROWID = ?;",
+					   TWLogTableColumnTimeStamp,
+					   TWLogTableColumnDateTime,
+					   TWLogTableColumnLevel,
+					   TWLogTableColumnFile,
+					   TWLogTableColumnFunction,
+					   TWLogTableColumnBody,
+					   //from
+					   TWLogTableName];
+	
+	sqlite3_stmt *statement;
+	@try{
+		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) != SQLITE_OK){
+			sqlite3_bind_int64(statement, 1, rowId);
+			int result = sqlite3_step(statement);
+			if(result == SQLITE_ROW){
+				TWSqliteLogEntry *entry = [[TWSqliteLogEntry alloc]init];
+				
+				entry.logId = sqlite3_column_int64(statement, 0);
+				entry.timestamp = sqlite3_column_double(statement, 1);
+				entry.datetime = [NSString stringWithSqliteString:sqlite3_column_text(statement, 2)];
+				entry.logLevel = [NSString stringWithSqliteString:sqlite3_column_text(statement, 3)];
+				entry.file = [NSString stringWithSqliteString:sqlite3_column_text(statement, 4)];
+				entry.function = [NSString stringWithSqliteString:sqlite3_column_text(statement, 5)];
+				entry.logBody = [NSString stringWithSqliteString:sqlite3_column_text(statement, 6)];
+				
+				return entry;
+				
+			}else if(result == SQLITE_DONE){
+				*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteLogEntryNotFound userInfo:@{NSLocalizedDescriptionKey: @"Log entry not found"}];
+				return nil;
+			}
+		}
+	}@finally{
+		if(statement){
+			sqlite3_finalize(statement);
+		}
+	}
+	
+	*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToRead userInfo:@{NSLocalizedDescriptionKey: @"Failed to read log entry"}];
+	
+	return nil;
+}
+
 -(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error{
 	NSString *query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ < ?;",TWLogTableName, TWLogTableColumnTimeStamp];
 	
@@ -160,3 +229,15 @@ NSInteger databaseVersion = 1;
 	}
 }
 @end
+
+@implementation NSString (TWSqlite)
++(NSString *)stringWithSqliteString:(const unsigned char*)text{
+	if(text){
+		return [NSString stringWithUTF8String:(const char*)text];
+	}else{
+		return nil;
+	}
+	
+}
+@end
+

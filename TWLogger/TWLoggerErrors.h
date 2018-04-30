@@ -19,6 +19,8 @@ typedef NS_ENUM(NSUInteger, TWFileLoggerError) {
 	
 	//sqlite errors
 	TWLoggerErrorSqliteFailedToWrite = 3001,
+	TWLoggerErrorSqliteFailedToRead = 3002,
+	TWLoggerErrorSqliteLogEntryNotFound = 3003
 };
 
 #endif /* TWLoggerErrors_h */
