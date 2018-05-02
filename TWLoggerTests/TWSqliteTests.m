@@ -135,8 +135,22 @@
 	XCTAssertNotNil(error);
 	
 	XCTAssertEqual(TWLoggerErrorSqliteLogEntryNotFound, error.code);
+}
+
+-(void)testGetAllLogEntries{
+	TWSqlite *twSqlite = [self getDatabase];
 	
+	for(int i=0; i<10; i++){
+		TWSqliteLogEntry *entry = [self createLogEntry];
+		XCTAssertTrue([self addLogEntry:entry toDatabase:twSqlite] > 0);
+	}
 	
+	NSError *error = nil;
+	NSArray *logs = [twSqlite selectAllLogEntries:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(logs);
+	XCTAssertEqual(10, logs.count);
 }
 
 @end
