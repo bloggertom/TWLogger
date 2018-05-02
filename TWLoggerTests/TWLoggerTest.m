@@ -51,4 +51,7 @@
 	[[NSFileManager defaultManager]removeItemAtPath:logDirPath error:nil];
 }
 
+-(NSArray *)contentsOfLogDir:(NSError **)error{
+	return [self.fileManager contentsOfDirectoryAtPath:self.logPath error:error];
+}
 @end

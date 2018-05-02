@@ -21,6 +21,7 @@
 
 -(NSString *)getLogDirPath;
 -(void)setUpLogger;
+-(NSArray *)contentsOfLogDir:(NSError **)error;
 @end
 
 #endif /* TWLoggerTest_h */

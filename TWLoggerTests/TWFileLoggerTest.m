@@ -40,7 +40,7 @@
 
 -(void)logTest:(NSString *)expectedResult{
 	NSError *error = nil;
-	NSArray *testDirContents = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
+	NSArray *testDirContents = [self contentsOfLogDir:&error];
 	XCTAssertNil(error);
 	XCTAssert(testDirContents.count == 1);
 	
@@ -74,7 +74,7 @@
 	[self.logger logReceived:TWLogLevelDebug body:logText fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
 	
 	NSError *error = nil;
-	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
+	NSArray *contents = [self contentsOfLogDir:&error];
 	
 	XCTAssertNil(error);
 	XCTAssert(contents.count == 2);
@@ -101,7 +101,7 @@
 	[self.logger logReceived:TWLogLevelDebug body:logMessage2 fromFile:[NSString stringWithFormat:@"%s", __FILE__] forFunction:[NSString stringWithFormat:@"%s",__PRETTY_FUNCTION__]];
 	
 	NSError *error = nil;
-	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
+	NSArray *contents = [self contentsOfLogDir:&error];
 	
 	XCTAssertNil(error);
 	XCTAssert(contents.count == 2);
@@ -132,7 +132,7 @@
 	[self.logger logReceived:TWLogLevelDebug body:logMessage fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
 	
 	NSError *error = nil;
-	NSArray *logCache = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
+	NSArray *logCache = [self contentsOfLogDir:&error];
 	
 	XCTAssertNil(error);
 	XCTAssert(logCache.count == 1);
@@ -147,7 +147,7 @@
 	[self.logger logReceived:TWLogLevelDebug body:newLog fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
 	
 	error = nil;
-	logCache = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
+	logCache = [self contentsOfLogDir:&error];
 	
 	XCTAssertNil(error);
 	XCTAssert(logCache.count == 2);
