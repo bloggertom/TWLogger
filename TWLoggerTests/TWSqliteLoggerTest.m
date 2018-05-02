@@ -28,6 +28,26 @@
     [super tearDown];
 }
 
+-(void)testLogCreation{
+	[self.logger stopLogging];
+	
+	//Instant flush
+	self.options.flushPeriod = nil;
+	self.logger = [[TWSqliteLogger alloc]initWithOptions:self.options];
+	XCTAssertTrue([self.logger startLogging]);
+	
+	[self.logger logReceived:TWLogLevelInfo body:@"Body of info" fromFile:@"File" forFunction:@"function"];
+	
+	NSError *error = nil;
+	NSArray *contents = [self contentsOfLogDir:&error];
+	
+	XCTAssertNotNil(contents);
+	XCTAssertNil(error);
+	XCTAssertEqual(1, contents.count);
+	
+	NSString *file = [contents firstObject];
+	XCTAssertTrue([file hasPrefix:self.options.logFilePrefix]);
+}
 
 
 @end
