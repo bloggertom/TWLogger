@@ -168,18 +168,7 @@ NSInteger databaseVersion = 1;
 			sqlite3_bind_int64(statement, 1, rowId);
 			int result = sqlite3_step(statement);
 			if(result == SQLITE_ROW){
-				TWSqliteLogEntry *entry = [[TWSqliteLogEntry alloc]init];
-				
-				entry.logId = sqlite3_column_int64(statement, 0);
-				entry.timestamp = sqlite3_column_double(statement, 1);
-				entry.datetime = [NSString stringWithSqliteString:sqlite3_column_text(statement, 2)];
-				entry.logLevel = [NSString stringWithSqliteString:sqlite3_column_text(statement, 3)];
-				entry.file = [NSString stringWithSqliteString:sqlite3_column_text(statement, 4)];
-				entry.function = [NSString stringWithSqliteString:sqlite3_column_text(statement, 5)];
-				entry.logBody = [NSString stringWithSqliteString:sqlite3_column_text(statement, 6)];
-				
-				return entry;
-				
+				return [self getLogEntryFromStatement:statement];
 			}else if(result == SQLITE_DONE){
 				*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteLogEntryNotFound userInfo:@{NSLocalizedDescriptionKey: @"Log entry not found"}];
 				return nil;
@@ -194,6 +183,49 @@ NSInteger databaseVersion = 1;
 	*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToRead userInfo:@{NSLocalizedDescriptionKey: @"Failed to read log entry"}];
 	
 	return nil;
+}
+
+-(NSArray *)selectAllLogEntries:(NSError *__autoreleasing *)error{
+	NSString *query = [NSString stringWithFormat:@"SELECT ROWID,%@,%@,%@,%@,%@,%@ FROM %@;",
+					   TWLogTableColumnTimeStamp,
+					   TWLogTableColumnDateTime,
+					   TWLogTableColumnLevel,
+					   TWLogTableColumnFile,
+					   TWLogTableColumnFunction,
+					   TWLogTableColumnBody,
+					   //from
+					   TWLogTableName];
+	
+	sqlite3_stmt *statement;
+	
+	if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
+		NSMutableArray *entries = [[NSMutableArray alloc]init];
+		int result = 0;
+		while((result = sqlite3_step(statement)) == SQLITE_ROW){
+			[entries addObject:[self getLogEntryFromStatement:statement]];
+		}
+		if(result == SQLITE_DONE){
+			return entries;
+		}
+	}
+	
+	*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToRead userInfo:@{NSLocalizedDescriptionKey: @"Failed to read log entries"}];
+	
+	return nil;
+}
+
+-(TWSqliteLogEntry *)getLogEntryFromStatement:(sqlite3_stmt *)statement{
+	TWSqliteLogEntry *entry = [[TWSqliteLogEntry alloc]init];
+	
+	entry.logId = sqlite3_column_int64(statement, 0);
+	entry.timestamp = sqlite3_column_double(statement, 1);
+	entry.datetime = [NSString stringWithSqliteString:sqlite3_column_text(statement, 2)];
+	entry.logLevel = [NSString stringWithSqliteString:sqlite3_column_text(statement, 3)];
+	entry.file = [NSString stringWithSqliteString:sqlite3_column_text(statement, 4)];
+	entry.function = [NSString stringWithSqliteString:sqlite3_column_text(statement, 5)];
+	entry.logBody = [NSString stringWithSqliteString:sqlite3_column_text(statement, 6)];
+	
+	return entry;
 }
 
 -(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error{
