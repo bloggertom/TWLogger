@@ -14,11 +14,11 @@
 -(void)stopLogging;
 @end
 
-@interface TWLoggerTests : XCTestCase
+@interface TWLoggerFrameworkTests : XCTestCase
 
 @end
 
-@implementation TWLoggerTests
+@implementation TWLoggerFrameworkTests
 
 - (void)setUp {
     [super setUp];
