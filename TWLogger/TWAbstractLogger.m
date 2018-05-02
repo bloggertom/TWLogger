@@ -39,16 +39,16 @@
 			_logFormatter = self.options.logFormat;
 		}
 		if(_options.logFilePrefix == nil){
-			options.logFilePrefix = @"TWLog";
+			_options.logFilePrefix = @"TWLog";
 		}
 		if(options.dateTimeFormat == nil){
-			options.dateTimeFormat = TWDateTimeFormatDefault;
+			_options.dateTimeFormat = TWDateTimeFormatDefault;
 		}
 		
-		if(options.loggingAddress == nil){
+		if(_options.loggingAddress == nil){
 			NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 			path = [path stringByAppendingPathComponent:@"TWLogFiles"];
-			options.loggingAddress = path;
+			_options.loggingAddress = path;
 		}
 		
 	}
