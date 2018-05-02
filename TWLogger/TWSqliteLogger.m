@@ -52,7 +52,7 @@
 	if(self.options.flushPeriod != nil){
 		[self addLogEntry:entry];
 	}else{
-		
+		[self writeLogEntry:entry];
 	}
 	
 }
@@ -71,7 +71,7 @@
 	BOOL isDir;
 	if(![self.fileManager fileExistsAtPath:loggingDirectory isDirectory:&isDir]){
 		[self.fileManager createDirectoryAtPath:loggingDirectory withIntermediateDirectories:YES attributes:nil error:error];
-		if(error){
+		if(*error){
 			return NO;
 		}
 		isDir = YES;
@@ -88,20 +88,24 @@
 
 -(void)flushLogs{
 	for (TWLogEntry *entry in self.logStore) {
-		NSError *error = nil;
-		TWSqliteLogEntry *dbEntry = [[TWSqliteLogEntry alloc]init];
-		
-		dbEntry.datetime = [_dateFormatter stringFromDate:entry.datetime];
-		dbEntry.logLevel = [TWUtils logLevelString:entry.logLevel];
-		dbEntry.file = entry.file;
-		dbEntry.function = entry.function;
-		dbEntry.logBody = entry.logBody;
-		dbEntry.timestamp = [entry.datetime timeIntervalSince1970];
-		
-		if([self.twSqlite insertEntry:dbEntry error:&error] == 0){
-			[TWLog systemLog:@"Failed to write log with error:"];
-			[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
-		}
+		[self writeLogEntry:entry];
+	}
+}
+
+-(void)writeLogEntry:(TWLogEntry *)entry{
+	NSError *error = nil;
+	TWSqliteLogEntry *dbEntry = [[TWSqliteLogEntry alloc]init];
+	
+	dbEntry.datetime = [_dateFormatter stringFromDate:entry.datetime];
+	dbEntry.logLevel = [TWUtils logLevelString:entry.logLevel];
+	dbEntry.file = entry.file;
+	dbEntry.function = entry.function;
+	dbEntry.logBody = entry.logBody;
+	dbEntry.timestamp = [entry.datetime timeIntervalSince1970];
+	
+	if([self.twSqlite insertEntry:dbEntry error:&error] == 0){
+		[TWLog systemLog:@"Failed to write log with error:"];
+		[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
 	}
 }
 
