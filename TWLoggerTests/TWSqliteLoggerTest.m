@@ -9,6 +9,8 @@
 #import <XCTest/XCTest.h>
 #import "TWLoggerTest.h"
 #import "TWSqliteLogger.h"
+#import "TWSqlite.h"
+
 @interface TWSqliteLoggerTest : TWLoggerTest
 @end
 
@@ -25,6 +27,7 @@
 
 - (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
+	[TWSqlite closeDatabase];
     [super tearDown];
 }
 
@@ -47,7 +50,26 @@
 	
 	NSString *file = [contents firstObject];
 	XCTAssertTrue([file hasPrefix:self.options.logFilePrefix]);
+	
+	[self.logger stopLogging];
+	
+	NSString *logDbPath = [self.logPath stringByAppendingPathComponent:file];
+	TWSqlite *db = [self getTwSqliteDatabase:logDbPath];
+	
+	error = nil;
+	NSArray *logEntries = [db selectAllLogEntries:&error];
+	
+	XCTAssertEqual(1, logEntries.count);
 }
 
+-(TWSqlite *)getTwSqliteDatabase:(NSString *)path{
+	NSError *error = nil;
+	TWSqlite *db = [TWSqlite openDatabaseAtPath:path error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(db);
+	
+	return db;
+}
 
 @end

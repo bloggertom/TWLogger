@@ -18,7 +18,7 @@
 	_logPath = [self getLogDirPath];
 	[self setUpLogger];
 	self.options.loggingAddress = self.logPath;
-	[self.logger startLogging];
+	XCTAssertTrue([self.logger startLogging]);
 }
 
 - (void)tearDown {
