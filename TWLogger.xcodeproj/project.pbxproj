@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB208C55209A3D87005ED4E4 /* TWSqliteLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = DB208C54209A3D87005ED4E4 /* TWSqliteLoggerTest.m */; };
+		DB208C57209A3FE0005ED4E4 /* TWLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = DB208C56209A3FE0005ED4E4 /* TWLoggerTest.m */; };
 		DB2DC708208CCBC2008F3FF0 /* TWAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2DC706208CCBC2008F3FF0 /* TWAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB2DC709208CCBC2008F3FF0 /* TWAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2DC707208CCBC2008F3FF0 /* TWAbstractLogger.m */; };
 		DB2DC70E208CD33F008F3FF0 /* TWSqliteLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2DC70C208CD33F008F3FF0 /* TWSqliteLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -30,7 +32,7 @@
 		DBB669AA208669AF004EA937 /* TWFileLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB669A9208669AF004EA937 /* TWFileLoggerTest.m */; };
 		DBB669AB20867013004EA937 /* TWLoggerOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = DBB669A52083749F004EA937 /* TWLoggerOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE46B70207C095C00F5A3BE /* TWLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE46B66207C095B00F5A3BE /* TWLogger.framework */; };
-		DBE46B75207C095C00F5A3BE /* TWLoggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE46B74207C095C00F5A3BE /* TWLoggerTests.m */; };
+		DBE46B75207C095C00F5A3BE /* TWLoggerFrameworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE46B74207C095C00F5A3BE /* TWLoggerFrameworkTests.m */; };
 		DBE46B77207C095C00F5A3BE /* TWLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B69207C095B00F5A3BE /* TWLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE46B82207C098700F5A3BE /* TWLog.h in Headers */ = {isa = PBXBuildFile; fileRef = DBE46B80207C098700F5A3BE /* TWLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE46B83207C098700F5A3BE /* TWLog.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE46B81207C098700F5A3BE /* TWLog.m */; };
@@ -50,6 +52,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DB208C54209A3D87005ED4E4 /* TWSqliteLoggerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWSqliteLoggerTest.m; sourceTree = "<group>"; };
+		DB208C56209A3FE0005ED4E4 /* TWLoggerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLoggerTest.m; sourceTree = "<group>"; };
+		DB208C58209A400F005ED4E4 /* TWLoggerTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLoggerTest.h; sourceTree = "<group>"; };
 		DB2DC706208CCBC2008F3FF0 /* TWAbstractLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWAbstractLogger.h; sourceTree = "<group>"; };
 		DB2DC707208CCBC2008F3FF0 /* TWAbstractLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWAbstractLogger.m; sourceTree = "<group>"; };
 		DB2DC70C208CD33F008F3FF0 /* TWSqliteLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWSqliteLogger.h; sourceTree = "<group>"; };
@@ -76,7 +81,7 @@
 		DBE46B69207C095B00F5A3BE /* TWLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogger.h; sourceTree = "<group>"; };
 		DBE46B6A207C095C00F5A3BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBE46B6F207C095C00F5A3BE /* TWLoggerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TWLoggerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBE46B74207C095C00F5A3BE /* TWLoggerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLoggerTests.m; sourceTree = "<group>"; };
+		DBE46B74207C095C00F5A3BE /* TWLoggerFrameworkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLoggerFrameworkTests.m; sourceTree = "<group>"; };
 		DBE46B76207C095C00F5A3BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBE46B80207C098700F5A3BE /* TWLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLog.h; sourceTree = "<group>"; };
 		DBE46B81207C098700F5A3BE /* TWLog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLog.m; sourceTree = "<group>"; };
@@ -167,11 +172,14 @@
 		DBE46B73207C095C00F5A3BE /* TWLoggerTests */ = {
 			isa = PBXGroup;
 			children = (
-				DBE46B74207C095C00F5A3BE /* TWLoggerTests.m */,
+				DBE46B74207C095C00F5A3BE /* TWLoggerFrameworkTests.m */,
 				DBE46B76207C095C00F5A3BE /* Info.plist */,
 				DBB669A9208669AF004EA937 /* TWFileLoggerTest.m */,
 				DB8051A7208B942D0001CA8D /* TWLogFormatterTest.m */,
 				DB9FB9562096566100145294 /* TWSqliteTests.m */,
+				DB208C54209A3D87005ED4E4 /* TWSqliteLoggerTest.m */,
+				DB208C58209A400F005ED4E4 /* TWLoggerTest.h */,
+				DB208C56209A3FE0005ED4E4 /* TWLoggerTest.m */,
 			);
 			path = TWLoggerTests;
 			sourceTree = "<group>";
@@ -313,8 +321,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBE46B75207C095C00F5A3BE /* TWLoggerTests.m in Sources */,
+				DBE46B75207C095C00F5A3BE /* TWLoggerFrameworkTests.m in Sources */,
 				DB8051A8208B942D0001CA8D /* TWLogFormatterTest.m in Sources */,
+				DB208C57209A3FE0005ED4E4 /* TWLoggerTest.m in Sources */,
+				DB208C55209A3D87005ED4E4 /* TWSqliteLoggerTest.m in Sources */,
 				DB9FB9572096566100145294 /* TWSqliteTests.m in Sources */,
 				DBB669AA208669AF004EA937 /* TWFileLoggerTest.m in Sources */,
 			);
