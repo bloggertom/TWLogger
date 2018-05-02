@@ -7,18 +7,10 @@
 //
 
 #import <XCTest/XCTest.h>
-#import <TWLogger/TWLogger.h>
+#import "TWFileLogger.h"
+#import "TWLoggerTest.h"
 
-@interface TWFileLogger()
-@property (nonatomic, strong)TWLoggerOptions *options;
--(void)stopLogging;
-@end
-
-@interface TWFileLoggerTest : XCTestCase
-@property (nonatomic, strong)NSFileManager *fileManager;
-@property (nonatomic, strong)NSString *baseDir;
-@property (nonatomic, strong)TWFileLogger *fileLogger;
-@property (nonatomic, strong)NSString *logPath;
+@interface TWFileLoggerTest : TWLoggerTest
 @end
 
 @implementation TWFileLoggerTest
@@ -26,33 +18,21 @@
 - (void)setUp {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
-	_baseDir  = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-	_fileManager = [NSFileManager defaultManager];
-	_fileLogger = [[TWFileLogger alloc]init];
+	self.logger = [[TWFileLogger alloc]init];
 	
-	_logPath = [self getLogDirPath];
-	self.fileLogger.options.loggingAddress = self.logPath;
-	[_fileLogger startLogging];
+	TWFileLogger *fileLogger = (TWFileLogger *)self.logger;
+	fileLogger.options.loggingAddress = self.logPath;
+	[self.logger startLogging];
 }
 - (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 	[super tearDown];
-	[self.fileLogger stopLogging];
-	[self removeLogDir: self.logPath];
-	
-}
--(NSString *)getLogDirPath{
-	return [self.baseDir stringByAppendingPathComponent:[NSString stringWithFormat:@"TestLogDir-%lld",(long long)[NSDate date].timeIntervalSince1970]];
-}
-
--(void)removeLogDir:(NSString *)logDirPath{
-		[[NSFileManager defaultManager]removeItemAtPath:logDirPath error:nil];
 }
 
 -(void)testLogCreation{
 	NSString *logMessage = @"Logging Test";
 
-	[self.fileLogger logReceived:TWLogLevelDebug body:logMessage fromFile:[NSString stringWithFormat:@"%s",__FILE__] forFunction:[NSString stringWithFormat:@"%s",__PRETTY_FUNCTION__]];
+	[self.logger logReceived:TWLogLevelDebug body:logMessage fromFile:[NSString stringWithFormat:@"%s",__FILE__] forFunction:[NSString stringWithFormat:@"%s",__PRETTY_FUNCTION__]];
 	
 	[self logTest:logMessage];
 	
@@ -74,7 +54,7 @@
 	NSMutableString *expectedResult = [[NSMutableString alloc]init];
 	NSString *format = @"Log test %d";
 	for(int i=0; i<3; i++){
-		[self.fileLogger logReceived:TWLogLevelDebug body:[NSString stringWithFormat:format,i] fromFile:[NSString stringWithFormat:@"%s",__FILE__] forFunction:[NSString stringWithFormat:@"%s", __PRETTY_FUNCTION__]];
+		[self.logger logReceived:TWLogLevelDebug body:[NSString stringWithFormat:format,i] fromFile:[NSString stringWithFormat:@"%s",__FILE__] forFunction:[NSString stringWithFormat:@"%s", __PRETTY_FUNCTION__]];
 		[expectedResult appendFormat:format, i];
 	}
 	
@@ -85,13 +65,13 @@
 	NSString *logText = @"Extra Log";
 	
 	[self testExpiringLog];//create 2 logs files
-	[self.fileLogger stopLogging];
+	[self.logger stopLogging];
 	
-	_fileLogger = [[TWFileLogger alloc]init];
-	self.fileLogger.options.loggingAddress = self.logPath;
-	[_fileLogger startLogging];
+	self.logger = [[TWFileLogger alloc]init];
+	self.options.loggingAddress = self.logPath;
+	[self.logger startLogging];
 	
-	[self.fileLogger logReceived:TWLogLevelDebug body:logText fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
+	[self.logger logReceived:TWLogLevelDebug body:logText fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
 	
 	NSError *error = nil;
 	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
@@ -110,15 +90,15 @@
 }
 
 -(void)testExpiringLog{
-	self.fileLogger.options.pageLife.day = 0;
-	self.fileLogger.options.pageLife.second = 1;
+	self.options.pageLife.day = 0;
+	self.options.pageLife.second = 1;
 	NSString *logMessage1 = @"Log Message 1";
 	NSString *logMessage2 = @"Log Message 2";
-	[self.fileLogger logReceived:TWLogLevelDebug body:logMessage1 fromFile:[NSString stringWithFormat:@"%s",__FILE__] forFunction:[NSString stringWithFormat:@"%s",__PRETTY_FUNCTION__]];
+	[self.logger logReceived:TWLogLevelDebug body:logMessage1 fromFile:[NSString stringWithFormat:@"%s",__FILE__] forFunction:[NSString stringWithFormat:@"%s",__PRETTY_FUNCTION__]];
 	
 	[NSThread sleepForTimeInterval:2];
 	
-	[self.fileLogger logReceived:TWLogLevelDebug body:logMessage2 fromFile:[NSString stringWithFormat:@"%s", __FILE__] forFunction:[NSString stringWithFormat:@"%s",__PRETTY_FUNCTION__]];
+	[self.logger logReceived:TWLogLevelDebug body:logMessage2 fromFile:[NSString stringWithFormat:@"%s", __FILE__] forFunction:[NSString stringWithFormat:@"%s",__PRETTY_FUNCTION__]];
 	
 	NSError *error = nil;
 	NSArray *contents = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
@@ -132,13 +112,13 @@
 	NSString *file2Path = [contents objectAtIndex:1];
 	
 	error = nil;
-	NSString *file1Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.loggingAddress stringByAppendingPathComponent:file1Path] encoding:NSASCIIStringEncoding error:&error];
+	NSString *file1Content = [NSString stringWithContentsOfFile:[self.options.loggingAddress stringByAppendingPathComponent:file1Path] encoding:NSASCIIStringEncoding error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertEqualObjects(logMessage1, file1Content);
 
 	error = nil;
-	NSString *file2Content = [NSString stringWithContentsOfFile:[self.fileLogger.options.loggingAddress stringByAppendingPathComponent:file2Path] encoding:NSASCIIStringEncoding error:&error];
+	NSString *file2Content = [NSString stringWithContentsOfFile:[self.options.loggingAddress stringByAppendingPathComponent:file2Path] encoding:NSASCIIStringEncoding error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertEqualObjects(logMessage2, file2Content);
@@ -146,10 +126,10 @@
 
 -(void)testLogCacheSize{
 	
-	self.fileLogger.options.maxPageSize = 1;// 1Kb
+	self.options.maxPageSize = 1;// 1Kb
 	NSString *logMessage = [self getRandomString:1500];
 	
-	[self.fileLogger logReceived:TWLogLevelDebug body:logMessage fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
+	[self.logger logReceived:TWLogLevelDebug body:logMessage fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
 	
 	NSError *error = nil;
 	NSArray *logCache = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
@@ -164,7 +144,7 @@
 	XCTAssertEqualObjects(logMessage, logContent);
 	
 	NSString *newLog = @"The new log";
-	[self.fileLogger logReceived:TWLogLevelDebug body:newLog fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
+	[self.logger logReceived:TWLogLevelDebug body:newLog fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];
 	
 	error = nil;
 	logCache = [self.fileManager contentsOfDirectoryAtPath:self.logPath error:&error];
