@@ -20,6 +20,7 @@
 @property (nonatomic, strong)NSString *logPath;
 
 -(NSString *)getLogDirPath;
+-(void)setUpLogger;
 @end
 
 #endif /* TWLoggerTest_h */

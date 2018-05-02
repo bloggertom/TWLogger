@@ -16,6 +16,9 @@
 	_baseDir  = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 	_fileManager = [NSFileManager defaultManager];
 	_logPath = [self getLogDirPath];
+	[self setUpLogger];
+	self.options.loggingAddress = self.logPath;
+	[self.logger startLogging];
 }
 
 - (void)tearDown {
@@ -24,7 +27,9 @@
 	[self removeLogDir: self.logPath];
     [super tearDown];
 }
-
+-(void)setUpLogger{
+	//Abstract
+}
 -(void)setOptions:(TWLoggerOptions *)options{
 	if([self.logger respondsToSelector:@selector(setOptions:)]){
 		[self.logger performSelector:@selector(setOptions:) withObject:options];
