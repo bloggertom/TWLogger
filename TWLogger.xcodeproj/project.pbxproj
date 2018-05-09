@@ -16,6 +16,7 @@
 		DB2DC712208CD58C008F3FF0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DB2DC711208CD58C008F3FF0 /* libsqlite3.tbd */; };
 		DB2DC7152092763A008F3FF0 /* TWLogEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = DB2DC7132092763A008F3FF0 /* TWLogEntry.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB2DC7162092763A008F3FF0 /* TWLogEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2DC7142092763A008F3FF0 /* TWLogEntry.m */; };
+		DB77774420A365B9000A8924 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB77773C20A365B9000A8924 /* libOCMock.a */; };
 		DB8051A0208B89E90001CA8D /* TWLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = DB80519E208B89E90001CA8D /* TWLogFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB8051A5208B92AC0001CA8D /* TWLogLevel.h in Headers */ = {isa = PBXBuildFile; fileRef = DB8051A4208B928F0001CA8D /* TWLogLevel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB8051A6208B93590001CA8D /* TWLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DB80519F208B89E90001CA8D /* TWLogFormatter.m */; };
@@ -62,6 +63,17 @@
 		DB2DC711208CD58C008F3FF0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		DB2DC7132092763A008F3FF0 /* TWLogEntry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogEntry.h; sourceTree = "<group>"; };
 		DB2DC7142092763A008F3FF0 /* TWLogEntry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLogEntry.m; sourceTree = "<group>"; };
+		DB77773920A365B9000A8924 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
+		DB77773A20A365B9000A8924 /* OCMMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMMacroState.h; sourceTree = "<group>"; };
+		DB77773B20A365B9000A8924 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
+		DB77773C20A365B9000A8924 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
+		DB77773D20A365B9000A8924 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
+		DB77773E20A365B9000A8924 /* OCMFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMFunctions.h; sourceTree = "<group>"; };
+		DB77773F20A365B9000A8924 /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
+		DB77774020A365B9000A8924 /* OCMRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMRecorder.h; sourceTree = "<group>"; };
+		DB77774120A365B9000A8924 /* OCMLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMLocation.h; sourceTree = "<group>"; };
+		DB77774220A365B9000A8924 /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
+		DB77774320A365B9000A8924 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
 		DB80519E208B89E90001CA8D /* TWLogFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogFormatter.h; sourceTree = "<group>"; };
 		DB80519F208B89E90001CA8D /* TWLogFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLogFormatter.m; sourceTree = "<group>"; };
 		DB8051A4208B928F0001CA8D /* TWLogLevel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogLevel.h; sourceTree = "<group>"; };
@@ -104,6 +116,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBE46B70207C095C00F5A3BE /* TWLogger.framework in Frameworks */,
+				DB77774420A365B9000A8924 /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +129,32 @@
 				DB2DC711208CD58C008F3FF0 /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DB77773720A365B9000A8924 /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				DB77773820A365B9000A8924 /* OCMock */,
+			);
+			path = OCMock;
+			sourceTree = "<group>";
+		};
+		DB77773820A365B9000A8924 /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				DB77773920A365B9000A8924 /* OCMockObject.h */,
+				DB77773A20A365B9000A8924 /* OCMMacroState.h */,
+				DB77773B20A365B9000A8924 /* OCMock.h */,
+				DB77773C20A365B9000A8924 /* libOCMock.a */,
+				DB77773D20A365B9000A8924 /* NSNotificationCenter+OCMAdditions.h */,
+				DB77773E20A365B9000A8924 /* OCMFunctions.h */,
+				DB77773F20A365B9000A8924 /* OCMStubRecorder.h */,
+				DB77774020A365B9000A8924 /* OCMRecorder.h */,
+				DB77774120A365B9000A8924 /* OCMLocation.h */,
+				DB77774220A365B9000A8924 /* OCMConstraint.h */,
+				DB77774320A365B9000A8924 /* OCMArg.h */,
+			);
+			path = OCMock;
 			sourceTree = "<group>";
 		};
 		DBE46B5C207C095B00F5A3BE = {
@@ -172,6 +211,7 @@
 		DBE46B73207C095C00F5A3BE /* TWLoggerTests */ = {
 			isa = PBXGroup;
 			children = (
+				DB77773720A365B9000A8924 /* OCMock */,
 				DBE46B74207C095C00F5A3BE /* TWLoggerFrameworkTests.m */,
 				DBE46B76207C095C00F5A3BE /* Info.plist */,
 				DBB669A9208669AF004EA937 /* TWFileLoggerTest.m */,
@@ -510,11 +550,16 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQ2U65ZE29;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/TWLoggerTests/OCMock";
 				INFOPLIST_FILE = TWLoggerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TWLoggerTests/OCMock/OCMock",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ThomasWilson.Development.TDWLoggerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -527,11 +572,16 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQ2U65ZE29;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/TWLoggerTests/OCMock";
 				INFOPLIST_FILE = TWLoggerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TWLoggerTests/OCMock/OCMock",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ThomasWilson.Development.TDWLoggerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
