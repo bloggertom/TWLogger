@@ -561,6 +561,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/TWLoggerTests/OCMock/OCMock",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = ThomasWilson.Development.TDWLoggerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -583,6 +584,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/TWLoggerTests/OCMock/OCMock",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = ThomasWilson.Development.TDWLoggerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
