@@ -10,6 +10,7 @@
 #import "TWLoggerTest.h"
 #import "TWSqliteLogger.h"
 #import "TWSqlite.h"
+#import <OCMock/OCMock.h>
 
 @interface TWSqliteLoggerTest : TWLoggerTest
 @end
@@ -60,6 +61,60 @@
 	NSArray *logEntries = [db selectAllLogEntries:&error];
 	
 	XCTAssertEqual(1, logEntries.count);
+}
+
+-(void)testFlushTiming{
+	[self.logger stopLogging];
+	
+	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
+	logger.options.flushPeriod.second = 2;
+	logger.options.loggingAddress = self.logPath;
+	id<TWLoggerDelegate> mockLogger = OCMPartialMock(logger);
+	
+	XCTAssertTrue([mockLogger startLogging]);
+	[mockLogger logReceived:TWLogLevelInfo body:@"Body" fromFile:@"File" forFunction:@"function"];
+	
+	[NSThread sleepForTimeInterval:3];
+	
+	OCMVerify([mockLogger flushLogs]);
+	
+	[logger stopLogging];
+}
+
+-(void)testClosingFlush{
+	[self.logger stopLogging];
+	
+	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
+	//logger.options.flushPeriod.second = 10; Default;
+	logger.options.loggingAddress = self.logPath;
+	id<TWLoggerDelegate> mockLogger = OCMPartialMock(logger);
+
+	XCTAssertTrue([mockLogger startLogging]);
+	[mockLogger logReceived:TWLogLevelInfo body:@"Body" fromFile:@"File" forFunction:@"function"];
+	[mockLogger stopLogging];
+	OCMVerify([mockLogger flushLogs]);
+}
+
+-(void)testCloseFlushIsNotBlocked{
+	[self.logger stopLogging];
+	
+	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
+	//logger.options.flushPeriod.second = 10; Default;
+	logger.options.loggingAddress = self.logPath;
+	XCTAssertEqual(10, logger.options.flushPeriod.second);
+	id<TWLoggerDelegate> mockLogger = OCMPartialMock(logger);
+	
+	XCTestExpectation *expectation = [[XCTestExpectation alloc]initWithDescription:@"Not waiting for schedualed flushed"];
+	
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		XCTAssertTrue([mockLogger startLogging]);
+		[mockLogger logReceived:TWLogLevelInfo body:@"Body" fromFile:@"File" forFunction:@"function"];
+		[mockLogger stopLogging];
+		OCMVerify([mockLogger flushLogs]);
+		[expectation fulfill];
+	});
+	
+	[self waitForExpectations:@[expectation] timeout:5];
 }
 
 -(TWSqlite *)getTwSqliteDatabase:(NSString *)path{

@@ -65,6 +65,17 @@ BOOL _logging;
 	_logging = logging;
 	if(!prev && logging && self.options.flushPeriod != nil){
 		[self scheduleLogFlush];
+	}else if(prev && !logging && self.options.flushPeriod != nil){
+		dispatch_sync(self.flushQueue, ^{
+			@try{
+				[self flushLogs];
+			}
+			@catch(NSException *e){
+				[TWLog systemLog:@"Failed to flush logs before logging stopped"];
+				[TWLog systemLog:e.name];
+				[TWLog systemLog:e.reason];
+			}
+		});
 	}
 }
 
@@ -78,10 +89,10 @@ BOOL _logging;
 			
 			//The wait is asynchronous so will break the lock.
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(trigger * NSEC_PER_SEC)), self.flushQueue, ^{
-				[self flushQueue];
-				[self.logStore removeAllObjects];
-				self.flushingScheduled = NO;
 				if(self.logging){
+					[self flushLogs];
+					[self.logStore removeAllObjects];
+					self.flushingScheduled = NO;
 					[self scheduleLogFlush];
 				}
 			});

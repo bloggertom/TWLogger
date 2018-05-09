@@ -113,7 +113,6 @@
 	//close database and stuff;
 	@synchronized(self){
 		self.logging = NO;
-		[self flushLogs];
 		[TWSqlite closeDatabase];
 		_twSqlite = nil;
 	}
