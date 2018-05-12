@@ -22,6 +22,7 @@
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
+//Called by super class.
 -(void)setUpLogger{
 	self.logger = [[TWSqliteLogger alloc]init];
 }
@@ -54,13 +55,7 @@
 	
 	[self.logger stopLogging];
 	
-	NSString *logDbPath = [self.logPath stringByAppendingPathComponent:file];
-	TWSqlite *db = [self getTwSqliteDatabase:logDbPath];
-	
-	error = nil;
-	NSArray *logEntries = [db selectAllLogEntries:&error];
-	
-	XCTAssertEqual(1, logEntries.count);
+	[self checkLogExists];
 }
 
 -(void)testFlushTiming{
@@ -79,6 +74,9 @@
 	OCMVerify([mockLogger flushLogs]);
 	
 	[logger stopLogging];
+	
+	[self checkLogExists];
+	
 }
 
 -(void)testClosingFlush{
@@ -93,6 +91,8 @@
 	[mockLogger logReceived:TWLogLevelInfo body:@"Body" fromFile:@"File" forFunction:@"function"];
 	[mockLogger stopLogging];
 	OCMVerify([mockLogger flushLogs]);
+	
+	[self checkLogExists];
 }
 
 -(void)testCloseFlushIsNotBlocked{
@@ -115,6 +115,8 @@
 	});
 	
 	[self waitForExpectations:@[expectation] timeout:5];
+	
+	[self checkLogExists];
 }
 
 -(TWSqlite *)getTwSqliteDatabase:(NSString *)path{
@@ -125,6 +127,37 @@
 	XCTAssertNotNil(db);
 	
 	return db;
+}
+
+-(TWSqlite *)getTwSqliteDatabase{
+	NSError *error = nil;
+	NSArray *contents = [self contentsOfLogDir:&error];
+	
+	XCTAssertNotNil(contents);
+	XCTAssertNil(error);
+	XCTAssertEqual(1, contents.count);
+	
+	NSString *file = [contents firstObject];
+	XCTAssertTrue([file hasPrefix:self.options.logFilePrefix]);
+	
+	NSString *logDbPath = [self.logPath stringByAppendingPathComponent:file];
+	TWSqlite *db = [self getTwSqliteDatabase:logDbPath];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(db);
+	
+	return db;
+}
+
+-(void)checkLogExists{
+	TWSqlite *db = [self getTwSqliteDatabase];
+	
+	NSError *error = nil;
+	NSArray *logs = [db selectAllLogEntries:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(logs);
+	XCTAssertEqual(1, logs.count);
 }
 
 @end
