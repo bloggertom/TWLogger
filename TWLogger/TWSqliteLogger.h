@@ -33,6 +33,7 @@
  options.logFilePrefix = @"TWLog";
  options.flushPeriod.seconds = 10;
  options.logFormat = nil;
+ options.pageLife.month = 1;
  @endcode
  
  By default the database will be put in the Documents directory in a @code TWLogFiles @endcode subdirectory.
