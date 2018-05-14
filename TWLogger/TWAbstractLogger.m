@@ -98,9 +98,15 @@ BOOL _logging;
 			});
 		}
 	}
-	
-	
 }
+
+-(void)setNeedsFlush{
+	dispatch_async(self.flushQueue, ^{
+		[self flushLogs];
+		[self.logStore removeAllObjects];
+	});
+}
+
 -(void)addLogEntry:(TWLogEntry *)entry{
 	dispatch_async(self.flushQueue, ^{
 		[self.logStore addObject:entry];

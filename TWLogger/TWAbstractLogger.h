@@ -31,5 +31,15 @@
 
 -(void)addLogEntry:(TWLogEntry *)entry;
 
+/**
+ Will trigger the queued logs to be written to disc when safe to do so.
+ */
+-(void)setNeedsFlush;
 
+/**
+ Loggers inheriting from the TWAbstractLogger class should not call this method directly and instead should call setNeedsFlaush instead.
+ 
+ Calling this method directly can lead to unpredictable behaviour.
+ */
+-(void)flushLogs;
 @end

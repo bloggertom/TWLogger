@@ -28,7 +28,7 @@
 		self.options.pageLife.month = 1;
 		self.options.flushPeriod = [[NSDateComponents alloc]init];
 		self.options.flushPeriod.second = 10;
-		
+		self.options.maxPageNum = 10;
 		_dateFormatter = [[NSDateFormatter alloc]init];
 		[_dateFormatter setDateFormat:DATE_TIME_FORMAT];
 	}
@@ -51,6 +51,9 @@
 	
 	if(self.options.flushPeriod != nil){
 		[self addLogEntry:entry];
+		if(self.options.maxPageNum != 0 && self.options.maxPageNum < self.logStore.count){
+			[self setNeedsFlush];
+		}
 	}else{
 		[self writeLogEntry:entry];
 	}
@@ -86,12 +89,6 @@
 	return YES;
 }
 
--(void)flushLogs{
-	for (TWLogEntry *entry in self.logStore) {
-		[self writeLogEntry:entry];
-	}
-}
-
 -(void)writeLogEntry:(TWLogEntry *)entry{
 	NSError *error = nil;
 	TWSqliteLogEntry *dbEntry = [[TWSqliteLogEntry alloc]init];
@@ -106,6 +103,14 @@
 	if([self.twSqlite insertEntry:dbEntry error:&error] == 0){
 		[TWLog systemLog:@"Failed to write log with error:"];
 		[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
+	}
+}
+
+-(void)flushLogs{
+	@synchronized(self){
+		for (TWLogEntry *entry in self.logStore) {
+			[self writeLogEntry:entry];
+		}
 	}
 }
 
