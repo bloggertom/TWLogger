@@ -123,4 +123,7 @@
 	}
 }
 
+-(void)dealloc{
+	[self stopLogging];
+}
 @end
