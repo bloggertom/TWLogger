@@ -8,6 +8,9 @@
 
 #import <XCTest/XCTest.h>
 #import <TWLogger/TWLogger.h>
+#import "TWSqlite.h"
+#import "TWSqliteLogEntry.h"
+#import "TWUtils.h"
 
 @interface TWFileLogger()
 @property (nonatomic, strong)TWLoggerOptions *options;
@@ -38,7 +41,7 @@
 	
 	[self checkLogFolderContents:fileLogger.options.loggingAddress result:[NSString stringWithFormat:@"%@\n", logMessage]];
 									   
-	[self cleanUpFileLogger:fileLogger];
+	[self cleanUpLogger:fileLogger];
 }
 
 -(void)testTWLog{
@@ -47,10 +50,49 @@
 	NSString *logMessage = @"logging NSLog logging test";
 	TWLog(TWLogLevelDebug, logMessage);
 	
-	
 	[self checkLogFolderContents:fileLogger.options.loggingAddress result:[NSString stringWithFormat:@"%@\n",logMessage]];
 	
-	[self cleanUpFileLogger:fileLogger];
+	[self cleanUpLogger:fileLogger];
+}
+
+-(void)testLevelDefines{
+	TWSqliteLogger *logger =  [[TWSqliteLogger alloc]init];
+	logger.options.flushPeriod = nil;
+	
+	[TWLog addLogger:logger];
+	
+	TWLogDebug(@"Debug");
+	TWLogWarning(@"Warning");
+	TWLogInfo(@"Info");
+	TWLogFatal(@"Fatal");
+	
+	[TWLog removeLogger:logger];
+	
+	NSError *error = nil;
+	TWSqlite *db = [TWSqlite openDatabaseAtPath:[self getLogFilePath:logger] error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(db);
+	
+	error = nil;
+	NSArray<TWSqliteLogEntry *> *logs = [db selectAllLogEntries:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(logs);
+	XCTAssertEqual(4, logs.count);
+	
+	NSDictionary *dic = @{logs[0].logBody : logs[0].logLevel,
+						  logs[1].logBody : logs[1].logLevel,
+						  logs[2].logBody : logs[2].logLevel,
+						  logs[3].logBody : logs[3].logLevel,
+						  };
+	
+	XCTAssertEqualObjects([TWUtils logLevelString:TWLogLevelDebug], [dic objectForKey:@"Debug\n"]);
+	XCTAssertEqualObjects([TWUtils logLevelString:TWLogLevelInfo], [dic objectForKey:@"Info\n"]);
+	XCTAssertEqualObjects([TWUtils logLevelString:TWLogLevelWarning], [dic objectForKey:@"Warning\n"]);
+	XCTAssertEqualObjects([TWUtils logLevelString:TWLogLevelFatal], [dic objectForKey:@"Fatal\n"]);
+	
+	[self cleanUpLogger:logger];
 }
 
 -(void)checkLogFolderContents:(NSString *)loggingDirectory result:(NSString *)expectedContents{
@@ -69,17 +111,17 @@
 	XCTAssertEqualObjects(expectedContents, logContent);
 }
 
--(void)cleanUpFileLogger:(TWFileLogger *)fileLogger{
-	[TWLog removeLogger:fileLogger];
+-(void)cleanUpLogger:(TWAbstractLogger *)logger{
+	[TWLog removeLogger:logger];
 	
 	NSError *error = nil;
-	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileLogger.options.loggingAddress error:&error];
+	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:logger.options.loggingAddress error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssert(contents.count == 1);
 	
 	error = nil;
-	[[NSFileManager defaultManager] removeItemAtPath:fileLogger.options.loggingAddress error:&error];
+	[[NSFileManager defaultManager] removeItemAtPath:logger.options.loggingAddress error:&error];
 	XCTAssertNil(error);
 }
 -(void)testConcurrentFileLogging{
@@ -95,7 +137,7 @@
 	XCTAssertTrue(contents.count == 1);
 	
 	error = nil;
-	NSString *fileContent = [NSString stringWithContentsOfFile:[fileLogger.options.loggingAddress  stringByAppendingPathComponent:contents.firstObject]  encoding:NSASCIIStringEncoding error:&error];
+	NSString *fileContent = [NSString stringWithContentsOfFile:[self getLogFilePath:fileLogger]  encoding:NSASCIIStringEncoding error:&error];
 	
 	XCTAssertNil(error);
 	XCTAssertNotNil(fileContent);
@@ -106,9 +148,17 @@
 		XCTAssertEqual(range.length, log.length);
 	}
 	
-	[self cleanUpFileLogger:fileLogger];
+	[self cleanUpLogger:fileLogger];
 }
-
+-(NSString *)getLogFilePath:(TWAbstractLogger *)logger{
+	NSError *error = nil;
+	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:logger.options.loggingAddress error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertTrue(contents.count == 1);
+	return [logger.options.loggingAddress  stringByAppendingPathComponent:contents.firstObject];
+	
+}
 -(NSArray<NSString *> *)performConcurrentLogs{
 	NSMutableArray *expectations = [[NSMutableArray alloc]init];
 	NSMutableArray *logStrings = [[NSMutableArray alloc]init];
