@@ -119,6 +119,38 @@
 	[self checkLogExists];
 }
 
+-(void)testLogStorageCapacity{
+	[self.logger stopLogging];
+	
+	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
+	logger.options.loggingAddress = self.logPath;
+	logger.options.flushPeriod.second = 0;// set flush period to something stupid.
+	logger.options.flushPeriod.hour = 1;
+	logger.options.maxPageNum = 3;
+	
+	TWSqliteLogger *mockLogger = OCMPartialMock(logger);
+	XCTAssertTrue([mockLogger startLogging]);
+	
+	for (int i=0; i<4; i++){
+		[mockLogger logReceived:TWLogLevelInfo body:@"Body" fromFile:@"File" forFunction:@"function"];
+	}
+	
+	OCMVerify([mockLogger setNeedsFlush]);
+	OCMVerify([mockLogger flushLogs]);
+	
+	[mockLogger stopLogging];
+	
+	TWSqlite *db = [self getTwSqliteDatabase];
+	
+	NSError *error = nil;
+	NSArray *logs = [db selectAllLogEntries:&error];
+	
+	XCTAssertNotNil(logs);
+	XCTAssertNil(error);
+	
+	XCTAssertEqual(4, logs.count);
+}
+
 -(TWSqlite *)getTwSqliteDatabase:(NSString *)path{
 	NSError *error = nil;
 	TWSqlite *db = [TWSqlite openDatabaseAtPath:path error:&error];

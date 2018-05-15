@@ -101,14 +101,14 @@ BOOL _logging;
 }
 
 -(void)setNeedsFlush{
-	dispatch_async(self.flushQueue, ^{
+	dispatch_sync(self.flushQueue, ^{
 		[self flushLogs];
 		[self.logStore removeAllObjects];
 	});
 }
 
 -(void)addLogEntry:(TWLogEntry *)entry{
-	dispatch_async(self.flushQueue, ^{
+	dispatch_sync(self.flushQueue, ^{
 		[self.logStore addObject:entry];
 	});
 }
