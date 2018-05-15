@@ -21,7 +21,7 @@
 +(void)closeDatabase;
 
 -(TWSqliteLogEntry *)selectLogEntryWithRowId:(NSInteger)rowId error:(NSError **)error;
--(NSArray *)selectAllLogEntries:(NSError **)error;
+-(NSArray<TWSqliteLogEntry *> *)selectAllLogEntries:(NSError **)error;
 -(NSInteger)insertEntry:(TWSqliteLogEntry *)entry error:(NSError **)error;
 -(BOOL)deleteEntryWithRowId:(NSInteger)rowId error:(NSError **)error;
 -(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error;
