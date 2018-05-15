@@ -92,6 +92,8 @@
 	XCTAssertEqualObjects([TWUtils logLevelString:TWLogLevelWarning], [dic objectForKey:@"Warning\n"]);
 	XCTAssertEqualObjects([TWUtils logLevelString:TWLogLevelFatal], [dic objectForKey:@"Fatal\n"]);
 	
+	[TWSqlite closeDatabase];
+	
 	[self cleanUpLogger:logger];
 }
 
