@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 #define NSLog(args...) twLogD(__FILE__,__PRETTY_FUNCTION__,args);
 #define TWLog(TWLogLevel, args...) twLogL(__FILE__,__PRETTY_FUNCTION__, TWLogLevel, args);
+#define TWLogDebug(args...) twLogL(__FILE__,__PRETTY_FUNCTION__,TWLogLevelDebug, args);
+#define TWLogInfo(args...) twLogL(__FILE__,__PRETTY_FUNCTION__,TWLogLevelInfo, args);
+#define TWLogWarning(args...) twLogL(__FILE__,__PRETTY_FUNCTION__,TWLogLevelWarning, args);
+#define TWLogFatal(args...) twLogL(__FILE__,__PRETTY_FUNCTION__,TWLogLevelFatal, args);
+
 //! Project version number for TWLogger.
 FOUNDATION_EXPORT double TWLoggerVersionNumber;
 
