@@ -26,4 +26,6 @@
 -(BOOL)deleteEntryWithRowId:(NSInteger)rowId error:(NSError **)error;
 -(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error;
 
++(bool)isOpen;
+
 @end

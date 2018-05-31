@@ -260,6 +260,10 @@ NSInteger databaseVersion = 1;
 		instance = nil;
 	}
 }
+
++(bool)isOpen{
+	return instance.database != nil;
+}
 @end
 
 @implementation NSString (TWSqlite)
