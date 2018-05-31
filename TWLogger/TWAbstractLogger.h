@@ -18,6 +18,14 @@
 @property (nonatomic, readonly, strong)NSFileManager *fileManager;
 @property (nonatomic, readonly, strong)TWLogFormatter *logFormatter;
 @property (strong, readonly)NSMutableArray *logStore;
+
+/**
+ Boolean indicating if logger is currently active and logging.
+ 
+ The value of this property is used to set and trigger log flushing.
+ */
+@property (nonatomic, getter=isLogging)BOOL logging;
+
 /**
  Create a new instance of a TWLogger with a given set of options.
  
