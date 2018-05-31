@@ -108,15 +108,7 @@
 	entry.file = file;
 	entry.function = function;
 	
-	if(self.options.flushPeriod != nil){
-		[self addLogEntry:entry];
-		if(self.options.maxPageNum != 0 && self.options.maxPageNum < self.logStore.count){
-			[self setNeedsFlush];
-		}
-	}else{
-		[self writeLogEntry:entry];
-	}
-	
+	[self addLogEntry:entry];	
 }
 
 -(BOOL)startLogging{

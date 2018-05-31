@@ -110,6 +110,10 @@ BOOL _logging;
 -(void)addLogEntry:(TWLogEntry *)entry{
 	dispatch_sync(self.flushQueue, ^{
 		[self.logStore addObject:entry];
+		if((self.options.flushPeriod == nil && self.options.maxPageNum == 0) || (self.options.maxPageNum > 0 && self.logStore.count > self.options.maxPageNum)){
+			[self flushLogs];
+			[self.logStore removeAllObjects];
+		}
 	});
 }
 
