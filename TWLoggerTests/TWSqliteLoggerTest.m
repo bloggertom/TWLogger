@@ -38,6 +38,7 @@
 	
 	//Instant flush
 	self.options.flushPeriod = nil;
+	self.options.maxPageNum = 0;
 	self.logger = [[TWSqliteLogger alloc]initWithOptions:self.options];
 	XCTAssertTrue([self.logger startLogging]);
 	
@@ -135,7 +136,6 @@
 		[mockLogger logReceived:TWLogLevelInfo body:@"Body" fromFile:@"File" forFunction:@"function"];
 	}
 	
-	OCMVerify([mockLogger setNeedsFlush]);
 	OCMVerify([mockLogger flushLogs]);
 	
 	[mockLogger stopLogging];
