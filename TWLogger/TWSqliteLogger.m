@@ -14,6 +14,64 @@
 #import "TWSqliteLogEntry.h"
 #import "TWUtils.h"
 
+@implementation NSDateComponents (pagelife)
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+-(NSDateComponents *)invertedDateComponents{
+	NSDateComponents *inverted = [[NSDateComponents alloc]init];
+	if(self.nanosecond != NSDateComponentUndefined){
+		inverted.nanosecond = self.nanosecond *-1;
+	}
+	if(self.second != NSDateComponentUndefined){
+		inverted.second = self.second *-1;
+	}
+	if(self.minute != NSDateComponentUndefined){
+		inverted.minute = self.minute *-1;
+	}
+	if(self.hour != NSDateComponentUndefined){
+		inverted.hour = self.hour *-1;
+	}
+	
+	
+	//deprecated
+	if(self.week != NSDateComponentUndefined){
+		inverted.week = self.week *-1;
+	}
+	
+	if(self.day != NSDateComponentUndefined){
+		inverted.day = self.day *-1;
+	}
+	if(self.weekOfYear != NSDateComponentUndefined){
+		inverted.weekOfYear = self.weekOfYear *-1;
+	}
+	if(self.weekdayOrdinal != NSDateComponentUndefined){
+		inverted.weekdayOrdinal = self.weekdayOrdinal *-1;
+	}
+	if(self.weekday != NSDateComponentUndefined){
+		inverted.weekday = self.weekday *-1;
+	}
+
+	if(self.month != NSDateComponentUndefined){
+		inverted.month = self.month *-1;
+	}
+	if(self.quarter != NSDateComponentUndefined){
+		inverted.quarter = self.quarter *-1;
+	}
+	if(self.yearForWeekOfYear != NSDateComponentUndefined){
+		inverted.yearForWeekOfYear = self.yearForWeekOfYear *-1;
+	}
+	if(self.year != NSDateComponentUndefined){
+		inverted.year = self.year *-1;
+	}
+	if(self.era != NSDateComponentUndefined){
+		inverted.era = self.era *-1;
+	}
+	return inverted;
+}
+#pragma GCC diagnostic pop
+@end
+
 @interface TWSqliteLogger()
 @property (nonatomic, strong)TWSqlite *twSqlite;
 @property (nonatomic, strong)NSDateFormatter *dateFormatter;
@@ -24,6 +82,7 @@
 -(instancetype)init{
 	self = [super init];
 	if(self){
+		self.options.pageLife = [[NSDateComponents alloc]init];
 		self.options.pageLife.day = 0;
 		self.options.pageLife.month = 1;
 		self.options.flushPeriod = [[NSDateComponents alloc]init];
@@ -112,6 +171,23 @@
 			[self writeLogEntry:entry];
 		}
 	}
+}
+
+-(void)removeExpiredLogs{
+	//Called withing a @synchronized so should be safe.
+	NSDate *now = [NSDate date];
+	NSDate *expiryDate = [[NSCalendar currentCalendar] dateByAddingComponents:[self.options.pageLife invertedDateComponents] toDate:now options:0];
+	
+	NSTimeInterval exiryTime = [expiryDate timeIntervalSince1970];
+	//date components were already negative. Do the old switcharoo.
+	if(exiryTime > [now timeIntervalSince1970]){
+		expiryDate = [[NSCalendar currentCalendar] dateByAddingComponents:self.options.pageLife toDate:now options:0];
+		exiryTime = [expiryDate timeIntervalSince1970];
+	}
+	
+	NSError *error = nil;
+	[self.twSqlite deleteEntriesFromBeforeTimeStame:exiryTime error:&error];
+	
 }
 
 -(void)stopLogging{
