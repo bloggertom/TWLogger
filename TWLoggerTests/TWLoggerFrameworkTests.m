@@ -33,6 +33,7 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
+
 -(void)testNSLogToFile{
 	TWFileLogger *fileLogger = [[TWFileLogger alloc]init];
 	[TWLog addLogger:fileLogger];
@@ -58,6 +59,7 @@
 -(void)testLevelDefines{
 	TWSqliteLogger *logger =  [[TWSqliteLogger alloc]init];
 	logger.options.flushPeriod = nil;
+	logger.options.maxPageNum = 0;
 	
 	[TWLog addLogger:logger];
 	
