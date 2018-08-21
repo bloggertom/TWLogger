@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TWLogFormatter.h"
+
 /**
  @class TWLoggerOptions
  
@@ -24,12 +25,14 @@
  Span of time which a log page will be used before starting a new page. If nil a page will never expire.
  */
 @property (nonatomic, strong)NSDateComponents *pageLife;
+
 /**
  @brief Maximum size of a page
  
  @note How size is interpreted will depend of the type off logger.
  */
 @property (nonatomic)NSUInteger maxPageSize;
+
 /**
  @brief Maximum number of pages.
  
@@ -46,7 +49,7 @@
 
 /**
  Format defining how the log will be formatted when it is written.
- 
+
  If nil no additonal infomration is added to logged text.
  */
 @property (nonatomic, strong)TWLogFormatter *logFormat;
