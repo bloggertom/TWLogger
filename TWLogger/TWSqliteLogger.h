@@ -18,7 +18,7 @@
  
  - loggingAddress sets the location in the file system that logging files will be created.
  
- - pageLife defines how old a log entry can be before it is cleared from the database.
+ - pageLife defines how old a log entry can be before it is cleared from the database. If nil log entries will be stored indefinitely.
  
  - maxPageSize is ignored.
  
@@ -33,7 +33,7 @@
  options.logFilePrefix = @"TWLog";
  options.flushPeriod.seconds = 10;
  options.logFormat = nil;
- options.pageLife.month = 1;
+ options.pageLife = nil;
  options.maxPageNum = 10;
  @endcode
  

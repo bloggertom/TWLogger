@@ -82,9 +82,6 @@
 -(instancetype)init{
 	self = [super init];
 	if(self){
-		self.options.pageLife = [[NSDateComponents alloc]init];
-		self.options.pageLife.day = 0;
-		self.options.pageLife.month = 1;
 		self.options.flushPeriod = [[NSDateComponents alloc]init];
 		self.options.flushPeriod.second = 10;
 		self.options.maxPageNum = 10;
@@ -167,6 +164,10 @@
 
 -(void)removeExpiredLogs{
 	//Called withing a @synchronized so should be safe.
+	if(self.options.pageLife == nil){
+		return;
+	}
+	
 	NSDate *now = [NSDate date];
 	NSDate *expiryDate = [[NSCalendar currentCalendar] dateByAddingComponents:[self.options.pageLife invertedDateComponents] toDate:now options:0];
 	
