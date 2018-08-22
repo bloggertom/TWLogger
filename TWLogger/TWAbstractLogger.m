@@ -41,9 +41,6 @@
 		if(_options.logFilePrefix == nil){
 			_options.logFilePrefix = @"TWLog";
 		}
-		if(options.dateTimeFormat == nil){
-			_options.dateTimeFormat = TWDateTimeFormatDefault;
-		}
 		
 		if(_options.loggingAddress == nil){
 			NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];

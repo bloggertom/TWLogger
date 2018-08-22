@@ -55,11 +55,6 @@
 @property (nonatomic, strong)TWLogFormatter *logFormat;
 
 /**
- Date time format to be used when writing date time to log. Defaults to YYYYMMdd:HHmmss.
- */
-@property (nonatomic, strong)NSString *dateTimeFormat;
-
-/**
  Sets how often the logs is flushed to disk. If nil logs will be flushed to disk immediately.
  */
 @property (nonatomic, strong)NSDateComponents *flushPeriod;
