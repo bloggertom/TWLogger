@@ -159,6 +159,7 @@
 		for (TWLogEntry *entry in self.logStore) {
 			[self writeLogEntry:entry];
 		}
+		[self removeExpiredLogs];
 	}
 }
 

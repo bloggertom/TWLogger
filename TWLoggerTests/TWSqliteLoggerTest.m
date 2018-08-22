@@ -140,15 +140,40 @@
 	
 	[mockLogger stopLogging];
 	
-	TWSqlite *db = [self getTwSqliteDatabase];
+	[self checkNumberOfEntriesEquals:4];
+}
+
+-(void)testExpiredLogsRemoval{
+	[self.logger stopLogging];
 	
-	NSError *error = nil;
-	NSArray *logs = [db selectAllLogEntries:&error];
+	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
+	logger.options.loggingAddress = self.logPath;
+	logger.options.pageLife = [[NSDateComponents alloc]init];
+	logger.options.pageLife.second = 3;
+	logger.options.maxPageNum = 0;
+	//logger.options.flushPeriod = nil;
 	
-	XCTAssertNotNil(logs);
-	XCTAssertNil(error);
+	XCTAssertTrue([logger startLogging]);
 	
-	XCTAssertEqual(4, logs.count);
+	[logger logReceived:TWLogLevelDebug body:@"Boby" fromFile:@"File" forFunction:@"one"];
+	[NSThread sleepForTimeInterval:2];
+	[logger logReceived:TWLogLevelDebug body:@"Body" fromFile:@"File" forFunction:@"two"];
+	[NSThread sleepForTimeInterval:2];
+	[logger logReceived:TWLogLevelDebug body:@"Body" fromFile:@"File" forFunction:@"three"];
+	[logger stopLogging];
+	
+	[self checkNumberOfEntriesEquals:2];
+	
+	XCTAssertTrue([logger startLogging]);
+	
+	[NSThread sleepForTimeInterval:2];
+	
+	[logger logReceived:TWLogLevelDebug body:@"Body" fromFile:@"File" forFunction:@"four"];
+	
+	[logger stopLogging];
+	
+	[self checkNumberOfEntriesEquals:2];
+	
 }
 
 -(TWSqlite *)getTwSqliteDatabase:(NSString *)path{
@@ -159,6 +184,20 @@
 	XCTAssertNotNil(db);
 	
 	return db;
+}
+
+-(void)checkNumberOfEntriesEquals:(NSInteger)expectedCount{
+	TWSqlite *db = [self getTwSqliteDatabase];
+	
+	NSError *error = nil;
+	NSArray *logs = [db selectAllLogEntries:&error];
+	
+	XCTAssertNotNil(logs);
+	XCTAssertNil(error);
+	
+	XCTAssertEqual(expectedCount, logs.count);
+	
+	[TWSqlite closeDatabase];
 }
 
 -(TWSqlite *)getTwSqliteDatabase{

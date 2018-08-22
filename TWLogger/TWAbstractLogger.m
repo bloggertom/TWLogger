@@ -69,6 +69,7 @@ BOOL _logging;
 		dispatch_sync(self.flushQueue, ^{
 			@try{
 				[self flushLogs];
+				[self.logStore removeAllObjects];
 			}
 			@catch(NSException *e){
 				[TWLog systemLog:@"Failed to flush logs before logging stopped"];
