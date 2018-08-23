@@ -18,8 +18,6 @@
  
  Options passed in set the behaviour for this class.
  
- - loggingAddress sets the location in the file system that logging files will be created.
- 
  - pageLife set the length time a log file is used before a new log file is created.
  
  - maxPageSize sets the maximum size in KiloBytes a log file can be before a new one is created.

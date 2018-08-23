@@ -16,15 +16,11 @@
  
  Options passed in set the behaviour for this class.
  
- - loggingAddress sets the location in the file system that logging files will be created.
- 
  - pageLife defines how old a log entry can be before it is cleared from the database. If nil log entries will be stored indefinitely.
  
  - maxPageSize is ignored.
  
  - maxPageNum is ignored.
- 
- - flushPeriod defines how long a log is cached before it is flushed to disk. If nil logs will be written immediately. Use this to save performance with multiple successive database writes.
  
  - logFormat is ignored, values are stored in there own columns in the database.
  
