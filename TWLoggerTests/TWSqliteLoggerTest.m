@@ -38,7 +38,7 @@
 	
 	//Instant flush
 	self.options.flushPeriod = nil;
-	self.options.maxPageNum = 0;
+	self.options.cacheSize = 0;
 	self.logger = [[TWSqliteLogger alloc]initWithOptions:self.options];
 	XCTAssertTrue([self.logger startLogging]);
 	
@@ -127,7 +127,7 @@
 	logger.options.loggingAddress = self.logPath;
 	logger.options.flushPeriod.second = 0;// set flush period to something stupid.
 	logger.options.flushPeriod.hour = 1;
-	logger.options.maxPageNum = 3;
+	logger.options.cacheSize = 3;
 	
 	TWSqliteLogger *mockLogger = OCMPartialMock(logger);
 	XCTAssertTrue([mockLogger startLogging]);
@@ -150,7 +150,7 @@
 	logger.options.loggingAddress = self.logPath;
 	logger.options.pageLife = [[NSDateComponents alloc]init];
 	logger.options.pageLife.second = 3;
-	logger.options.maxPageNum = 0;
+	logger.options.cacheSize = 0;
 	//logger.options.flushPeriod = nil;
 	
 	XCTAssertTrue([logger startLogging]);

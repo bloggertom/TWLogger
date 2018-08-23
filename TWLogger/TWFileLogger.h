@@ -28,6 +28,8 @@
  
  - flushPeriod is ignored and all logs are written to disk immediately.
  
+ - cacheSize is ignored and all logs are written to disk immediately.
+ 
  Default options are as follows
  @code
  options.pageLife.day = 1;

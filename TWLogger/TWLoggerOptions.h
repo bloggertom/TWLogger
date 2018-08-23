@@ -29,7 +29,7 @@
 /**
  @brief Maximum size of a page
  
- @note How size is interpreted will depend of the type off logger.
+ @note How size is interpreted will depend of the type of logger.
  */
 @property (nonatomic)NSUInteger maxPageSize;
 
@@ -55,7 +55,17 @@
 @property (nonatomic, strong)TWLogFormatter *logFormat;
 
 /**
- Sets how often the logs is flushed to disk. If nil logs will be flushed to disk immediately.
+ Sets how often the log cache is flushed to disk. If nil and periodic flush will not run.
+ 
+ @note Must be used coordination with cacheSize to set the behaviour of logging cache.
  */
 @property (nonatomic, strong)NSDateComponents *flushPeriod;
+
+/**
+ Sets the number of logs which are cached before being written to disk.
+ If 0 logs will be written to disk at the end at the end of the next flush period. If the flushPeriod property is nil then logs will be written to disk immediately.
+ 
+ @note Must be used coordination with flushPeriod to set the behaviour of loggin cache.
+ */
+@property (nonatomic)NSUInteger cacheSize;
 @end

@@ -84,7 +84,7 @@
 	if(self){
 		self.options.flushPeriod = [[NSDateComponents alloc]init];
 		self.options.flushPeriod.second = 10;
-		self.options.maxPageNum = 10;
+		self.options.cacheSize = 10;
 		_dateFormatter = [[NSDateFormatter alloc]init];
 		[_dateFormatter setDateFormat:DATE_TIME_FORMAT];
 	}

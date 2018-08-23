@@ -22,7 +22,7 @@
  
  - maxPageSize is ignored.
  
- - maxPageNum set the maximum number of logs which can be queued before they are written to disc.
+ - maxPageNum is ignored.
  
  - flushPeriod defines how long a log is cached before it is flushed to disk. If nil logs will be written immediately. Use this to save performance with multiple successive database writes.
  
@@ -34,7 +34,7 @@
  options.flushPeriod.seconds = 10;
  options.logFormat = nil;
  options.pageLife = nil;
- options.maxPageNum = 10;
+ options.cacheSize = 10;
  @endcode
  
  By default the database will be put in the Documents directory in a @code TWLogFiles @endcode subdirectory.

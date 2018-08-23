@@ -59,7 +59,7 @@
 -(void)testLevelDefines{
 	TWSqliteLogger *logger =  [[TWSqliteLogger alloc]init];
 	logger.options.flushPeriod = nil;
-	logger.options.maxPageNum = 0;
+	logger.options.cacheSize = 0;
 	
 	[TWLog addLogger:logger];
 	
