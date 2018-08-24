@@ -68,4 +68,9 @@
  @note Must be used coordination with flushPeriod to set the behaviour of loggin cache.
  */
 @property (nonatomic)NSUInteger cacheSize;
+
+/**
+ Dictionary to hold data about the logs.
+ */
+@property (nonatomic, strong)NSDictionary *metaData;
 @end

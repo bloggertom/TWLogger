@@ -28,6 +28,8 @@
  
  - cacheSize is ignored and all logs are written to disk immediately.
  
+ - metaData key values are logged out at the top of each file.
+ 
  Default options are as follows
  @code
  options.pageLife.day = 1;

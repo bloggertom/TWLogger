@@ -42,6 +42,8 @@
 		[self.currentLogHandle closeFile];
 		self.currentLogPath = [self getLogFileUrl:&error];
 		self.currentLogHandle = [NSFileHandle fileHandleForWritingAtPath:self.currentLogPath];
+		//if there is metadata the file will already contain it.
+		[self.currentLogHandle seekToEndOfFile];
 	}
 	if(error){
 		[TWLog systemLog:@"Failed to create log file handle"];
@@ -149,7 +151,14 @@
 		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorFailedToCreateLogFile userInfo:@{NSLocalizedDescriptionKey : @"Failed to create new log file"}];
 		return nil;
 	}
-	
+	if(self.options.metaData){
+		NSString *metaData = [self createMetaDataString:self.options.metaData];
+		
+		if(![metaData writeToFile:fileUrl atomically:NO encoding:NSASCIIStringEncoding error:error]){
+			[TWLog systemLog:@"Failed to write metadata to log file:"];
+			[TWLog systemLog:metaData];
+		}
+	}
 	contents = [contents arrayByAddingObject:fileName];
 	if(self.options.maxPageNum > 0 && contents.count > self.options.maxPageNum){
 		//Remove oldest file.
@@ -159,6 +168,20 @@
 	}
 	
 	return fileUrl;
+}
+
+-(NSString *)createMetaDataString:(NSDictionary *)metaData{
+	if(metaData == nil || metaData.count == 0){
+		return nil;
+	}
+	NSArray *allkeys = metaData.allKeys;
+	NSMutableString *metaString = [[NSMutableString alloc]init];
+	for (NSString *key in allkeys) {
+		NSString *value = [metaData objectForKey:key];
+		[metaString appendFormat:@"%@: %@/n", key, value ];
+	}
+	
+	return metaString.copy;
 }
 
 -(BOOL)deleteOldestLog:(NSArray *)contents error:(NSError **)error{

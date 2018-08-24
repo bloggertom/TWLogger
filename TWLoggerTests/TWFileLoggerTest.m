@@ -10,6 +10,10 @@
 #import "TWFileLogger.h"
 #import "TWLoggerTest.h"
 
+@interface TWFileLogger()
+-(NSString *)createMetaDataString:(NSDictionary *)metaData;
+@end
+
 @interface TWFileLoggerTest : TWLoggerTest
 @end
 
@@ -124,7 +128,7 @@
 	XCTAssertEqualObjects(logMessage2, file2Content);
 }
 
--(void)testLogCacheSize{
+-(void)testLogSize{
 	
 	self.options.maxPageSize = 1;// 1Kb
 	NSString *logMessage = [self getRandomString:1500];
@@ -175,5 +179,36 @@
 -(void)testLogFileFormatting{
 	TWFileLogger *fileLogger = [[TWFileLogger alloc]init];
 	fileLogger.options.logFormat = [TWLogFormatter defaultLogFormatter];
+	
+	//TODO: this needs finishing?
+}
+
+-(void)testMetadata{
+	[self.logger stopLogging];
+	[self resetLogs];
+	
+	NSDictionary *metaData = @{@"Key1" : @"Value1",
+							   @"Key2" : @"Value2",
+							   @"Key3" : @"Value3",
+							   };
+	self.options.metaData = metaData;
+	
+	XCTAssertTrue([self.logger startLogging]);
+	
+	NSError *error = nil;
+	NSArray *logCache = [self contentsOfLogDir:&error];
+	
+	XCTAssertNil(error);
+	XCTAssert(logCache.count == 1);
+	
+	error = nil;
+	NSString *logContent = [NSString stringWithContentsOfFile:[self.logPath stringByAppendingPathComponent:logCache.firstObject] encoding:NSASCIIStringEncoding error:&error];
+	TWFileLogger *fileLogger = self.logger;
+	XCTAssertEqualObjects([fileLogger createMetaDataString:metaData], logContent);
+}
+
+-(void)resetLogs{
+	NSError *error = nil;
+	[self.fileManager removeItemAtPath:self.logPath error:&error];
 }
 @end
