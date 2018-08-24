@@ -91,6 +91,7 @@
 		self.logging = NO;
 		[self.currentLogHandle synchronizeFile];
 		[self.currentLogHandle closeFile];
+		self.currentLogHandle = nil;
 	}
 }
 
