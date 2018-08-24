@@ -17,9 +17,11 @@ TWFileLogger *logger = [TWFileLogger alloc]init];
 [TWLog addLogger:logger];
 
 ```
-To later remove a logger you can call  `[TWLog removeLogger:];
+To later remove a logger you can call  `[TWLog removeLogger:];`
 
 To log something without sending it through the logging framework you can use `[TWLog systemLog:(NSString *)string]`.
+
+It is possible to run multiple loggers at the same time.
 
 There is a log formatter included but currently it's not very well documented.
 
