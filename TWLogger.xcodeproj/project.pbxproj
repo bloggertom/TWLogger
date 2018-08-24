@@ -89,6 +89,7 @@
 		DBB669A52083749F004EA937 /* TWLoggerOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLoggerOptions.h; sourceTree = "<group>"; };
 		DBB669A62083749F004EA937 /* TWLoggerOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWLoggerOptions.m; sourceTree = "<group>"; };
 		DBB669A9208669AF004EA937 /* TWFileLoggerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWFileLoggerTest.m; sourceTree = "<group>"; };
+		DBD327942130644C0065A254 /* License.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		DBE46B66207C095B00F5A3BE /* TWLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TWLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBE46B69207C095B00F5A3BE /* TWLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWLogger.h; sourceTree = "<group>"; };
 		DBE46B6A207C095C00F5A3BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -160,6 +161,7 @@
 		DBE46B5C207C095B00F5A3BE = {
 			isa = PBXGroup;
 			children = (
+				DBD327942130644C0065A254 /* License.txt */,
 				DBE46B68207C095B00F5A3BE /* TWLogger */,
 				DBE46B73207C095C00F5A3BE /* TWLoggerTests */,
 				DBE46B67207C095B00F5A3BE /* Products */,
