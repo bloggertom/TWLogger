@@ -54,7 +54,7 @@ void twLogD(const char *file, const char *functionName, NSString *format, ...) {
 		function = [NSString stringWithUTF8String:functionName];
 	}
 	
-	[TWLog twLog:TWLogLevelDebug from:fileName inFunction:function body:body];
+	[TWLog twLog:_defaultLevel from:fileName inFunction:function body:body];
 	
 	// End using variable argument list.
 	va_end (ap);
