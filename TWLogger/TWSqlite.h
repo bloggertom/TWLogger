@@ -26,6 +26,9 @@
 -(BOOL)deleteEntryWithRowId:(NSInteger)rowId error:(NSError **)error;
 -(BOOL)deleteEntriesFromBeforeTimeStame:(double)timeStamp error:(NSError **)error;
 
+-(BOOL)insertMetadata:(NSDictionary<NSString*, NSString*> *)metaData error:(NSError **)error;
+-(NSDictionary *)selectAllMetadata:(NSError **)error;
+
 +(bool)isOpen;
 
 @end

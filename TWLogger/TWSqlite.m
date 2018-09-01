@@ -13,6 +13,7 @@
 #import "TWUtils.h"
 
 NSString * const TWLogTableName = @"TWLogEntries";
+NSString * const TWLogMetaDataTableName = @"TWLogMetaData";
 
 NSString * const TWLogTableColumnTimeStamp = @"timestamp";
 NSString * const TWLogTableColumnDateTime = @"date_time";
@@ -20,6 +21,9 @@ NSString * const TWLogTableColumnLevel = @"level";
 NSString * const TWLogTableColumnBody = @"body";
 NSString * const TWLogTableColumnFunction = @"function";
 NSString * const TWLogTableColumnFile = @"file";
+
+NSString * const TWLogMetaDataColumnKey =  @"key";
+NSString * const TWLogMetaDataColumnValue = @"value";
 
 @interface TWSqlite ()
 
@@ -79,6 +83,50 @@ NSInteger databaseVersion = 1;
 		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToWrite userInfo:
 				  @{NSLocalizedDescriptionKey: @"Failed write database schema"}];
 		return NO;
+	}
+	
+	return YES;
+}
+
+-(BOOL)insertMetadata:(NSDictionary<NSString*, NSString*> *)metaData error:(NSError **)error{
+	NSString *query = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", TWLogMetaDataTableName];
+	
+	if(sqlite3_exec(self.database, query.UTF8String, NULL, NULL, NULL) != SQLITE_OK){
+		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToWrite userInfo:
+				  @{NSLocalizedDescriptionKey: @"Failed to delete old meta data"}];
+		return NO;
+	}
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE %@ (%@ TEXT, %@, TEXT);", TWLogMetaDataTableName, TWLogMetaDataColumnKey, TWLogMetaDataColumnValue];
+	
+	if(sqlite3_exec(self.database, query.UTF8String, NULL, NULL, NULL) != SQLITE_OK){
+		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToWrite userInfo:
+				  @{NSLocalizedDescriptionKey: @"Failed to create meta data table"}];
+		return NO;
+	}
+	
+	for (NSString *key in metaData) {
+		query = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUE (?,?);", TWLogMetaDataTableName, TWLogMetaDataColumnKey, TWLogMetaDataColumnValue];
+		
+		sqlite3_stmt *statement;
+		@try{
+			if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
+				sqlite3_bind_text(statement, 1, key.UTF8String, -1, NULL);
+				sqlite3_bind_text(statement, 2, [metaData objectForKey:key].UTF8String, -1, NULL);
+				
+				int result = sqlite3_step(statement);
+				if(result != SQLITE_OK && result != SQLITE_DONE){
+					*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToWrite userInfo:
+							  @{NSLocalizedDescriptionKey: @"Failed to write metadata entry to database"}];
+					return NO;
+				}
+			}
+		}
+		@finally{
+			if(statement != nil){
+				sqlite3_finalize(statement);
+			}
+		}
 	}
 	
 	return YES;
@@ -211,6 +259,41 @@ NSInteger databaseVersion = 1;
 	
 	*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToRead userInfo:@{NSLocalizedDescriptionKey: @"Failed to read log entries"}];
 	
+	return nil;
+}
+
+-(NSDictionary *)selectAllMetadata:(NSError **)error{
+	NSString *query = [NSString stringWithFormat:@"SELECT %@,%@ FROM %@;",
+					   TWLogMetaDataColumnKey,
+					   TWLogMetaDataColumnValue,
+					   TWLogMetaDataTableName];
+	
+	sqlite3_stmt *statement;
+	@try{
+		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
+			NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+			int result = 0;
+			while((result = sqlite3_step(statement)) == SQLITE_ROW){
+				NSString *key = [NSString stringWithSqliteString:sqlite3_column_text(statement, 0)];
+				NSString *value = [NSString stringWithSqliteString:sqlite3_column_text(statement, 1)];
+				
+				[metaData setObject:value forKey:key];
+			}
+			
+			if(result == SQLITE_DONE){
+				return metaData;
+			}
+		}
+	}
+	@finally{
+		if(statement != nil){
+			sqlite3_finalize(statement);
+		}
+	}
+	
+	*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorSqliteFailedToRead userInfo:
+			  @{NSLocalizedDescriptionKey: @"Failed to retrieve metadata"}];
+	   
 	return nil;
 }
 
