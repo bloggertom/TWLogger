@@ -106,7 +106,7 @@ NSInteger databaseVersion = 1;
 	}
 	
 	for (NSString *key in metaData) {
-		query = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUE (?,?);", TWLogMetaDataTableName, TWLogMetaDataColumnKey, TWLogMetaDataColumnValue];
+		query = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?,?);", TWLogMetaDataTableName, TWLogMetaDataColumnKey, TWLogMetaDataColumnValue];
 		
 		sqlite3_stmt *statement;
 		@try{
