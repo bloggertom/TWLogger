@@ -80,15 +80,14 @@
 @implementation TWSqliteLogger
 
 -(instancetype)init{
-	self = [super init];
-	if(self){
-		self.options.flushPeriod = [[NSDateComponents alloc]init];
-		self.options.flushPeriod.second = 10;
-		self.options.cacheSize = 10;
-		_dateFormatter = [[NSDateFormatter alloc]init];
-		[_dateFormatter setDateFormat:DATE_TIME_FORMAT];
-	}
-	return self;
+	TWLoggerOptions *options = [[TWLoggerOptions alloc]init];
+	options.flushPeriod = [[NSDateComponents alloc]init];
+	options.flushPeriod.second = 10;
+	options.cacheSize = 10;
+	_dateFormatter = [[NSDateFormatter alloc]init];
+	[_dateFormatter setDateFormat:DATE_TIME_FORMAT];
+	
+	return [self initWithOptions:options];
 }
 
 -(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
