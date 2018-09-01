@@ -130,11 +130,15 @@
 	if(isDir){
 		NSString *databasePath = [loggingDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-Database.db",self.options.logFilePrefix]];
 		_twSqlite = [TWSqlite openDatabaseAtPath:databasePath error:error];
+		if(self.twSqlite != nil && self.options.metaData.count > 0 && ![self.twSqlite insertMetadata:self.options.metaData error:error]){
+			return NO;
+		}
 	}else{
 		*error = [NSError errorWithDomain:ERROR_DOMAIN code:TWLoggerErrorInvalidFilePath userInfo:@{NSLocalizedDescriptionKey: @"Invalid log storage directory."}];
 		return NO;
 	}
-	return YES;
+	
+	return _twSqlite != nil;
 }
 
 -(void)writeLogEntry:(TWLogEntry *)entry{
