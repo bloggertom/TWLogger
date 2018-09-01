@@ -245,15 +245,21 @@ NSInteger databaseVersion = 1;
 					   TWLogTableName];
 	
 	sqlite3_stmt *statement;
-	
-	if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
-		NSMutableArray *entries = [[NSMutableArray alloc]init];
-		int result = 0;
-		while((result = sqlite3_step(statement)) == SQLITE_ROW){
-			[entries addObject:[self getLogEntryFromStatement:statement]];
+	@try{
+		if(sqlite3_prepare(self.database, query.UTF8String, -1, &statement, NULL) == SQLITE_OK){
+			NSMutableArray *entries = [[NSMutableArray alloc]init];
+			int result = 0;
+			while((result = sqlite3_step(statement)) == SQLITE_ROW){
+				[entries addObject:[self getLogEntryFromStatement:statement]];
+			}
+			if(result == SQLITE_DONE){
+				return entries;
+			}
 		}
-		if(result == SQLITE_DONE){
-			return entries;
+	}
+	@finally{
+		if(statement != nil){
+			sqlite3_finalize(statement);
 		}
 	}
 	
