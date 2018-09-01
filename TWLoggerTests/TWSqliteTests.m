@@ -153,4 +153,28 @@
 	XCTAssertEqual(10, logs.count);
 }
 
+-(void)testMetaData{
+	TWSqlite *twSqlite = [self getDatabase];
+	
+	NSDictionary *metatest= @{@"key1": @"value1",
+	  @"key2": @"value2",
+	  @"key3": @"value3"
+	  };
+	
+	NSError *error = nil;
+	XCTAssertTrue([twSqlite insertMetadata:metatest error:&error]);
+	XCTAssertNil(error);
+	
+	error = nil;
+	
+	NSDictionary *metatestActual = [twSqlite selectAllMetadata:&error];
+	XCTAssertNotNil(metatestActual);
+	XCTAssertEqual(3, metatestActual.count);
+	XCTAssertNil(error);
+	for (NSString *key in metatest) {
+		XCTAssertNotNil([metatestActual objectForKey:key]);
+		XCTAssertEqualObjects([metatest objectForKey:key], [metatestActual objectForKey:key]);
+	}
+}
+
 @end
