@@ -35,6 +35,8 @@
  
  By default the database will be put in the Documents directory in a @code TWLogFiles @endcode subdirectory.
  
+ @note
+ Metadata is persisted at the point of initialization in a separate metadata table in the sqlite database. Old metadata is replace by the new metadata if metadata is found in the database at the point of the next intialization. Passing nil for the metaData option will not remove the old metadata.
  */
 
 @interface TWSqliteLogger : TWAbstractLogger
