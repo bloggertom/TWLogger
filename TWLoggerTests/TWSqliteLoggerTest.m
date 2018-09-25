@@ -37,9 +37,8 @@
 	[self.logger stopLogging];
 	
 	//Instant flush
-	self.options.flushPeriod = nil;
-	self.options.cacheSize = 0;
-	self.logger = [[TWSqliteLogger alloc]initWithOptions:self.options];
+	self.logger.flushPeriod = nil;
+	self.logger.cacheSize = 0;
 	XCTAssertTrue([self.logger startLogging]);
 	
 	[self.logger logReceived:TWLogLevelInfo body:@"Body of info" fromFile:@"File" forFunction:@"function"];
@@ -63,7 +62,7 @@
 	[self.logger stopLogging];
 	
 	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
-	logger.options.flushPeriod.second = 2;
+	logger.flushPeriod.second = 2;
 	logger.options.loggingAddress = self.logPath;
 	TWAbstractLogger *mockLogger = OCMPartialMock(logger);
 	
@@ -102,7 +101,7 @@
 	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
 	//logger.options.flushPeriod.second = 10; Default;
 	logger.options.loggingAddress = self.logPath;
-	XCTAssertEqual(10, logger.options.flushPeriod.second);
+	XCTAssertEqual(10, logger.flushPeriod.second);
 	TWAbstractLogger *mockLogger = OCMPartialMock(logger);
 	
 	XCTestExpectation *expectation = [[XCTestExpectation alloc]initWithDescription:@"Not waiting for schedualed flushed"];
@@ -125,9 +124,9 @@
 	
 	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
 	logger.options.loggingAddress = self.logPath;
-	logger.options.flushPeriod.second = 0;// set flush period to something stupid.
-	logger.options.flushPeriod.hour = 1;
-	logger.options.cacheSize = 3;
+	logger.flushPeriod.second = 0;// set flush period to something stupid.
+	logger.flushPeriod.hour = 1;
+	logger.cacheSize = 3;
 	
 	TWSqliteLogger *mockLogger = OCMPartialMock(logger);
 	XCTAssertTrue([mockLogger startLogging]);
@@ -150,7 +149,7 @@
 	logger.options.loggingAddress = self.logPath;
 	logger.options.pageLife = [[NSDateComponents alloc]init];
 	logger.options.pageLife.second = 3;
-	logger.options.cacheSize = 0;
+	logger.cacheSize = 0;
 	//logger.options.flushPeriod = nil;
 	
 	XCTAssertTrue([logger startLogging]);

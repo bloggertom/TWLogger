@@ -203,7 +203,7 @@
 	
 	error = nil;
 	NSString *logContent = [NSString stringWithContentsOfFile:[self.logPath stringByAppendingPathComponent:logCache.firstObject] encoding:NSASCIIStringEncoding error:&error];
-	TWFileLogger *fileLogger = self.logger;
+	TWFileLogger *fileLogger = (TWFileLogger *)self.logger;
 	XCTAssertEqualObjects([fileLogger createMetaDataString:metaData], logContent);
 }
 

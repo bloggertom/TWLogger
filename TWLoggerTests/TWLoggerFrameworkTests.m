@@ -58,8 +58,8 @@
 
 -(void)testLevelDefines{
 	TWSqliteLogger *logger =  [[TWSqliteLogger alloc]init];
-	logger.options.flushPeriod = nil;
-	logger.options.cacheSize = 0;
+	logger.flushPeriod = nil;
+	logger.cacheSize = 0;
 	
 	[TWLog addLogger:logger];
 	
