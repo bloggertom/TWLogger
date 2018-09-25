@@ -48,21 +48,6 @@
 @property (nonatomic)NSString *logFilePrefix;
 
 /**
- Sets how often the log cache is flushed to disk. If nil the periodic flush will not run.
- 
- @note Must be used coordination with cacheSize to set the behaviour of logging cache. If flushPeriod is nil and cacheSize is 0 logs will be written to disk immediately.
- */
-@property (nonatomic, strong)NSDateComponents *flushPeriod;
-
-/**
- Sets the number of logs which are cached before being written to disk.
- If 0 logs will be written to disk at the end at the end of the next flush period. If the flushPeriod property is nil then logs will be written to disk immediately.
- 
- @note Must be used coordination with flushPeriod to set the behaviour of loggin cache.
- */
-@property (nonatomic)NSUInteger cacheSize;
-
-/**
  Dictionary to hold data about the logs.
  */
 @property (nonatomic, strong)NSDictionary *metaData;

@@ -81,9 +81,9 @@
 
 -(instancetype)init{
 	TWLoggerOptions *options = [[TWLoggerOptions alloc]init];
-	options.flushPeriod = [[NSDateComponents alloc]init];
-	options.flushPeriod.second = 10;
-	options.cacheSize = 10;
+	self.flushPeriod = [[NSDateComponents alloc]init];
+	self.flushPeriod.second = 10;
+	self.cacheSize = 10;
 	_dateFormatter = [[NSDateFormatter alloc]init];
 	[_dateFormatter setDateFormat:DATE_TIME_FORMAT];
 	

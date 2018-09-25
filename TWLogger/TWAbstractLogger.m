@@ -58,9 +58,9 @@ BOOL _logging;
 -(void)setLogging:(BOOL)logging{
 	BOOL prev = _logging;
 	_logging = logging;
-	if(!prev && logging && self.options.flushPeriod != nil){
+	if(!prev && logging && self.flushPeriod != nil){
 		[self scheduleLogFlush];
-	}else if(prev && !logging && self.options.flushPeriod != nil){
+	}else if(prev && !logging && self.flushPeriod != nil){
 		dispatch_sync(self.flushQueue, ^{
 			@try{
 				[self triggerFlush];
@@ -79,7 +79,7 @@ BOOL _logging;
 		if(!self.flushingScheduled){
 			self.flushingScheduled = YES;
 			NSDate *now = [NSDate date];
-			NSDate *then = [self.cal dateByAddingComponents:self.options.flushPeriod toDate:now options:0];
+			NSDate *then = [self.cal dateByAddingComponents:self.flushPeriod toDate:now options:0];
 			NSTimeInterval trigger = [then timeIntervalSinceDate:now];
 			
 			//The wait is asynchronous so will break the lock.
@@ -102,7 +102,7 @@ BOOL _logging;
 -(void)addLogEntry:(TWLogEntry *)entry{
 	dispatch_sync(self.flushQueue, ^{
 		[self.logStore addObject:entry];
-		if((self.options.flushPeriod == nil && self.options.cacheSize == 0) || (self.options.cacheSize > 0 && self.logStore.count > self.options.cacheSize)){
+		if((self.flushPeriod == nil && self.cacheSize == 0) || (self.cacheSize > 0 && self.logStore.count > self.cacheSize)){
 			[self flushLogs];
 			[self.logStore removeAllObjects];
 		}
