@@ -35,9 +35,7 @@
 		}else{
 			_options = options;
 		}
-		if(_options.logFormat != nil){
-			_logFormatter = self.options.logFormat;
-		}
+
 		if(_options.logFilePrefix == nil){
 			_options.logFilePrefix = @"TWLog";
 		}

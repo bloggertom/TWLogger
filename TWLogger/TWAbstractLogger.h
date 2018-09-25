@@ -16,7 +16,6 @@
 
 @property (nonatomic, readonly, strong)TWLoggerOptions *options;
 @property (nonatomic, readonly, strong)NSFileManager *fileManager;
-@property (nonatomic, readonly, strong)TWLogFormatter *logFormatter;
 @property (strong, readonly)NSMutableArray *logStore;
 
 /**

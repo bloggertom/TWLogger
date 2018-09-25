@@ -50,6 +50,6 @@
  
  If nil no additonal information is added to logged text.
  */
-@property (nonatomic, strong)TWLogFormatter *logFormat;
+@property (nonatomic, strong)TWLogFormatter *logFormatter;
 
 @end
