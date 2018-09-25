@@ -57,7 +57,7 @@
 /**
  Sets how often the log cache is flushed to disk. If nil the periodic flush will not run.
  
- @note Must be used coordination with cacheSize to set the behaviour of logging cache.
+ @note Must be used coordination with cacheSize to set the behaviour of logging cache. If flushPeriod is nil and cacheSize is 0 logs will be written to disk immediately.
  */
 @property (nonatomic, strong)NSDateComponents *flushPeriod;
 
