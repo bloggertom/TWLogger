@@ -39,7 +39,17 @@ Using `NSLog()` will make store the logs against the default logging level set. 
 
 ## Extension
 
-New loggers just need to adhere to the `TWLogDelegate` protocol. An `TWAbstractLogger` class is available, this handles caching and triggering of flushes for you otherwise you will need to build your own method for triggering log writes.
+New loggers just need to adhere to the `TWLogDelegate` protocol. 
+
+An `TWAbstractLogger` class is available, this handles caching and triggering of flushes for you otherwise you will need to build your own method for triggering log writes. It contains several abstract methods which must be overriden before a class can be used:
+
+```
+- (void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function;
+- (void)stopLogging;
+- (BOOL)startLogging;
+- (void)flushLogs;
+```
+Abstract methods are used by the TWLogging framework and should not be called directly. Doing so could lead to unexpected behaviour.
 
 ## Things still to do
 
