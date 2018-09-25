@@ -55,7 +55,7 @@
 @property (nonatomic, strong)TWLogFormatter *logFormat;
 
 /**
- Sets how often the log cache is flushed to disk. If nil and periodic flush will not run.
+ Sets how often the log cache is flushed to disk. If nil the periodic flush will not run.
  
  @note Must be used coordination with cacheSize to set the behaviour of logging cache.
  */
