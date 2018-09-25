@@ -25,6 +25,18 @@ It is possible to run multiple loggers at the same time.
 
 There is a log formatter included but currently it's not very well documented.
 
+### Logging Level
+To make use of the different logging levels several macros have been defined to use their corresponding logging level:
+
+``` objective-c
+TWLog(TWLogLevel, args...); // default logging level used
+TWLogDebug(args...);
+TWLogInfo(args...);
+TWLogWarning(args...);
+TWLogFatal(args...);
+```
+Using `NSLog()` will make store the logs against the default logging level set. To set the default logging level use `[TWLog setDefaultLogLevel:(TWLogLevel)level`.
+
 ## Extension
 
 New loggers just need to adhere to the `TWLogDelegate` protocol. An `TWAbstractLogger` class is available, this handles caching and triggering of flushes for you otherwise you will need to build your own method for triggering log writes.
