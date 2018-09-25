@@ -48,13 +48,6 @@
 @property (nonatomic)NSString *logFilePrefix;
 
 /**
- Format defining how the log will be formatted when it is written.
-
- If nil no additonal infomration is added to logged text.
- */
-@property (nonatomic, strong)TWLogFormatter *logFormat;
-
-/**
  Sets how often the log cache is flushed to disk. If nil the periodic flush will not run.
  
  @note Must be used coordination with cacheSize to set the behaviour of logging cache. If flushPeriod is nil and cacheSize is 0 logs will be written to disk immediately.

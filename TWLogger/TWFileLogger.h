@@ -45,5 +45,11 @@
 
 @interface TWFileLogger : TWAbstractLogger <TWLoggerDelegate>
 
+/**
+ Format defining how the log will be formatted when it is written.
+ 
+ If nil no additonal information is added to logged text.
+ */
+@property (nonatomic, strong)TWLogFormatter *logFormat;
 
 @end
