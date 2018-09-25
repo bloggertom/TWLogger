@@ -13,7 +13,7 @@
 
 @protocol TWLoggerDelegate <NSObject>
 /**
- Boolean indicating if logger is currently active and logging.
+ Boolean indicating if logger is currently active and logging. To be set at the end of startLogging and at the start of endLogging.
  */
 @property (nonatomic, getter=isLogging)BOOL logging;
 
