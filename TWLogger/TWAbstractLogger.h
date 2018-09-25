@@ -35,14 +35,27 @@
  */
 -(instancetype)initWithOptions:(TWLoggerOptions *)options;
 
+/**
+ Helper method to log out to the system log with an error. A call to stop logging with proceed a call to this method.
+ 
+ @param message Message to be logged out in the system log.
+ @param error Error which will proceed the message.
+ */
 -(void)stopLoggingWithMessage:(NSString *)message andError:(nullable NSError *)error;
 
+/**
+ Adds a log to the logging cache.
+ 
+ @param entry TWLogEntry object to be placed in the cache.
+ */
 -(void)addLogEntry:(TWLogEntry *)entry;
 
 /**
- Loggers inheriting from the TWAbstractLogger class should not call this method directly and instead should call setNeedsFlaush instead.
+ Abstract method called by the TWAbstractLogger super class and to be overriden by the subclass. Implementation of this methods should write any logs currently in the logStore to disk.
  
- Calling this method directly can lead to unpredictable behaviour.
+ Once called by the TWAbstractLogger super class the logStore will be emptied.
+ 
+ Calling this method directly can lead to duplicate logging.
  */
 -(void)flushLogs;
 @end
