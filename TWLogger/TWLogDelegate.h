@@ -42,10 +42,5 @@ Called just before the logger is removed from active logger list. Use this metho
  */
 -(void)stopLogging;
 
-/**
- Force logger to write any pending logs to disk.
- */
--(void)flushLogs;
-
 @end
 #endif /* LogDelegate_h */
