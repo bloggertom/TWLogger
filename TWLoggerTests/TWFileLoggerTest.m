@@ -178,7 +178,7 @@
 
 -(void)testLogFileFormatting{
 	TWFileLogger *fileLogger = [[TWFileLogger alloc]init];
-	fileLogger.options.logFormat = [TWLogFormatter defaultLogFormatter];
+	fileLogger.logFormatter = [TWLogFormatter defaultLogFormatter];
 	
 	//TODO: this needs finishing?
 }
