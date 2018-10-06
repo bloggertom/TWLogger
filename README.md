@@ -44,7 +44,6 @@ New loggers just need to adhere to the `TWLogDelegate` protocol.
 An `TWAbstractLogger` class is available, this handles caching and triggering of flushes for you otherwise you will need to build your own method for triggering log writes. It contains several abstract methods which must be overriden before a class can be used:
 
 ```
-- (void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function;
 - (void)stopLogging;
 - (BOOL)startLogging;
 - (void)flushLogs;
