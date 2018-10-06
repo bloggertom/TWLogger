@@ -100,18 +100,28 @@ BOOL _logging;
 }
 
 -(void)addLogEntry:(TWLogEntry *)entry{
-	dispatch_sync(self.flushQueue, ^{
-		[self.logStore addObject:entry];
-		if((self.flushPeriod == nil && self.cacheSize == 0) || (self.cacheSize > 0 && self.logStore.count > self.cacheSize)){
-			[self flushLogs];
-			[self.logStore removeAllObjects];
-		}
-	});
+	[self.logStore addObject:entry];
+	if((self.flushPeriod == nil && self.cacheSize == 0) || (self.cacheSize > 0 && self.logStore.count > self.cacheSize)){
+		[self triggerFlush];
+	}
 }
 
 - (void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function {
-	[NSException raise:NSInternalInconsistencyException
-				format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
+	dispatch_sync(self.flushQueue, ^{
+		if(!self.isLogging){
+			[TWLog systemLog: @"Log received when logging not active"];
+			return;
+		}
+		
+		TWLogEntry *entry = [[TWLogEntry alloc]init];
+		entry.datetime = [NSDate date];
+		entry.logLevel = level;
+		entry.logBody = body;
+		entry.file = file;
+		entry.function = function;
+		
+		[self addLogEntry:entry];
+	});
 }
 
 - (void)stopLogging {

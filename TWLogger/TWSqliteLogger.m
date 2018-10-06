@@ -90,23 +90,6 @@
 	return [self initWithOptions:options];
 }
 
--(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
-	@synchronized(self){
-		if(self.twSqlite == nil || !self.isLogging){
-			[TWLog systemLog: @"Log received when logging not active"];
-			return;
-		}
-	}
-	TWLogEntry *entry = [[TWLogEntry alloc]init];
-	entry.datetime = [NSDate date];
-	entry.logLevel = level;
-	entry.logBody = body;
-	entry.file = file;
-	entry.function = function;
-	
-	[self addLogEntry:entry];	
-}
-
 -(BOOL)startLogging{
 	NSError *error = nil;
 	if(![self openOrCreateDatabase:self.options.loggingAddress error:&error]){
