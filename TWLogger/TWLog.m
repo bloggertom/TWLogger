@@ -31,6 +31,10 @@
 
 void twLogD(const char *file, const char *functionName, NSString *format, ...) {
 	// Type to hold information about variable arguments.
+	if(_defaultLevel < _filterLogLevel){
+		return;
+	}
+	
 	va_list ap;
 	
 	// Initialize a variable argument list.

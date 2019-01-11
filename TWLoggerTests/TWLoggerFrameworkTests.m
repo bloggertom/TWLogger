@@ -99,6 +99,50 @@
 	[self cleanUpLogger:logger];
 }
 
+-(void)testLoggingFilter{
+	TWSqliteLogger *logger =  [[TWSqliteLogger alloc]init];
+	logger.flushPeriod = nil;
+	logger.cacheSize = 0;
+	
+	[TWLog addLogger:logger];
+	
+	[TWLog setLogLevelFilter:TWLogLevelInfo];
+	
+	TWLogDebug(@"Debug");
+	TWLogWarning(@"Warning");
+	TWLogInfo(@"Info");
+	TWLogFatal(@"Fatal");
+	NSLog(@"NSLog");//default to debug
+	
+	[TWLog removeLogger:logger];
+	
+	NSError *error = nil;
+	TWSqlite *db = [TWSqlite openDatabaseAtPath:[self getLogFilePath:logger] error:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(db);
+	
+	error = nil;
+	NSArray<TWSqliteLogEntry *> *logs = [db selectAllLogEntries:&error];
+	
+	XCTAssertNil(error);
+	XCTAssertNotNil(logs);
+	XCTAssertEqual(3, logs.count);
+	
+	NSDictionary *dic = @{logs[0].logBody : logs[0].logLevel,
+						  logs[1].logBody : logs[1].logLevel,
+						  logs[2].logBody : logs[2].logLevel,
+						  };
+	
+	XCTAssertEqualObjects([TWUtils logLevelString:TWLogLevelInfo], [dic objectForKey:@"Info\n"]);
+	XCTAssertEqualObjects([TWUtils logLevelString:TWLogLevelWarning], [dic objectForKey:@"Warning\n"]);
+	XCTAssertEqualObjects([TWUtils logLevelString:TWLogLevelFatal], [dic objectForKey:@"Fatal\n"]);
+	
+	[TWSqlite closeDatabase];
+	
+	[self cleanUpLogger:logger];
+}
+
 -(void)checkLogFolderContents:(NSString *)loggingDirectory result:(NSString *)expectedContents{
 	NSError *error = nil;
 	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:loggingDirectory error:&error];
@@ -154,6 +198,7 @@
 	
 	[self cleanUpLogger:fileLogger];
 }
+
 -(NSString *)getLogFilePath:(id<TWLoggerDelegate>)logger{
 	NSError *error = nil;
 	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:logger.options.loggingAddress error:&error];
