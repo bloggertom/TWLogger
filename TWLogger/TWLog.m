@@ -62,6 +62,10 @@ void twLogD(const char *file, const char *functionName, NSString *format, ...) {
 
 void twLogL(const char *file, const char *functionName, TWLogLevel level, NSString *format, ...) {
 		// Type to hold information about variable arguments.
+	if(level < _filterLogLevel){
+		return;
+	}
+	
 	va_list ap;
 	
 		// Initialize a variable argument list.
@@ -105,12 +109,19 @@ void twLogL(const char *file, const char *functionName, TWLogLevel level, NSStri
 	}
 	
 }
-+(void)systemLog:(NSString *)body{
++(void)systemLog:(NSString *)body,...{
+	va_list args;
+	va_start(args, body);
+	
 	if (![body hasSuffix: @"\n"])
 	{
 		body = [body stringByAppendingString: @"\n"];
 	}
-	fprintf(stderr, "%s", body.UTF8String);
+	NSString *logme = [[NSString alloc]initWithFormat:body arguments:args];
+	
+	va_end(args);
+	
+	fprintf(stderr, "%s", logme.UTF8String);
 }
 NSMutableArray<LoggerReference *> *_loggers;
 +(void)addLogger:(id<TWLoggerDelegate>)logger{
@@ -158,6 +169,11 @@ static BOOL _log = YES;
 
 +(void)log:(BOOL)logging{
 	_log = logging;
+}
+
+static TWLogLevel _filterLogLevel = TWLogLevelDebug;
++(void)setLogLevelFilter:(TWLogLevel)level{
+	_filterLogLevel = level;
 }
 
 @end

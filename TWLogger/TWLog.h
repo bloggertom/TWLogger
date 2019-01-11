@@ -10,13 +10,24 @@
 
 @interface TWLog : NSObject
 
-//Setters/Getters
 /**
- Set default logging level for NSLog()
+ Set default logging level for NSLog().
+ 
+ @note
+ Defaults to TWLogLevelDebug.
  
  @param level Level of default logging.
  */
 +(void)setDefaultLogLevel:(TWLogLevel)level;
+/**
+ Set the logging level at which logs with a level below will be filtered out.
+ 
+ @note
+ Defaults to TWLogLevelDebug (no filter).
+ 
+ @param level Level to set filter.
+ */
++(void)setLogLevelFilter:(TWLogLevel)level;
 /**
  Indicates if logging is currently active.
  
@@ -44,7 +55,7 @@
 /**
  Log to system bypassing active loggers.
  */
-+(void)systemLog:(NSString *)body;
++(void)systemLog:(NSString *)body,...;
 
 
 void twLogD(const char *file, const char *functionName, NSString *format, ...);
