@@ -16,7 +16,7 @@
  
  The TWFileLogger write logs to a file at a specified location.
  
- Options passed in set the behaviour for this class.
+ A TWFileLogger can be configured using the following properties:
  
  - pageLife set the length time a log file is used before a new log file is created.
  
@@ -24,20 +24,8 @@
  
  - maxPageNum sets the maximum number of pages which can be created in LoggingAddress. Once maxPageNum is met the oldest log file is deleted.
  
- - flushPeriod is ignored and all logs are written to disk immediately.
- 
- - cacheSize is ignored and all logs are written to disk immediately.
- 
- - metaData key values are logged out at the top of each file.
- 
- Default options are as follows
- @code
- options.pageLife.day = 1;
- options.dateTimeFormat = TWDateTimeFormatDefault;
- options.maxPageNum = 80;
- options.maxPageSize = 0;
- options.logFilePrefix = @"TWLog";
- @endcode
+ @note
+ metaData key values are logged out at the top of each file.
  
  By default logs will be put in the Documents directory in a @code TWLogFiles @endcode subdirectory.
  
@@ -54,18 +42,22 @@
 
 /**
  Span of time which a log page will be used before starting a new page. If nil a page will never expire.
+ 
+ Default is 1 day
  */
 @property (nonatomic, strong)NSDateComponents *pageLife;
 
 /**
- @brief Maximum size of a page
+ @brief Maximum size of a log file in kilobytes
+ 
+ 0 by default (ignored)
  */
 @property (nonatomic)NSUInteger maxPageSize;
 
 /**
  @brief Maximum number of pages.
  
- The maximum number of pages allowed by logger.
+ The maximum number of log files before the oldest is deleted.
  */
 @property (nonatomic)NSUInteger maxPageNum;
 
