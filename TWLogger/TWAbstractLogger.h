@@ -13,7 +13,6 @@
 #import "TWLoggerErrors.h"
 
 @interface TWAbstractLogger : NSObject <TWLoggerDelegate>
-
 @property (nonatomic, readonly, strong)TWLoggerOptions *options;
 @property (nonatomic, readonly, strong)NSFileManager *fileManager;
 @property (strong, readonly)NSMutableArray *logStore;

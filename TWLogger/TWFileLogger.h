@@ -32,6 +32,7 @@
  */
 
 @interface TWFileLogger : NSObject <TWLoggerDelegate>
+@property (nonatomic, readonly, strong)TWLoggerOptions *options;
 
 /**
  Format defining how the log will be formatted when it is written.

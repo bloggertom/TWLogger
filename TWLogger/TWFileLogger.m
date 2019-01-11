@@ -13,7 +13,6 @@
 
 @property (nonatomic, strong)NSFileHandle *currentLogHandle;
 @property (nonatomic, strong)NSString *currentLogPath;
-@property (nonatomic, strong)TWLoggerOptions *options;
 @property (nonatomic, readonly, strong)NSFileManager *fileManager;
 
 @end

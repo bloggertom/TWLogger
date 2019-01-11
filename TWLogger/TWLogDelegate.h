@@ -10,12 +10,18 @@
 #define LogDelegate_h
 #import	<Foundation/Foundation.h>
 #import "TWLogLevel.h"
+#import "TWLoggerOptions.h"
 
 @protocol TWLoggerDelegate <NSObject>
 /**
  Boolean indicating if logger is currently active and logging. To be set at the end of startLogging and at the start of endLogging.
  */
 @property (nonatomic, getter=isLogging)BOOL logging;
+
+/**
+ The logger options for this logger.
+ */
+@property (nonatomic, readonly, strong)TWLoggerOptions* options;
 
 /**
  @brief Set up function for the logger.

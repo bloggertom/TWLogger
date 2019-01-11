@@ -115,7 +115,7 @@
 	XCTAssertEqualObjects(expectedContents, logContent);
 }
 
--(void)cleanUpLogger:(TWAbstractLogger *)logger{
+-(void)cleanUpLogger:(id<TWLoggerDelegate>)logger{
 	[TWLog removeLogger:logger];
 	
 	NSError *error = nil;
@@ -154,7 +154,7 @@
 	
 	[self cleanUpLogger:fileLogger];
 }
--(NSString *)getLogFilePath:(TWAbstractLogger *)logger{
+-(NSString *)getLogFilePath:(id<TWLoggerDelegate>)logger{
 	NSError *error = nil;
 	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:logger.options.loggingAddress error:&error];
 	
