@@ -22,27 +22,6 @@
 @property (nonatomic, strong)NSString *loggingAddress;
 
 /**
- Span of time which a log page will be used before starting a new page. If nil a page will never expire.
- */
-@property (nonatomic, strong)NSDateComponents *pageLife;
-
-/**
- @brief Maximum size of a page
- 
- @note How size is interpreted will depend of the type of logger.
- */
-@property (nonatomic)NSUInteger maxPageSize;
-
-/**
- @brief Maximum number of pages.
- 
- The maximum number of pages allowed by logger.
- 
- @note Once maximum pages have been reached the logger will decide how to continue.
- */
-@property (nonatomic)NSUInteger maxPageNum;
-
-/**
  Prefix given to the log file.
  */
 @property (nonatomic)NSString *logFilePrefix;

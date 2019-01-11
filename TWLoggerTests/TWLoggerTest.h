@@ -14,7 +14,7 @@
 
 @interface TWLoggerTest : XCTestCase
 @property (nonatomic, strong)TWLoggerOptions *options;
-@property (nonatomic, strong)TWAbstractLogger *logger;
+@property (nonatomic, strong)id<TWLoggerDelegate> logger;
 @property (nonatomic, strong)NSFileManager *fileManager;
 @property (nonatomic, strong)NSString *baseDir;
 @property (nonatomic, strong)NSString *logPath;

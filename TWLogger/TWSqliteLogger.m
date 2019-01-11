@@ -151,17 +151,17 @@
 
 -(void)removeExpiredLogs{
 	//Called withing a @synchronized so should be safe.
-	if(self.options.pageLife == nil){
+	if(self.logExpiration == nil){
 		return;
 	}
 	
 	NSDate *now = [NSDate date];
-	NSDate *expiryDate = [[NSCalendar currentCalendar] dateByAddingComponents:[self.options.pageLife invertedDateComponents] toDate:now options:0];
+	NSDate *expiryDate = [[NSCalendar currentCalendar] dateByAddingComponents:[self.logExpiration invertedDateComponents] toDate:now options:0];
 	
 	NSTimeInterval exiryTime = [expiryDate timeIntervalSince1970];
 	//date components were already negative. Do the old switcharoo.
 	if(exiryTime > [now timeIntervalSince1970]){
-		expiryDate = [[NSCalendar currentCalendar] dateByAddingComponents:self.options.pageLife toDate:now options:0];
+		expiryDate = [[NSCalendar currentCalendar] dateByAddingComponents:self.logExpiration toDate:now options:0];
 		exiryTime = [expiryDate timeIntervalSince1970];
 	}
 	

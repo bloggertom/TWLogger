@@ -41,6 +41,6 @@
 
 @interface TWSqliteLogger : TWAbstractLogger
 
-
+@property (nonatomic, strong)NSDateComponents *logExpiration;
 
 @end

@@ -37,8 +37,8 @@
 	[self.logger stopLogging];
 	
 	//Instant flush
-	self.logger.flushPeriod = nil;
-	self.logger.cacheSize = 0;
+	((TWAbstractLogger*)self.logger).flushPeriod = nil;
+	((TWAbstractLogger*)self.logger).cacheSize = 0;
 	XCTAssertTrue([self.logger startLogging]);
 	
 	[self.logger logReceived:TWLogLevelInfo body:@"Body of info" fromFile:@"File" forFunction:@"function"];
@@ -99,7 +99,7 @@
 	[self.logger stopLogging];
 	
 	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
-	//logger.options.flushPeriod.second = 10; Default;
+	//logger.flushPeriod.second = 10; //Default;
 	logger.options.loggingAddress = self.logPath;
 	XCTAssertEqual(10, logger.flushPeriod.second);
 	TWAbstractLogger *mockLogger = OCMPartialMock(logger);
@@ -147,8 +147,8 @@
 	
 	TWSqliteLogger *logger = [[TWSqliteLogger alloc]init];
 	logger.options.loggingAddress = self.logPath;
-	logger.options.pageLife = [[NSDateComponents alloc]init];
-	logger.options.pageLife.second = 3;
+	logger.logExpiration = [[NSDateComponents alloc]init];
+	logger.logExpiration.second = 3;
 	logger.cacheSize = 0;
 	//logger.options.flushPeriod = nil;
 	

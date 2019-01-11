@@ -94,8 +94,8 @@
 }
 
 -(void)testExpiringLog{
-	self.options.pageLife.day = 0;
-	self.options.pageLife.second = 1;
+	((TWFileLogger*)self.logger).pageLife.day = 0;
+	((TWFileLogger*)self.logger).pageLife.second = 1;
 	NSString *logMessage1 = @"Log Message 1";
 	NSString *logMessage2 = @"Log Message 2";
 	[self.logger logReceived:TWLogLevelDebug body:logMessage1 fromFile:[NSString stringWithFormat:@"%s",__FILE__] forFunction:[NSString stringWithFormat:@"%s",__PRETTY_FUNCTION__]];
@@ -130,7 +130,7 @@
 
 -(void)testLogSize{
 	
-	self.options.maxPageSize = 1;// 1Kb
+	((TWFileLogger*)self.logger).maxPageSize = 1;// 1Kb
 	NSString *logMessage = [self getRandomString:1500];
 	
 	[self.logger logReceived:TWLogLevelDebug body:logMessage fromFile:[NSString stringWithUTF8String:__FILE__] forFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__]];

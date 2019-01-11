@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "TWLog.h"
-#import "TWAbstractLogger.h"
 #import "TWLoggerOptions.h"
+
 
 /**
  @class TWFileLogger
@@ -43,7 +43,7 @@
  
  */
 
-@interface TWFileLogger : TWAbstractLogger <TWLoggerDelegate>
+@interface TWFileLogger : NSObject <TWLoggerDelegate>
 
 /**
  Format defining how the log will be formatted when it is written.
@@ -51,5 +51,22 @@
  If nil no additonal information is added to logged text.
  */
 @property (nonatomic, strong)TWLogFormatter *logFormatter;
+
+/**
+ Span of time which a log page will be used before starting a new page. If nil a page will never expire.
+ */
+@property (nonatomic, strong)NSDateComponents *pageLife;
+
+/**
+ @brief Maximum size of a page
+ */
+@property (nonatomic)NSUInteger maxPageSize;
+
+/**
+ @brief Maximum number of pages.
+ 
+ The maximum number of pages allowed by logger.
+ */
+@property (nonatomic)NSUInteger maxPageNum;
 
 @end

@@ -7,25 +7,44 @@
 //
 
 #import "TWFileLogger.h"
-#import "TWAbstractLogger.h"
+#import "TWLoggerErrors.h"
 
 @interface TWFileLogger()
 
 @property (nonatomic, strong)NSFileHandle *currentLogHandle;
 @property (nonatomic, strong)NSString *currentLogPath;
+@property (nonatomic, strong)TWLoggerOptions *options;
+@property (nonatomic, readonly, strong)NSFileManager *fileManager;
 
 @end
 
 @implementation TWFileLogger
+@synthesize logging;
 
 -(instancetype)init{
-	TWLoggerOptions *options = [[TWLoggerOptions alloc]init];
-	options.maxPageNum = 80;
-	options.maxPageSize = 0;
-	options.pageLife = [[NSDateComponents alloc]init];
-	options.pageLife.day = 1;
+	self = [super init];
+	if(self){
+		_options = [[TWLoggerOptions alloc]init];
+		if(_options.logFilePrefix == nil){
+			_options.logFilePrefix = @"TWLog";
+		}
+		
+		if(_options.loggingAddress == nil){
+			NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+			path = [path stringByAppendingPathComponent:@"TWLogFiles"];
+			_options.loggingAddress = path;
+		}
+		
+		_maxPageNum = 80;
+		_maxPageSize = 0;
+		_pageLife = [[NSDateComponents alloc]init];
+		_pageLife.day = 1;
+		
+		_fileManager = [NSFileManager defaultManager];
+	}
 	
-	return [self initWithOptions:options];
+	return self;
+	
 }
 
 -(void)logReceived:(TWLogLevel)level body:(NSString *)body fromFile:(NSString *)file forFunction:(NSString *)function{
@@ -160,7 +179,7 @@
 		}
 	}
 	contents = [contents arrayByAddingObject:fileName];
-	if(self.options.maxPageNum > 0 && contents.count > self.options.maxPageNum){
+	if(self.maxPageNum > 0 && contents.count > self.maxPageNum){
 		//Remove oldest file.
 		if([self deleteOldestLog:contents error:error]){
 			[TWLog systemLog:[NSString stringWithFormat:@"Failed to delete old log"]];
@@ -212,7 +231,7 @@
 }
 
 -(BOOL)logFileHasExpired:(NSString *)logFile error:(NSError **)error{
-	if(self.options.pageLife == nil){
+	if(self.pageLife == nil){
 		return NO;
 	}
 	
@@ -223,13 +242,13 @@
 	}
 	NSDate *fileCreation = [fileAtt fileCreationDate];
 	
-	NSDate *expiryDate = [calendar dateByAddingComponents:self.options.pageLife toDate:fileCreation options:0];
+	NSDate *expiryDate = [calendar dateByAddingComponents:self.pageLife toDate:fileCreation options:0];
 	NSDate *now = [NSDate date];
 	return ([expiryDate compare:now] == NSOrderedAscending || [expiryDate compare:now] == NSOrderedSame);
 }
 
 -(BOOL)logFileHasReachedMaxSize:(NSString *)logFile error:(NSError **)error{
-	if(self.options.maxPageSize <= 0){
+	if(self.maxPageSize <= 0){
 		return NO;
 	}
 	
@@ -240,7 +259,7 @@
 	
 	NSInteger sizeKb = [fileAtt fileSize]/1000;
 	
-	return sizeKb >= self.options.maxPageSize;
+	return sizeKb >= self.maxPageSize;
 }
 
 -(NSArray *)sortFilesByCreationDate:(NSArray *)files{
@@ -273,5 +292,13 @@
 		sortedArray = [self sortFilesByCreationDate:files];
 	}
 	return sortedArray.firstObject;
+}
+
+-(void)stopLoggingWithMessage:(NSString *)message andError:(nullable NSError *)error{
+	[TWLog systemLog:message];
+	if(error != nil){
+		[TWLog systemLog:[NSString stringWithFormat:@"%@",error]];
+	}
+	[self stopLogging];
 }
 @end
